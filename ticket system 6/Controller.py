@@ -25,16 +25,16 @@ from PyQt6.QtWidgets import (QApplication)
 #todo Fenstergrößen anpassen
 #todo Fenster schöner machen [Anton ist ragequitet]
 
-from start_window import StartWindow
-from login_window import LoginWindow
-from main_window import MainWindow
-from create_ticket import CreateTicket
-from mytickets_window import MyTicketsWindow
-from universal_data import CurrentUserdata
-from registration_window import RegistrationWindow
+from StartWindow import StartWindow
+from LoginWindow import LoginWindow
+from MainWindow import MainWindow
+from CreateTicket import CreateTicket
+from MyTicketsWindow import MyTicketsWindow
+from UniversalData import CurrentUserdata
+from RegistrationWindow import RegistrationWindow
 
 # 1. Der Controller (Der Manager)
-class WindowManager:
+class Controller:
     def __init__(self):
         self.current_window = None
 
@@ -112,7 +112,7 @@ class WindowManager:
 app = QApplication(sys.argv)
 
 # Der Manager übernimmt die Kontrolle
-manager = WindowManager()
+manager = Controller()
 manager.show_start_screen()
 
 app.exec()

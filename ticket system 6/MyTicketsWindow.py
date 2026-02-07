@@ -2,7 +2,7 @@ import csv
 
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from PyQt6.QtWidgets import QMainWindow, QTableView, QWidget, QVBoxLayout, QPushButton
-from universal_data import CurrentUserdata,ProgramData
+from UniversalData import CurrentUserdata,ProgramData
 from PyQt6.QtCore import pyqtSignal
 
 

@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import (QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabel, QMessageBox)
 from PyQt6.QtCore import pyqtSignal
 
-from universal_data import CurrentUserdata
+from UniversalData import CurrentUserdata
 
 class LoginWindow(QWidget):
     request_main_window = pyqtSignal()

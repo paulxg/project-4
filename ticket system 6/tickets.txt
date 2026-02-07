@@ -1,1 +1,4 @@
 [id],[category],[short description],[long description]
+1,Network or Connection Issues,.fafgashgghug,awidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaiajdnawfawofafawofinf
+1,Installation or Updates,adawd,awdadad
+1,Installation or Updates,awdadw,awdadawda

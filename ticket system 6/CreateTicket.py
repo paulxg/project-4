@@ -3,7 +3,7 @@ import csv
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabel, QComboBox, QFileDialog, QTextEdit,
                              QMessageBox)
-from universal_data import CurrentUserdata,ProgramData
+from UniversalData import CurrentUserdata,ProgramData
 from PyQt6.QtCore import pyqtSignal
 
 
