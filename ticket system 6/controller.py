@@ -1,0 +1,118 @@
+import sys
+from PyQt6.QtWidgets import (QApplication)
+
+#todo registration - und in username file schreiben [Lorena]
+#todo (attachment fixen) [später]
+#todo clear Ticket Form nach submit
+#submit button für create ticket
+#todo user ids generieren ( auto zuweisung )
+#jedem user id hinzugefügt
+#universal variablen connected
+#universal_data Kategorien dahin ausgelagert
+#main_window: "modify" nur für admins sichtbar
+#Sicherheitsupdate: Username und Passwort nicht mehr plain in universal_data gespeichert
+#Zurückbuttons + Signout
+#farbige BacktoMain Buttons (dann kam der ragequit)
+#txt datei wird jetzt über "csv" ausgelesen und geschrieben (wegen splitting trotz Komma in Sätzen usw.)
+#Counter und Begrenzung in create Ticket
+#mytickets window angebunden
+#todo Ticket Creation feedback nach submit
+#todo mytickets schöner machen
+#todo mytickets Category Bearbeitung unterbinden
+#todo claim/view (tickets (also abarbeiten))
+#todo Priorisierung von tickets
+#todo status von tickets in Bearbeitung
+#todo Fenstergrößen anpassen
+#todo Fenster schöner machen [Anton ist ragequitet]
+
+from start_window import StartWindow
+from login_window import LoginWindow
+from main_window import MainWindow
+from create_ticket import CreateTicket
+from mytickets_window import MyTicketsWindow
+from universal_data import CurrentUserdata
+from registration_window import RegistrationWindow
+
+# 1. Der Controller (Der Manager)
+class WindowManager:
+    def __init__(self):
+        self.current_window = None
+
+    def show_start_screen(self):
+        #Wir erstellen das Startfenster
+        self.current_window = StartWindow()
+
+        #Wir verbinden das Signal des Fensters mit unserer Methode
+        self.current_window.request_login.connect(self.show_login_screen)
+        self.current_window.request_login.connect(self.show_registration_screen)
+
+        self.current_window.show()
+
+
+    def show_login_screen(self):
+        self.current_window.close()
+
+        #Neues Fenster erstellen
+        self.current_window = LoginWindow()
+
+        self.current_window.request_main_window.connect(self.show_main_window)
+        self.current_window.signout_signal.connect(self.show_start_screen)
+
+        self.current_window.show()
+
+        CurrentUserdata.rank = None
+        CurrentUserdata.id = None
+
+    def show_registration_screen(self):
+        self.current_window.close()
+
+        #Neues Fenster erstellen
+        self.current_window = RegistrationWindow()
+
+        self.current_window.request_main_window.connect(self.show_main_window)
+        self.current_window.return_signal.connect(self.show_start_screen)
+
+        self.current_window.show()
+
+        CurrentUserdata.rank = None
+        CurrentUserdata.id = None
+
+    def show_main_window(self):
+        self.current_window.close()
+
+        self.current_window = MainWindow()
+
+        self.current_window.create_ticket_signal.connect(self.create_ticket)
+        self.current_window.mytickets_signal.connect(self.myticket_window)
+        self.current_window.signout_signal.connect(self.show_start_screen)
+
+        self.current_window.show()
+
+    def create_ticket(self):
+        self.current_window.close()
+
+        self.current_window = CreateTicket()
+
+        self.current_window.request_main_window.connect(self.show_main_window)
+
+        self.current_window.show()
+
+    def myticket_window(self):
+        self.current_window.close()
+
+        self.current_window = MyTicketsWindow()
+
+        self.current_window.request_main_window.connect(self.show_main_window)
+
+        self.current_window.show()
+
+
+
+# --- Das Hauptprogramm ---
+app = QApplication(sys.argv)
+
+# Der Manager übernimmt die Kontrolle
+manager = WindowManager()
+manager.show_start_screen()
+
+app.exec()

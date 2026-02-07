@@ -1,0 +1,25 @@
+Ticketsystem für Unternehmen, das Datenmanagementsoftware vertreibt:
+
+Benötigte Daten vom Kunden:
+
+Aufbau/Unterteilung des Tickets
+1.Unterscheidung 
+	a.Privatperson
+	b.Unternehmen
+
+2.Kategorisierung des Problems
+	a.Installation und Updates [2]
+	b.Netzwerk – und Verbindungsprobleme [3]
+	c.Lizenzen und Konten [1]
+	d.Probleme beim Anwenden [3]
+	e.Dateien und Speicher [2]
+	f.Sicherheit und Datenschutz [1]
+	g.Verbesserungsvorschläge/ Fehlende Funktionen [4]
+	h.Sonstiges [3]
+
+3.Beschreibung des Problems
+	a.Überschrift – Kurzbenennung
+	b.Detailbeschreibung
+
+4.Zuweisung 
+5.Details (freies Feld)
