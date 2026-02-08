@@ -6,6 +6,7 @@ from PyQt6.QtWidgets import (QApplication)
 #todo clear Ticket Form nach submit
 #submit button für create ticket
 #todo user ids generieren ( auto zuweisung )
+#testtaewtdgdazug
 #jedem user id hinzugefügt
 #universal variablen connected
 #universal_data Kategorien dahin ausgelagert
