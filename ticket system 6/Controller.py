@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import (QApplication)
 
 #todo registration - und in username file schreiben [Lorena]
 #todo (attachment fixen) [später]
+#jdidindidni
 #todo clear Ticket Form nach submit
 #submit button für create ticket
 #todo user ids generieren ( auto zuweisung )
