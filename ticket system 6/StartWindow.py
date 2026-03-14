@@ -22,4 +22,4 @@ class StartWindow(QWidget):
 
         #Verbindung herstellen
         signin_button.clicked.connect(self.request_login.emit)
-        signup_button.clicked.connect(self.request_login.emit)
+        signup_button.clicked.connect(self.request_registration.emit)

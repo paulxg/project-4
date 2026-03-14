@@ -1,5 +1,6 @@
-from PyQt6.QtWidgets import (QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabel, QMessageBox)
+from PyQt6.QtWidgets import QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabel, QMessageBox, QToolButton, QHBoxLayout
 from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtGui import QAction
 
 from UniversalData import CurrentUserdata
 
@@ -25,23 +26,52 @@ class LoginWindow(QWidget):
         self.password_input.setPlaceholderText("Pin")
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
+        # Augen icon (ist ein PyQt Standard Icon)
+
+        icon = self.style().standardIcon(
+            self.style().StandardPixmap.SP_FileDialogDetailedView
+        )
+
         login_button = QPushButton("Submit")
 
+        # Augen-Button ist eine QAction (welches icon wird angezeigt, text zum icon, self -> im fenster)
+
+        self.show_password = QToolButton()
+        self.show_password.setIcon(icon)
+        self.show_password.setCheckable(True)
+        self.show_password.setToolTip("show password")
+        self.show_password.clicked.connect(self.show_or_hide_password)
+
+
+        # Augen Button ins Passwort input Feld
+
+        password_layout = QHBoxLayout()
+        password_layout.addWidget(self.password_input)
+        password_layout.addWidget(self.show_password)
 
 
         signout_button = QPushButton("Return to start page")
 
         # Widgets zum Layout hinzufügen
+
         layout.addWidget(QLabel("Username"))
         layout.addWidget(self.name_input)
         layout.addWidget(QLabel("Pin"))
-        layout.addWidget(self.password_input)
+        layout.addLayout(password_layout)
         layout.addWidget(login_button)
         layout.addWidget(signout_button)
 
         # Button verbinden
         login_button.clicked.connect(self.check_login)
         signout_button.clicked.connect(self.signout_signal.emit)
+
+    def show_or_hide_password(self, checked):
+        if checked:
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Normal)
+            self.password_action_widget.setToolTip("Passwort verstecken")
+        else:
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+            self.password_action_widget.setToolTip("Passwort anzeigen")
 
     def check_login(self):
         # Hier greifen wir auf UNSERE (self) Eingabefelder zu

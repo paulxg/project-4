@@ -1,4 +1,2 @@
 [id],[category],[short description],[long description]
-1,Network or Connection Issues,.fafgashgghug,awidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaifjafawidjaofwijaofwiajfoaiajdnawfawofafawofinf
-1,Installation or Updates,adawd,awdadad
-1,Installation or Updates,awdadw,awdadawda
+1,Installation or Updates,Mein Programm crasht,Hier spricht Lorena. Ich habe ein klassisches Layer-8-Problem. Der Support ist so super und ich brauche unbedingt eure HILFE! HILFE!

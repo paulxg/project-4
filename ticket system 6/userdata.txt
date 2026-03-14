@@ -1,2 +1,2 @@
 [id],[username],[password],[user/admin],[company/private]
-1,Lorena,1234,admin
+1,Lorena,1234,admin,company

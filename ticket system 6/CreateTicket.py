@@ -37,7 +37,6 @@ class CreateTicket(QWidget):
         self.problem = QLineEdit()
         self.problem.setPlaceholderText("max. 30 characters")
         self.problem.setMaxLength(30)
-        self.problem_quick = ""
 
         layout.addWidget(problem_label)
         layout.addWidget(self.problem)
@@ -46,7 +45,6 @@ class CreateTicket(QWidget):
         long_problem_label = QLabel("Describe your problem in detail:")
         self.description = QTextEdit()
         self.description.setPlaceholderText("Max 200 characters")
-        self.detailed_description = ""
         layout.addWidget(long_problem_label)
         layout.addWidget(self.description)
 
@@ -107,7 +105,6 @@ class CreateTicket(QWidget):
         layout.addWidget(self.backmain)
 
 
-
 # Update des Character Counters
     def update_character_counter(self):
         text = self.description.toPlainText()
@@ -147,6 +144,23 @@ class CreateTicket(QWidget):
                     self.problem_quick,
                     text_to_single_line
                     ])
+
+# Inputs in die Textboxen löschen nach dem schreiben (noch im "with")
+            inputs1 = self.findChildren(QLineEdit)
+            for input_field in inputs1:
+                input_field.clear()
+
+            inputs2 = self.findChildren(QTextEdit)
+            for input_field in inputs2:
+                input_field.clear()
+            self.success_notification()
+
+    def success_notification(self):
+        success = QMessageBox()
+        choice = self.dropdown.currentText()
+        success.setWindowTitle("Success")
+        success.setText(f"Your Ticket concerning {choice} has been received!")
+        success.exec()
 
     def choose_attachment(self):
         file = QFileDialog.getOpenFileName(self, "Open File", " ",

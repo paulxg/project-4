@@ -1,13 +1,15 @@
 import sys
 from PyQt6.QtWidgets import (QApplication)
 
-#todo registration - und in username file schreiben [Lorena]
+#registration window[Lorena]-
+# und in username file schreiben [Lorena]
+#todo nicht doppelte usernames [Lorena]
+#todo fixen dass user wirklich in die nächste Zeile geschrieben wird [Lorena]
 #todo (attachment fixen) [später]
-#jdidindidni
-#todo clear Ticket Form nach submit
+#clear Ticket Form nach submit
+#success noti nach submit
 #submit button für create ticket
-#todo user ids generieren ( auto zuweisung )
-#testtaewtdgdazug
+#user ids generieren ( auto zuweisung ) [Lorena]
 #jedem user id hinzugefügt
 #universal variablen connected
 #universal_data Kategorien dahin ausgelagert
@@ -18,14 +20,15 @@ from PyQt6.QtWidgets import (QApplication)
 #txt datei wird jetzt über "csv" ausgelesen und geschrieben (wegen splitting trotz Komma in Sätzen usw.)
 #Counter und Begrenzung in create Ticket
 #mytickets window angebunden
-#todo Ticket Creation feedback nach submit
-#todo mytickets schöner machen
-#todo mytickets Category Bearbeitung unterbinden
+#mytickets schöner machen [Paul]
+#mytickets Category Bearbeitung unterbinden [Paul]
+#todo MyTickets unterscheiden nach admin/user [Paul]
 #todo claim/view (tickets (also abarbeiten))
 #todo Priorisierung von tickets
 #todo status von tickets in Bearbeitung
 #todo Fenstergrößen anpassen
-#todo Fenster schöner machen [Anton ist ragequitet]
+#todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
+#todo Ticket creation Textfeld verkleinern [Anton]
 
 from StartWindow import StartWindow
 from LoginWindow import LoginWindow
@@ -46,7 +49,7 @@ class Controller:
 
         #Wir verbinden das Signal des Fensters mit unserer Methode
         self.current_window.request_login.connect(self.show_login_screen)
-        self.current_window.request_login.connect(self.show_registration_screen)
+        self.current_window.request_registration.connect(self.show_registration_screen)
 
         self.current_window.show()
 
