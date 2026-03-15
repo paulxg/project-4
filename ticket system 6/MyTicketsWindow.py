@@ -18,10 +18,10 @@ class MyTicketsWindow(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        self.tableview = QTableView()
+        self.tableview = QTableView() #sorgt für das tabellenartige Aussehen
         self.tableview.setWordWrap(True)  # Erlaube Textumbruch in Tabelle
 
-        self.tableview.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.tableview.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers) #Unterbindung editing
 
         self.backtomain = QPushButton("Back to Main Window")
         self.backtomain.clicked.connect(self.request_main_window.emit)
@@ -30,7 +30,7 @@ class MyTicketsWindow(QWidget):
         layout.addWidget(self.backtomain)
 
         # model-Variable füllt als QStandardItemModel das Tabellenraster mit Inhalt
-        self.model = QStandardItemModel()
+        self.model = QStandardItemModel() #Inhalt als Modell, der den Inhalt aus csv Datei "im Kopf behält"
         self.tableview.setModel(self.model)
 
         # 'with' schließt die Datei automatisch, auch bei Fehlern
