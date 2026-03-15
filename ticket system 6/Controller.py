@@ -19,19 +19,19 @@
 #mytickets window angebunden
 #mytickets schöner machen [Paul]
 #mytickets Category Bearbeitung unterbinden [Paul]
-#todo MyTickets unterscheiden nach admin/user [Paul]
+#MyTickets unterscheiden nach admin/user [Paul]
 #todo claim/view (tickets (also abarbeiten))
 #todo Priorisierung von tickets
 #todo status von tickets in Bearbeitung
 #todo Fenstergrößen anpassen
-#todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
-#todo Ticket creation Textfeld verkleinern [Anton]
+#todo Fenster schöner machen, Anton ist ragequitet ->[Lorena wirds versuchen]
+#Ticket creation Textfeld verkleinern [Anton]
 
-#todo Files nach Front-/Backend ordnen [Paul]
+#todo Files nach Front-/Backend & Controller ordnen [Paul]
 
-#PRIORISIERUNGSLOGIK
+#todo PRIORISIERUNGSLOGIK
 #Datum bei ticket creation
-#todo Klasse erstellen: Priorisierungslogik
+#Klasse erstellen: Priorisierungslogik
 #todo Priofaktor definieren
     #todo Datum
     #todo company/private
