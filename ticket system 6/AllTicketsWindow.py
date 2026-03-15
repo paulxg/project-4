@@ -38,7 +38,7 @@ class AllTicketsWindow(QWidget):
             reader = csv.reader(file, delimiter=',', quotechar='"')
             for entries in reader:
                 if len(entries) >= 1:
-                    content_only = entries[2:]
+                    content_only = entries[3:]
                     items = [QStandardItem(field) for field in content_only]
                     self.model.appendRow(items)
 

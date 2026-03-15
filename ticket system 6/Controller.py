@@ -27,8 +27,10 @@
 #todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
 #todo Ticket creation Textfeld verkleinern [Anton]
 
+#todo Files nach Front-/Backend ordnen [Paul]
+
 #PRIORISIERUNGSLOGIK
-#todo Datum bei ticket creation
+#Datum bei ticket creation
 #todo Klasse erstellen: Priorisierungslogik
 #todo Priofaktor definieren
     #todo Datum

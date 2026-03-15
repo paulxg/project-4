@@ -94,6 +94,7 @@ class LoginWindow(QWidget):
                             print("Login successful!")
                             CurrentUserdata.id = data[0]
                             CurrentUserdata.rank = data[3]
+                            CurrentUserdata.company = data[4]
                             user_found = True
                             self.request_main_window.emit()
                             break
