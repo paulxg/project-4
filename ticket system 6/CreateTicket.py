@@ -102,7 +102,7 @@ class CreateTicket(QWidget):
         """)
 
         layout.addWidget(self.backmain)
-
+        self.problem_quick = ""
 
 # Update des Character Counters
     def update_character_counter(self):
