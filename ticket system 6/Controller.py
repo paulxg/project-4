@@ -37,6 +37,7 @@ from CreateTicket import CreateTicket
 from MyTicketsWindow import MyTicketsWindow
 from UniversalData import CurrentUserdata
 from RegistrationWindow import RegistrationWindow
+from AllTicketsWindow import AllTicketsWindow
 
 # 1. Der Controller (Der Manager)
 class Controller:
@@ -90,6 +91,7 @@ class Controller:
         self.current_window.create_ticket_signal.connect(self.create_ticket)
         self.current_window.mytickets_signal.connect(self.myticket_window)
         self.current_window.signout_signal.connect(self.show_start_screen)
+        self.current_window.request_alltickets_window.connect(self.alltickets_window)
 
         self.current_window.show()
 
@@ -106,6 +108,15 @@ class Controller:
         self.current_window.close()
 
         self.current_window = MyTicketsWindow()
+
+        self.current_window.request_main_window.connect(self.show_main_window)
+
+        self.current_window.show()
+
+    def alltickets_window(self):
+        self.current_window.close()
+
+        self.current_window = AllTicketsWindow()
 
         self.current_window.request_main_window.connect(self.show_main_window)
 
