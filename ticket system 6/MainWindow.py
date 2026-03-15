@@ -16,20 +16,22 @@ class MainWindow(QWidget):
         self.setLayout(layout)
 
         create_ticket_button = QPushButton("Create Ticket")
-        my_tickets_button = QPushButton("My Tickets")
 
         layout.addWidget(create_ticket_button)
-        layout.addWidget(my_tickets_button)
 
-        #Modify button
+        #AllTickets Button
         if CurrentUserdata.rank == "admin":
-            modify_ticket_button = QPushButton("Modify Ticket")
+            modify_ticket_button = QPushButton("All Tickets")
             layout.addWidget(modify_ticket_button)
+        else:
+            my_tickets_button = QPushButton("My Tickets")
+            layout.addWidget(my_tickets_button)
+            my_tickets_button.clicked.connect(self.mytickets_signal.emit)
+
 
         #signout button
         signout_button = QPushButton("Signout")
         layout.addWidget(signout_button)
 
         create_ticket_button.clicked.connect(self.create_ticket_signal.emit)
-        my_tickets_button.clicked.connect(self.mytickets_signal.emit)
         signout_button.clicked.connect(self.signout_signal.emit)

@@ -1,6 +1,3 @@
-import sys
-from PyQt6.QtWidgets import (QApplication)
-
 #registration window[Lorena]-
 # und in username file schreiben [Lorena]
 #todo nicht doppelte usernames [Lorena]
@@ -29,6 +26,9 @@ from PyQt6.QtWidgets import (QApplication)
 #todo Fenstergrößen anpassen
 #todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
 #todo Ticket creation Textfeld verkleinern [Anton]
+
+import sys
+from PyQt6.QtWidgets import (QApplication)
 
 from StartWindow import StartWindow
 from LoginWindow import LoginWindow
