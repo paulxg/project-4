@@ -54,8 +54,8 @@ class MyTicketsWindow(QWidget):
             for col in range(column_count - 1):
                 header.setSectionResizeMode(col, QHeaderView.ResizeMode.ResizeToContents)
 
-            # 2. Die letzte Spalte (dein langer Text) wird gezwungen, den restlichen Platz
-            # auszufüllen und darf NICHT über den Rand hinauswachsen. Das ist die "Wand"!
+            # 2. Die letzte Spalte (langer Text) wird gezwungen, den restlichen Platz
+            # auszufüllen und darf NICHT über den Rand hinauswachsen.
             header.setSectionResizeMode(column_count - 1, QHeaderView.ResizeMode.Stretch)
 
         # 3. Jetzt, wo die Breite der Text-Spalte feststeht, kann die Höhe korrekt umbrechen

@@ -23,6 +23,7 @@ class LoginWindow(QWidget):
         self.name_input.setPlaceholderText("Username")
 
         self.password_input = QLineEdit()
+        self.password_input.returnPressed.connect(self.check_login) #fängt Enter-Taste ab und führt check_login durch
         self.password_input.setPlaceholderText("Pin")
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 

@@ -9,8 +9,7 @@ from PyQt6.QtWidgets import (QApplication)
 #clear Ticket Form nach submit
 #success noti nach submit
 #submit button für create ticket
-#user ids generieren ( auto zuweisung ) [Lorena]
-#test345
+#user ids generieren (auto zuweisung) [Lorena]
 #jedem user id hinzugefügt
 #universal variablen connected
 #universal_data Kategorien dahin ausgelagert
