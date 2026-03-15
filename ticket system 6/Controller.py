@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import (QApplication)
 #success noti nach submit
 #submit button für create ticket
 #user ids generieren ( auto zuweisung ) [Lorena]
+#test1234
 #jedem user id hinzugefügt
 #universal variablen connected
 #universal_data Kategorien dahin ausgelagert
