@@ -2,7 +2,7 @@ import csv
 
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from PyQt6.QtWidgets import QMainWindow, QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView
-from UniversalData import CurrentUserdata, ProgramData
+from UniversalData import ProgramData
 from PyQt6.QtCore import pyqtSignal
 
 
@@ -38,7 +38,7 @@ class AllTicketsWindow(QWidget):
             reader = csv.reader(file, delimiter=',', quotechar='"')
             for entries in reader:
                 if len(entries) >= 1:
-                    content_only = entries[1:]
+                    content_only = entries[2:]
                     items = [QStandardItem(field) for field in content_only]
                     self.model.appendRow(items)
 

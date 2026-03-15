@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabe
                              QMessageBox)
 from UniversalData import CurrentUserdata,ProgramData
 from PyQt6.QtCore import pyqtSignal
-#1234
+from datetime import datetime
 
 class CreateTicket(QWidget):
     request_main_window = pyqtSignal()
@@ -104,6 +104,7 @@ class CreateTicket(QWidget):
 
         layout.addWidget(self.backmain)
         self.problem_quick = ""
+        self.datetime = ""
 
 # Update des Character Counters
     def update_character_counter(self):
@@ -124,6 +125,7 @@ class CreateTicket(QWidget):
     def submit(self):
         self.category = self.dropdown.currentText()
         self.problem_quick = self.problem.text()
+        self.datetime = datetime.now().strftime("%d/%m/%Y")
         text = self.description.toPlainText()
         text_to_single_line = text.replace("\n", " ").replace("\r", "")
         if len(text_to_single_line) > 250 and self.problem_quick != "":
@@ -140,6 +142,7 @@ class CreateTicket(QWidget):
                 writer = csv.writer(file)
                 writer.writerow([
                     CurrentUserdata.id,
+                    self.datetime,
                     self.category,
                     self.problem_quick,
                     text_to_single_line

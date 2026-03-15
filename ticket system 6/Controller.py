@@ -27,6 +27,14 @@
 #todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
 #todo Ticket creation Textfeld verkleinern [Anton]
 
+#PRIORISIERUNGSLOGIK
+#todo Datum bei ticket creation
+#todo Klasse erstellen: Priorisierungslogik
+#todo Priofaktor definieren
+    #todo Datum
+    #todo company/private
+    #todo categories
+
 import sys
 from PyQt6.QtWidgets import (QApplication)
 

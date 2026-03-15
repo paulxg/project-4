@@ -1,4 +1,3 @@
-[id],[category],[short description],[long description]
-1,Installation or Updates,Mein Programm crasht,Hier spricht Lorena. Ich habe ein klassisches Layer-8-Problem. Der Support ist so super und ich brauche unbedingt eure HILFE! HILFE!
-2,Installation or Updates,adwdawdadawdadwawdawdadwawdsdw,test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test
+[id],[date/time],[category],[short description],[long description]
 
+1,15/03/2026,Installation or Updates,adawdawd,awdadwwd

@@ -39,7 +39,7 @@ class MyTicketsWindow(QWidget):
             for entries in reader:
                 if len(entries) >= 1:
                     if entries[0] == CurrentUserdata.id:
-                        content_only = entries[1:]
+                        content_only = entries[2:]
                         items = [QStandardItem(field) for field in content_only]
                         self.model.appendRow(items)
 
