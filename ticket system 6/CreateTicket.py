@@ -4,7 +4,8 @@ from PyQt6.QtWidgets import (QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabe
                              QMessageBox)
 from UniversalData import CurrentUserdata,ProgramData
 from PyQt6.QtCore import pyqtSignal
-#1234
+from Prioritizing import Prioritizing
+from datetime import datetime
 
 class CreateTicket(QWidget):
     request_main_window = pyqtSignal()
@@ -104,6 +105,10 @@ class CreateTicket(QWidget):
 
         layout.addWidget(self.backmain)
         self.problem_quick = ""
+        self.datetime = ""
+        self.factor = ""
+
+        self.final_factor = ""
 
 # Update des Character Counters
     def update_character_counter(self):
@@ -124,6 +129,8 @@ class CreateTicket(QWidget):
     def submit(self):
         self.category = self.dropdown.currentText()
         self.problem_quick = self.problem.text()
+        self.factor = ProgramData.support_categories[self.category]
+        self.datetime = datetime.now().strftime("%d/%m/%Y")
         text = self.description.toPlainText()
         text_to_single_line = text.replace("\n", " ").replace("\r", "")
         if len(text_to_single_line) > 250 and self.problem_quick != "":
@@ -136,10 +143,13 @@ class CreateTicket(QWidget):
             notification.exec()
 
         else:
+            Prioritizing.status_calculation(self)
             with open("tickets.txt", "a", encoding="utf-8", newline="") as file:
                 writer = csv.writer(file)
                 writer.writerow([
                     CurrentUserdata.id,
+                    self.final_factor,
+                    self.datetime,
                     self.category,
                     self.problem_quick,
                     text_to_single_line
@@ -169,3 +179,4 @@ class CreateTicket(QWidget):
         if file:
             self.attachment_label.setText(f"Attachment: {file}")
             print("Attachment: ", file)
+

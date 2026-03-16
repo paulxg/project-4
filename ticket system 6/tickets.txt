@@ -1,9 +1,2 @@
-[id],[category],[short description],[long description]
-1,Installation or Updates,Mein Programm crasht,Hier spricht Lorena. Ich habe ein klassisches Layer-8-Problem. Der Support ist so super und ich brauche unbedingt eure HILFE! HILFE!
-1,Installation or Updates,adwdawdadawdadwawdawdadwawdsdw,test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test 
-1,Installation or Updates,test test test test test test ,test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test 
-1,Installation or Updates,test test test test test test ,test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test 
-1,Licenses or Accounts,test test test test test test ,test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test 
-1,Installation or Updates,test test test test test test ,test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test 
-1,Installation or Updates,test test test test test test ,test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test 
-1,Installation or Updates,123,hahahahaha
+[id],[factor],[date/time],[category],[short description],[long description]
+1,1.1,15/03/2026,Installation or Updates,awdawd,awdadawd

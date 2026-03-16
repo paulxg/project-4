@@ -2,21 +2,23 @@
 class CurrentUserdata:
     id = None
     rank = None
+    company = None
 
-#mit CurrentUserdata.username in anderen Klassen darauf zugreifen
+#mit CurrentUserdata.id in anderen Klassen darauf zugreifen
 
 class ProgramData:
 
-    support_categories = [
-        "Installation or Updates",
-        "Network or Connection Issues",
-        "Licenses or Accounts",
-        "Application Issues",
-        "Files or Storage",
-        "Security or Privacy",
-        "Suggestions for Improvement / Missing Features",
-        "Miscellaneous"
-    ]
+    support_categories = {
+        "Installation or Updates":1,
+        "Network or Connection Issues":1,
+        "Licenses or Accounts":1,
+        "Application Issues":1,
+        "Files or Storage":1,
+        "Security or Privacy":1,
+        "Suggestions for Improvement / Missing Features":1,
+        "Miscellaneous":1
+    }
+
 
     myticket_columns = [
         "Category",
