@@ -1,7 +1,7 @@
 #registration window[Lorena]-
 # und in username file schreiben [Lorena]
-#todo nicht doppelte usernames [Lorena]
-#todo fixen dass user wirklich in die nächste Zeile geschrieben wird [Lorena]
+#(nicht doppelte usernames [Lorena]) Datenbank
+#(fixen dass user wirklich in die nächste Zeile geschrieben wird [Lorena])Datenbank
 #todo (attachment fixen) [später]
 #clear Ticket Form nach submit
 #success noti nach submit
