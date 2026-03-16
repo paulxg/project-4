@@ -25,7 +25,7 @@
 #todo status von tickets in Bearbeitung
 #todo Fenstergrößen anpassen
 #todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
-#todo Ticket creation Textfeld verkleinern [Anton]
+#Ticket creation Textfeld verkleinern [Anton]
 
 import sys
 from PyQt6.QtWidgets import (QApplication)
