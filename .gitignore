@@ -1,8 +1,29 @@
+# --- Python Standard ---
 venv/
 .venv/
 env/
-
-.idea/
-
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# --- IDEs (PyCharm / VS Code) ---
+.idea/
+.vscode/
+
+# --- Datenbanken (Wichtig!) ---
+# Wir ignorieren die lokale Datenbank-Datei, damit es keine Merge-Conflicts gibt.
+# Dein Code erstellt sie beim ersten Start für jeden User neu.
+*.db
+*.sqlite
+*.sqlite3
+
+# --- Betriebssystem-spezifisch ---
+# Mac-User erzeugen diese versteckten Dateien automatisch
+.DS_Store
+# Windows-spezifische Vorschaudateien
+Thumbs.db
+
+# --- Sicherheit ---
+# Falls du später Passwörter in einer .env Datei speicherst
+.env

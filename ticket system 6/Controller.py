@@ -37,11 +37,13 @@ from CreateTicket import CreateTicket
 from MyTicketsWindow import MyTicketsWindow
 from UniversalData import CurrentUserdata
 from RegistrationWindow import RegistrationWindow
+from Database import Database
 
 # 1. Der Controller (Der Manager)
 class Controller:
     def __init__(self):
         self.current_window = None
+
 
     def show_start_screen(self):
         #Wir erstellen das Startfenster
