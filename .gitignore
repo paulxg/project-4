@@ -14,7 +14,6 @@ __pycache__/
 # --- Datenbanken (Wichtig!) ---
 # Wir ignorieren die lokale Datenbank-Datei, damit es keine Merge-Conflicts gibt.
 # Dein Code erstellt sie beim ersten Start für jeden User neu.
-*.db
 *.sqlite
 *.sqlite3
 
