@@ -1,9 +1,9 @@
 import sqlite3
 
 class Database:
-    def __init__(self, db_name = "database.db"):
+    def __init__(self):
 
-        self.db_name = db_name
+        self.db_name = "backend/database.db"
         self.create_tables()
 
     def create_tables(self):
@@ -23,7 +23,11 @@ class Database:
             connection.commit()
 
 
-    def create_user(self, username, password, rank="user", status="private"):
+    def create_user(self, username, password):
+
+        rank = "user"
+        status = "private"
+
         query = "INSERT INTO userdata (username, password, rank, status) VALUES ( ?, ?, ?, ?)"
 
         try:

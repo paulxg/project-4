@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit,QMessageBox
 from PyQt6.QtCore import pyqtSignal
 
-from Database import Database
+from backend.Database import Database
 
 
 class RegistrationWindow(QWidget):
@@ -40,10 +40,10 @@ class RegistrationWindow(QWidget):
         layout.addWidget(return_button)
 
         # Button verbinden
-        register_button.clicked.connect(self.save_user_data)
+        register_button.clicked.connect(self.transfer_user_data)
         return_button.clicked.connect(self.return_signal.emit)
 
-    def save_user_data(self):
+    def transfer_user_data(self):
         username = self.name_input.text().strip()
         password = self.password_input.text().strip()
 
@@ -52,10 +52,8 @@ class RegistrationWindow(QWidget):
             return
 
         try:
-
             db = Database()
-
-            success = db.create_user(username, password, rank = "user", status = "private")
+            success = db.create_user(username, password)
 
             if success:
                 QMessageBox.information(self, "Success", "User created successfully!")
@@ -68,9 +66,3 @@ class RegistrationWindow(QWidget):
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"issue with saving{e}")
-
-
-
-
-
-
