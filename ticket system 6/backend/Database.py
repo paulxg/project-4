@@ -7,7 +7,7 @@ class Database:
         self.create_tables()
 
     def create_tables(self):
-        query = """
+        query1 = """
             CREATE TABLE IF NOT EXISTS userdata (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT NOT NULL UNIQUE,
@@ -17,9 +17,21 @@ class Database:
             )
         """
 
+        query2 = """
+            CREATE TABLE IF NOT EXISTS tickets (
+                id INTEGER PRIMARY KEY,
+                factor FLOAT NOT NULL,
+                date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                category TEXT NOT NULL,
+                shortdescription TEXT NOT NULL,
+                longdescription TEXT
+            )
+        """
+
         with sqlite3.connect(self.db_name) as connection:
             cursor = connection.cursor()
-            cursor.execute(query)
+            cursor.execute(query1)
+            cursor.execute(query2)
             connection.commit()
 
 

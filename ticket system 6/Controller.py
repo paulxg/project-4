@@ -19,13 +19,16 @@
 #mytickets window angebunden
 #mytickets schöner machen [Paul]
 #mytickets Category Bearbeitung unterbinden [Paul]
-#todo MyTickets unterscheiden nach admin/user [Paul]
+#MyTickets unterscheiden nach admin/user [Paul]
 #todo claim/view (tickets (also abarbeiten))
 #todo Priorisierung von tickets
 #todo status von tickets in Bearbeitung
 #todo Fenstergrößen anpassen
 #todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
 #Ticket creation Textfeld verkleinern [Anton]
+#todo Login connecten Database (Lorena)
+#todo AllTickets & MyTickets Database (Paul)
+#todo Create ticket Database (Anton)
 
 import sys
 from PyQt6.QtWidgets import (QApplication)
