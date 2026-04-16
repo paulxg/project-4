@@ -29,6 +29,9 @@
 #todo Login connecten Database (Lorena)
 #todo AllTickets & MyTickets Database (Paul)
 #todo Create ticket Database (Anton)
+#todo Fenstergrößen verstellbar machen
+#todo Registration abschließen durch Drücken von Entertaste (Lorena)
+#todo passwort hashen mit z.B. bcrypt
 
 import sys
 from PyQt6.QtWidgets import (QApplication)

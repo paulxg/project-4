@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit
 from PyQt6.QtCore import pyqtSignal
 
 from backend.Database import Database
+from backend.UniversalData import CurrentUserdata
 
 
 class RegistrationWindow(QWidget):
@@ -60,9 +61,10 @@ class RegistrationWindow(QWidget):
                 self.name_input.clear()
                 self.password_input.clear()
                 self.request_main_window.emit()
+
             else:
 
                 QMessageBox.warning(self, "Error ", f"Username or pin is invalid!")
 
         except Exception as e:
-            QMessageBox.critical(self, "Error", f"issue with saving{e}")
+            QMessageBox.critical(self, "Error", f"Issue with saving {e}")

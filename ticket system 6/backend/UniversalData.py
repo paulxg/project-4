@@ -1,8 +1,16 @@
 # Universal userdata
 class CurrentUserdata:
-    id = None
-    rank = None
-    company = None
+    def __init__(self):
+        self.__id = None
+        self.__rank = None
+        self.__company = False
+
+    def login(self, id, rank, company):
+        self.__id = id
+        self.__rank = rank
+        self.__company = company
+        print (f"System: ID {self.__id} is now logged in!")
+
 
 #mit CurrentUserdata.id in anderen Klassen darauf zugreifen
 
