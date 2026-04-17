@@ -29,7 +29,8 @@
 #todo Login connecten Database (Lorena)
 #todo AllTickets & MyTickets Database (Paul)
 #todo Create ticket Database (Anton)
-#todo(((doch nicht klartext password rein (maybe wenn noch zeit)))
+#todo passwort hashen mit bcrypt (Paul)
+#todo user löschen/bearbeiten etc.
 
 import sys
 from PyQt6.QtWidgets import (QApplication)

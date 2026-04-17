@@ -1,4 +1,4 @@
-#registration window[Lorena]-
+#registration window [Lorena]-
 # und in username file schreiben [Lorena]
 #(nicht doppelte usernames [Lorena]) Datenbank
 #(fixen dass user wirklich in die nächste Zeile geschrieben wird [Lorena])Datenbank
