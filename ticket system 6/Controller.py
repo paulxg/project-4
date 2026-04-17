@@ -29,6 +29,7 @@
 #todo Login connecten Database (Lorena)
 #todo AllTickets & MyTickets Database (Paul)
 #todo Create ticket Database (Anton)
+#todo(((doch nicht klartext password rein (maybe wenn noch zeit)))
 
 import sys
 from PyQt6.QtWidgets import (QApplication)
