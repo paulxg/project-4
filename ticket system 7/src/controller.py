@@ -1,36 +1,15 @@
-#registration window[Lorena]-
-# und in username file schreiben [Lorena]
-#(nicht doppelte usernames [Lorena]) Datenbank
-#(fixen dass user wirklich in die nächste Zeile geschrieben wird [Lorena])Datenbank
 #todo (attachment fixen) [später]
-#clear Ticket Form nach submit
-#success noti nach submit
-#submit button für create ticket
-#user ids generieren (auto zuweisung) [Lorena]
-#jedem user id hinzugefügt
-#universal variablen connected
-#universal_data Kategorien dahin ausgelagert
-#main_window: "modify" nur für admins sichtbar
-#Sicherheitsupdate: Username und Passwort nicht mehr plain in universal_data gespeichert
-#Zurückbuttons + Signout
-#farbige BacktoMain Buttons (dann kam der ragequit)
-#txt datei wird jetzt über "csv" ausgelesen und geschrieben (wegen splitting trotz Komma in Sätzen usw.)
-#Counter und Begrenzung in create Ticket
-#mytickets window angebunden
-#mytickets schöner machen [Paul]
-#mytickets Category Bearbeitung unterbinden [Paul]
-#MyTickets unterscheiden nach admin/user [Paul]
 #todo claim/view (tickets (also abarbeiten))
 #todo Priorisierung von tickets
 #todo status von tickets in Bearbeitung
 #todo Fenstergrößen anpassen
 #todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
-#Ticket creation Textfeld verkleinern [Anton]
 #todo Login connecten Database (Lorena)
 #todo AllTickets & MyTickets Database (Paul)
 #todo Create ticket Database (Anton)
 #todo passwort hashen mit bcrypt (Paul)
 #todo user löschen/bearbeiten etc.
+#todo main.py window einführen, die den Controller startet (weil Konvention)
 
 import sys
 from PyQt6.QtWidgets import (QApplication)
@@ -48,6 +27,7 @@ from frontend.registration_window import RegistrationWindow
 class Controller:
     def __init__(self):
         self.current_window = None
+        self.show_start_screen()
 
 
     def show_start_screen(self):
@@ -117,14 +97,3 @@ class Controller:
         self.current_window.request_main_window.connect(self.show_main_window)
 
         self.current_window.show()
-
-
-
-# --- Das Hauptprogramm ---
-app = QApplication(sys.argv)
-
-# Der Manager übernimmt die Kontrolle
-manager = Controller()
-manager.show_start_screen()
-
-app.exec()

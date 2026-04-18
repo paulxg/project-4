@@ -1,32 +1,3 @@
-#registration window [Lorena]-
-# und in username file schreiben [Lorena]
-#(nicht doppelte usernames [Lorena]) Datenbank
-#(fixen dass user wirklich in die nächste Zeile geschrieben wird [Lorena])Datenbank
-#todo (attachment fixen) [später]
-#clear Ticket Form nach submit
-#success noti nach submit
-#submit button für create ticket
-#user ids generieren (auto zuweisung) [Lorena]
-#jedem user id hinzugefügt
-#universal variablen connected
-#universal_data Kategorien dahin ausgelagert
-#main_window: "modify" nur für admins sichtbar
-#Sicherheitsupdate: Username und Passwort nicht mehr plain in universal_data gespeichert
-#Zurückbuttons + Signout
-#farbige BacktoMain Buttons (dann kam der ragequit)
-#txt datei wird jetzt über "csv" ausgelesen und geschrieben (wegen splitting trotz Komma in Sätzen usw.)
-#Counter und Begrenzung in create Ticket
-#mytickets window angebunden
-#mytickets schöner machen [Paul]
-#mytickets Category Bearbeitung unterbinden [Paul]
-#todo MyTickets unterscheiden nach admin/user [Paul]
-#todo claim/view (tickets (also abarbeiten))
-#todo Priorisierung von tickets
-#todo status von tickets in Bearbeitung
-#todo Fenstergrößen anpassen
-#todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
-#Ticket creation Textfeld verkleinern [Anton]
-
 import sys
 from PyQt6.QtWidgets import (QApplication)
 
