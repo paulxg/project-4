@@ -1,8 +1,7 @@
-import csv
-
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from PyQt6.QtWidgets import QMainWindow, QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView
 from backend.universal_data import CurrentUserdata, ProgramData
+from backend.database import Database
 from PyQt6.QtCore import pyqtSignal
 
 
@@ -33,17 +32,12 @@ class MyTicketsWindow(QWidget):
         self.model = QStandardItemModel() #Inhalt als Modell, der den Inhalt aus csv Datei "im Kopf behält"
         self.tableview.setModel(self.model)
 
-        # 'with' schließt die Datei automatisch, auch bei Fehlern
-        with open("../../data/tickets.txt", "r", encoding="utf-8") as file:
-            reader = csv.reader(file, delimiter=',', quotechar='"')
-            for entries in reader:
-                if len(entries) >= 1:
-                    if entries[0] == CurrentUserdata.id:
-                        content_only = entries[3:]
-                        items = [QStandardItem(field) for field in content_only]
-                        self.model.appendRow(items)
-
-            self.model.setHorizontalHeaderLabels(ProgramData.myticket_columns)
+        db = Database()
+        tickets = db.get_user_tickets(CurrentUserdata.id)
+        for row in tickets:
+            items = [QStandardItem(str(field) if field else "") for field in row]
+            self.model.appendRow(items)
+        self.model.setHorizontalHeaderLabels(ProgramData.myticket_columns)
 
 
         header = self.tableview.horizontalHeader()

@@ -19,7 +19,8 @@ class Database:
 
         query2 = """
             CREATE TABLE IF NOT EXISTS tickets (
-                id INTEGER PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
                 factor FLOAT NOT NULL,
                 date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 category TEXT NOT NULL,
@@ -32,6 +33,11 @@ class Database:
             cursor = connection.cursor()
             cursor.execute(query1)
             cursor.execute(query2)
+            # Migration: user_id Spalte hinzufügen falls DB schon existiert
+            try:
+                cursor.execute("ALTER TABLE tickets ADD COLUMN user_id INTEGER NOT NULL DEFAULT 0")
+            except sqlite3.OperationalError:
+                pass
             connection.commit()
 
 
@@ -53,9 +59,26 @@ class Database:
             # Dieser Fehler tritt auf, wenn z.B. der Username schon existiert (UNIQUE)
             return False
 
+    def create_ticket(self, user_id, factor, category, shortdescription, longdescription):
+        query = """
+            INSERT INTO tickets (user_id, factor, category, shortdescription, longdescription)
+            VALUES (?, ?, ?, ?, ?)
+        """
+        with sqlite3.connect(self.db_name) as connection:
+            cursor = connection.cursor()
+            cursor.execute(query, (user_id, factor, category, shortdescription, longdescription))
+            connection.commit()
+
+    def get_user_tickets(self, user_id):
+        query = "SELECT category, shortdescription, longdescription FROM tickets WHERE user_id = ?"
+        with sqlite3.connect(self.db_name) as connection:
+            cursor = connection.cursor()
+            cursor.execute(query, (user_id,))
+            return cursor.fetchall()
+
     def check_login(self, username, password):
-        query = "SELECT * FROM userdata WHERE username = ? AND password = ?"
+        query = "SELECT id, username, rank FROM userdata WHERE username = ? AND password = ?"
         with sqlite3.connect(self.db_name) as connection:
             cursor = connection.cursor()
             cursor.execute(query, (username, password))
-            connection.commit()
+            return cursor.fetchone()

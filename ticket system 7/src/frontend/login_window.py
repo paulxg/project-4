@@ -3,6 +3,7 @@ from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QAction
 
 from backend.universal_data import CurrentUserdata
+from backend.database import Database
 
 class LoginWindow(QWidget):
     request_main_window = pyqtSignal()
@@ -75,37 +76,19 @@ class LoginWindow(QWidget):
             self.show_password.setToolTip("Passwort anzeigen")
 
     def check_login(self):
-        # Hier greifen wir auf UNSERE (self) Eingabefelder zu
-        username = self.name_input.text()
-        password = self.password_input.text()
+        username = self.name_input.text().strip()
+        password = self.password_input.text().strip()
 
-        user_found = False
+        if not username or not password:
+            QMessageBox.warning(self, "Error", "Please enter username and pin!")
+            return
 
-        try:
-            # 'with' schließt die Datei automatisch, auch bei Fehlern
-            with open("../../data/userdata.txt", "r", encoding="utf-8") as file:
-                for line in file:
-                    data = line.strip().split(",")
-                    if len(data) >= 3:
-                        file_user = data[1].strip()
-                        file_pw = data[2].strip()
+        db = Database()
+        user = db.check_login(username, password)
 
-                        if file_user == username and file_pw == password:
-                            print("Login successful!")
-                            CurrentUserdata.id = data[0]
-                            CurrentUserdata.rank = data[3]
-                            CurrentUserdata.company = data[4]
-                            user_found = True
-                            self.request_main_window.emit()
-                            break
-
-            if not user_found:
-                notification = QMessageBox()
-                notification.setWindowTitle("Error")
-                notification.setText("Hä gib doch ein richgtiges Passwort ein")
-                notification.setIcon(QMessageBox.Icon.Warning)
-                notification.exec()
-
-
-        except FileNotFoundError:
-            print("Fehler: userdata.txt wurde nicht gefunden!")
+        if user:
+            CurrentUserdata.id = user[0]
+            CurrentUserdata.rank = user[2]
+            self.request_main_window.emit()
+        else:
+            QMessageBox.warning(self, "Error", "Falscher Username oder Pin!")

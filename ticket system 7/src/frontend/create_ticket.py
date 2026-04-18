@@ -1,10 +1,9 @@
-import csv
-
 from PyQt6.QtWidgets import (QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabel, QComboBox, QFileDialog, QTextEdit,
                              QMessageBox)
-from backend.universal_data import CurrentUserdata,ProgramData
+from backend.universal_data import CurrentUserdata, ProgramData
 from PyQt6.QtCore import pyqtSignal
 from backend.prioritizing import Prioritizing
+from backend.database import Database
 from datetime import datetime
 
 class CreateTicket(QWidget):
@@ -144,16 +143,14 @@ class CreateTicket(QWidget):
 
         else:
             Prioritizing.status_calculation(self)
-            with open("../../data/tickets.txt", "a", encoding="utf-8", newline="") as file:
-                writer = csv.writer(file)
-                writer.writerow([
-                    CurrentUserdata.id,
-                    self.final_factor,
-                    self.datetime,
-                    self.category,
-                    self.problem_quick,
-                    text_to_single_line
-                    ])
+            db = Database()
+            db.create_ticket(
+                CurrentUserdata.id,
+                self.final_factor,
+                self.category,
+                self.problem_quick,
+                text_to_single_line
+            )
 
 # Inputs in die Textboxen löschen nach dem schreiben (noch im "with")
             inputs1 = self.findChildren(QLineEdit)
