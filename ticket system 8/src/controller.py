@@ -29,7 +29,6 @@ class Controller:
         self.current_window = None
         self.show_start_screen()
 
-
     def show_start_screen(self):
         #Wir erstellen das Startfenster
         self.current_window = StartWindow()
@@ -39,7 +38,6 @@ class Controller:
         self.current_window.request_registration.connect(self.show_registration_screen)
 
         self.current_window.show()
-
 
     def show_login_screen(self):
         self.current_window.close()
