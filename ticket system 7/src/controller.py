@@ -35,13 +35,13 @@
 import sys
 from PyQt6.QtWidgets import (QApplication)
 
-from frontend.StartWindow import StartWindow
-from frontend.LoginWindow import LoginWindow
-from frontend.MainWindow import MainWindow
-from frontend.CreateTicket import CreateTicket
-from frontend.MyTicketsWindow import MyTicketsWindow
-from backend.UniversalData import CurrentUserdata
-from frontend.RegistrationWindow import RegistrationWindow
+from frontend.start_window import StartWindow
+from frontend.login_window import LoginWindow
+from frontend.main_window import MainWindow
+from frontend.create_ticket import CreateTicket
+from frontend.mytickets_window import MyTicketsWindow
+from backend.universal_data import CurrentUserdata
+from frontend.registration_window import RegistrationWindow
 
 
 # 1. Der Controller (Der Manager)

@@ -2,9 +2,9 @@ import csv
 
 from PyQt6.QtWidgets import (QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabel, QComboBox, QFileDialog, QTextEdit,
                              QMessageBox)
-from backend.UniversalData import CurrentUserdata,ProgramData
+from backend.universal_data import CurrentUserdata,ProgramData
 from PyQt6.QtCore import pyqtSignal
-from backend.Prioritizing import Prioritizing
+from backend.prioritizing import Prioritizing
 from datetime import datetime
 
 class CreateTicket(QWidget):
@@ -144,7 +144,7 @@ class CreateTicket(QWidget):
 
         else:
             Prioritizing.status_calculation(self)
-            with open("../tickets.txt", "a", encoding="utf-8", newline="") as file:
+            with open("../../data/tickets.txt", "a", encoding="utf-8", newline="") as file:
                 writer = csv.writer(file)
                 writer.writerow([
                     CurrentUserdata.id,

@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabel
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QAction
 
-from backend.UniversalData import CurrentUserdata
+from backend.universal_data import CurrentUserdata
 
 class LoginWindow(QWidget):
     request_main_window = pyqtSignal()
@@ -83,7 +83,7 @@ class LoginWindow(QWidget):
 
         try:
             # 'with' schließt die Datei automatisch, auch bei Fehlern
-            with open("../userdata.txt", "r", encoding="utf-8") as file:
+            with open("../../data/userdata.txt", "r", encoding="utf-8") as file:
                 for line in file:
                     data = line.strip().split(",")
                     if len(data) >= 3:

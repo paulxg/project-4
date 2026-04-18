@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit,QMessageBox
 from PyQt6.QtCore import pyqtSignal
 
-from backend.Database import Database
+from backend.database import Database
 
 
 class RegistrationWindow(QWidget):

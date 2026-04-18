@@ -1,4 +1,4 @@
-from backend.UniversalData import CurrentUserdata
+from backend.universal_data import CurrentUserdata
 
 class Prioritizing:
     def __init__(self):
