@@ -10,9 +10,7 @@
 #todo passwort hashen mit bcrypt (Paul)
 #todo user löschen/bearbeiten etc.
 #todo main.py window einführen, die den Controller startet (weil Konvention)
-
-import sys
-from PyQt6.QtWidgets import (QApplication)
+#todo error handling: im Termal oder auch im Programm?
 
 from frontend.start_window import StartWindow
 from frontend.login_window import LoginWindow

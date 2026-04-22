@@ -26,7 +26,6 @@ class RegistrationWindow(QWidget):
 
         self.password_input.setPlaceholderText("Pin")
 
-
         register_button = QPushButton("Register")
         return_button = QPushButton("Return to start page")
 
@@ -49,20 +48,6 @@ class RegistrationWindow(QWidget):
 
         if not username or not password:
             QMessageBox.warning(self, "Warning", "Please enter your username and pin!")
-            return
 
-        try:
-            db = Database()
-            success = db.create_user(username, password)
 
-            if success:
-                QMessageBox.information(self, "Success", "User created successfully!")
-                self.name_input.clear()
-                self.password_input.clear()
-                self.request_main_window.emit()
-            else:
 
-                QMessageBox.warning(self, "Error ", f"Username or pin is invalid!")
-
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"issue with saving{e}")
