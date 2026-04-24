@@ -4,7 +4,7 @@ from backend.universal_data import CurrentUserdata
 
 class MainWindow(QWidget):
     create_ticket_signal = pyqtSignal()
-    request_alltickets_window = pyqtSignal()
+    request_alltickets_signal = pyqtSignal()
     mytickets_signal = pyqtSignal()
     signout_signal = pyqtSignal()
 
@@ -24,7 +24,7 @@ class MainWindow(QWidget):
         if CurrentUserdata.rank == "admin":
             alltickets_button = QPushButton("All Tickets")
             layout.addWidget(alltickets_button)
-            alltickets_button.clicked.connect(self.request_alltickets_window.emit)
+            alltickets_button.clicked.connect(self.request_alltickets_signal.emit)
 
         else:
             my_tickets_button = QPushButton("My Tickets")

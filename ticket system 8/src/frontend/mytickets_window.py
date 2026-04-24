@@ -1,9 +1,7 @@
-from PyQt6.QtGui import QStandardItemModel, QStandardItem
-from PyQt6.QtWidgets import QMainWindow, QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView
-from backend.universal_data import CurrentUserdata, ProgramData
-from backend.database import Database
+from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView
 from PyQt6.QtCore import pyqtSignal
-
+from PyQt6.QtGui import QStandardItemModel, QStandardItem
+from backend.database import Database
 
 class MyTicketsWindow(QWidget):
     request_main_window = pyqtSignal()
@@ -28,29 +26,20 @@ class MyTicketsWindow(QWidget):
         layout.addWidget(self.tableview)
         layout.addWidget(self.backtomain)
 
-        # model-Variable füllt als QStandardItemModel das Tabellenraster mit Inhalt
-        self.model = QStandardItemModel() #Inhalt als Modell, der den Inhalt aus csv Datei "im Kopf behält"
-        self.tableview.setModel(self.model)
+        dummy_id = 1
 
         db = Database()
-        tickets = db.get_user_tickets(CurrentUserdata.id)
-        for row in tickets:
+        data = db.get_user_tickets(dummy_id)
+        self.load_table_data(data)
+
+    def load_table_data(self, mysql_data):
+        model = QStandardItemModel()
+        model.setHorizontalHeaderLabels(["ticket number", "time of issuing", "category", "short description", "detailed description"])
+        for row in mysql_data:
             items = [QStandardItem(str(field) if field else "") for field in row]
-            self.model.appendRow(items)
-        self.model.setHorizontalHeaderLabels(ProgramData.myticket_columns)
+            model.appendRow(items)
+        self.tableview.setModel(model)
 
-
-        header = self.tableview.horizontalHeader()
-        column_count = self.model.columnCount()
-
-        if column_count > 0:
-            # 1. Alle Spalten (AUßER der letzten) passen sich eng an den Inhalt an
-            for col in range(column_count - 1):
-                header.setSectionResizeMode(col, QHeaderView.ResizeMode.ResizeToContents)
-
-            # 2. Die letzte Spalte (langer Text) wird gezwungen, den restlichen Platz
-            # auszufüllen und darf NICHT über den Rand hinauswachsen.
-            header.setSectionResizeMode(column_count - 1, QHeaderView.ResizeMode.Stretch)
-
-        # 3. Jetzt, wo die Breite der Text-Spalte feststeht, kann die Höhe korrekt umbrechen
-        self.tableview.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+#todo dummy_id austauschen mit richtiger id
+#todo Sortierung überlegen
+#todo Spaltenbreite anpassen

@@ -11,7 +11,7 @@
 #todo user löschen/bearbeiten etc.
 #todo main.py window einführen, die den Controller startet (weil Konvention)
 #todo error handling: im Termal oder auch im Programm?
-
+from frontend.alltickets_window import AllTicketsWindow
 from frontend.start_window import StartWindow
 from frontend.login_window import LoginWindow
 from frontend.main_window import MainWindow
@@ -73,6 +73,7 @@ class Controller:
         self.current_window.create_ticket_signal.connect(self.create_ticket)
         self.current_window.mytickets_signal.connect(self.myticket_window)
         self.current_window.signout_signal.connect(self.show_start_screen)
+        self.current_window.request_alltickets_signal.connect(self.alltickets_window)
 
         self.current_window.show()
 
@@ -89,6 +90,15 @@ class Controller:
         self.current_window.close()
 
         self.current_window = MyTicketsWindow()
+
+        self.current_window.request_main_window.connect(self.show_main_window)
+
+        self.current_window.show()
+
+    def alltickets_window(self):
+        self.current_window.close()
+
+        self.current_window = AllTicketsWindow()
 
         self.current_window.request_main_window.connect(self.show_main_window)
 

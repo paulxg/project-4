@@ -1,5 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
+from backend.universal_data import CurrentUserdata
 
 
 class Database:
@@ -57,3 +58,23 @@ class Database:
             # Dieser Fehler wird von MySQL geworfen, wenn ein Username schon existiert
             # (Vorausgesetzt, du hast den Username in Workbench auf "UNIQUE" gestellt)
             return False
+
+    def get_user_tickets(self, dummy_id):
+        if not self.cursor:
+            print("Kein Datenbankzugriff möglich.")
+            return []  #leere Liste zurückgeben, damit die Tabelle später nicht crasht
+
+        query = "SELECT ticket_number, date_time, category, short_description, long_description FROM tickets WHERE user_id_ref = %s"
+        self.cursor.execute(query, (dummy_id,))
+        mysql_data = self.cursor.fetchall()
+        return mysql_data
+
+    def get_all_tickets(self):
+        if not self.cursor:
+            print("Kein Datenbankzugriff möglich.")
+            return []  #leere Liste zurückgeben, damit die Tabelle später nicht crasht
+
+        query = "SELECT ticket_number, date_time, category, short_description, long_description FROM tickets"
+        self.cursor.execute(query,)
+        mysql_data = self.cursor.fetchall()
+        return mysql_data
