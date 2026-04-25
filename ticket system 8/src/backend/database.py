@@ -54,9 +54,19 @@ class Database:
             self.connection.commit()
             return True
 
-        except mysql.connector.IntegrityError:
+        except mysql.connector.IntegrityError as e:
             # Dieser Fehler wird von MySQL geworfen, wenn ein Username schon existiert
             # (Vorausgesetzt, du hast den Username in Workbench auf "UNIQUE" gestellt)
+            print(f"IntegrityError (Vermutlich Username vergeben): {e}")
+            return False
+
+        except mysql.connector.Error as e:
+            print(f"Allgemeiner SQL-Fehler beim Erstellen des Users: {e}")
+            return False
+
+        except Exception as e:
+            # Fängt alle restlichen Python-Fehler ab
+            print(f"Unerwarteter Fehler: {e}")
             return False
 
     def get_user_tickets(self, dummy_id):
