@@ -47,7 +47,7 @@ class RegistrationWindow(QWidget):
         password = self.password_input.text().strip()
 
         if not username or not password:
-            QMessageBox.warning(self, "Warning", "Please enter your username and pin!")
+            QMessageBox.warning(self, "Warning", "Please enter your username and password!")
             return
 
         db = Database()
@@ -57,6 +57,3 @@ class RegistrationWindow(QWidget):
             self.return_signal.emit()
         else:
             QMessageBox.warning(self, "Warning", "This username already exists! Please choose another username!")
-
-
-
