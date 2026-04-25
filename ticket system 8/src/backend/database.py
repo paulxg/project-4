@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-from backend.universal_data import CurrentUserdata
+
 
 
 class Database:
@@ -88,3 +88,18 @@ class Database:
         self.cursor.execute(query,)
         mysql_data = self.cursor.fetchall()
         return mysql_data
+
+    def create_ticket(self, user_id, factor, category, short_description, long_description):
+        if not self.cursor:
+            print("Kein Datenbankzugriff möglich.")
+            return False
+
+        try:
+            query = "INSERT INTO tickets (user_id_ref, factor, category, short_description, long_description) VALUES (%s, %s, %s, %s, %s)"
+            self.cursor.execute(query, (user_id, factor, category, short_description, long_description))
+            self.connection.commit()
+            return True
+
+        except mysql.connector.Error as e:
+            print(f"Fehler beim Erstellen des Tickets: {e}")
+            return False

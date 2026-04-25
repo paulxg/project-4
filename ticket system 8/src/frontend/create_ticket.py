@@ -23,7 +23,7 @@ class CreateTicket(QWidget):
         self.dropdown.addItems(self.dropdown_Items)
         self.category = ""
 
-        # Begrenzung der Anzeige
+        # Begrenzung der Anzeige im Dropdown
         self.dropdown.setMaxVisibleItems(5)
 
         # Label für Dropdown
@@ -31,7 +31,7 @@ class CreateTicket(QWidget):
         layout.addWidget(self.label)
         layout.addWidget(self.dropdown)
 
-        #Problem-Kurzbeschreibung
+        # Problem-Kurzbeschreibung Input
         problem_label = QLabel("Describe your problem briefly:")
         self.problem = QLineEdit()
         self.problem.setPlaceholderText("max. 30 characters")
@@ -40,7 +40,7 @@ class CreateTicket(QWidget):
         layout.addWidget(problem_label)
         layout.addWidget(self.problem)
 
-        #detaillierte Problembeschreibung
+        # detaillierte Problembeschreibung
         long_problem_label = QLabel("Describe your problem in detail:")
         self.description = QTextEdit()
         self.description.setFixedHeight(125)
