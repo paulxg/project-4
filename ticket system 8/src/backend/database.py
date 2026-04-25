@@ -1,7 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-
-
+from backend.universal_data import CurrentUserdata
 
 class Database:
     def __init__(self):
@@ -33,11 +32,14 @@ class Database:
             return None
 
         # Hier schickst du die Abfrage an MySQL
-        query = "SELECT id, username, rank FROM userdata WHERE username = %s AND password = %s"
+        query = "SELECT 1 FROM userdata WHERE username = %s AND password = %s"
         self.cursor.execute(query, (username, password))
-
-        # fetchone() holt das erste gefundene Ergebnis
-        return self.cursor.fetchone()
+        user_checked = self.cursor.fetchone()
+        if user_checked is not None:
+            return True
+        else:
+            print("False")
+            return False
 
     def create_user(self, username, password):
         if not self.cursor:
@@ -52,6 +54,7 @@ class Database:
 
             # WICHTIG: Änderungen in der Datenbank endgültig speichern
             self.connection.commit()
+            print("User erfolgreich erstellt!")
             return True
 
         except mysql.connector.IntegrityError as e:
@@ -68,6 +71,19 @@ class Database:
             # Fängt alle restlichen Python-Fehler ab
             print(f"Unerwarteter Fehler: {e}")
             return False
+
+    def fetch_user_data(self, username, password):
+        if not self.cursor:
+            print("Kein Datenbankzugriff möglich.")
+            return []  #leere Liste zurückgeben, damit die Tabelle später nicht crasht
+
+        print("Fetching user data...")
+        query = "SELECT id FROM userdata WHERE username = %s AND password = %s"
+        print("query created...")
+        self.cursor.execute(query, (username, password,))
+        mysql_data = self.cursor.fetchone()
+        CurrentUserdata.id = mysql_data[0]
+        return True
 
     def get_user_tickets(self, dummy_id):
         if not self.cursor:

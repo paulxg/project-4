@@ -84,11 +84,11 @@ class LoginWindow(QWidget):
             return
 
         db = Database()
-        user = db.check_login(username, password)
+        success = db.check_login(username, password)
 
-        if user:
-            CurrentUserdata.id = user[0]
-            CurrentUserdata.rank = user[2]
+        if success is True:
+            db.fetch_user_data(username, password)
             self.request_main_window.emit()
+            print({"id": CurrentUserdata.id})
         else:
             QMessageBox.warning(self, "Error", "Falscher Username oder Pin!")

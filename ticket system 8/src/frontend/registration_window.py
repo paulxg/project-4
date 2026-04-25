@@ -51,9 +51,22 @@ class RegistrationWindow(QWidget):
             return
 
         db = Database()
-        success = db.create_user(username, password)
-        if success:
-            QMessageBox.information(self, "Success", "User created successfully!")
-            self.return_signal.emit()
+        check_user_exists = db.check_login(username, password)
+        if check_user_exists is False:
+            print("Erkannt: Username noch nicht vergeben")
+            create_success = db.create_user(username, password)
+            if create_success is True:
+                QMessageBox.information(self, "Success", "User created successfully!")
+                fetch_success = db.fetch_user_data(username, password)
+                if fetch_success is True:
+                    self.request_main_window.emit()
+                else:
+                    print("id fetching error")
+                    self.return_signal()
+
+            else:
+                print("User konnte nicht erstellt werden!")
+                self.return_signal()
+
         else:
             QMessageBox.warning(self, "Warning", "This username already exists! Please choose another username!")

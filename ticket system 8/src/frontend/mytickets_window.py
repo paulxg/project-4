@@ -2,6 +2,8 @@ from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHead
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from backend.database import Database
+from backend.universal_data import CurrentUserdata
+
 
 class MyTicketsWindow(QWidget):
     request_main_window = pyqtSignal()
@@ -26,7 +28,7 @@ class MyTicketsWindow(QWidget):
         layout.addWidget(self.tableview)
         layout.addWidget(self.backtomain)
 
-        dummy_id = 1
+        dummy_id = CurrentUserdata.id
 
         db = Database()
         data = db.get_user_tickets(dummy_id)
