@@ -78,20 +78,21 @@ class Database:
             return []  #leere Liste zurückgeben, damit die Tabelle später nicht crasht
 
         print("Fetching user data...")
-        query = "SELECT id FROM userdata WHERE username = %s AND password = %s"
-        print("query created...")
+        query = "SELECT id,rank FROM userdata WHERE username = %s AND password = %s"
         self.cursor.execute(query, (username, password,))
         mysql_data = self.cursor.fetchone()
         CurrentUserdata.id = mysql_data[0]
+        CurrentUserdata.rank = mysql_data[1]
+        print(f"current rank of acitve user: {CurrentUserdata.rank}")
         return True
 
-    def get_user_tickets(self, dummy_id):
+    def get_user_tickets(self, user_id):
         if not self.cursor:
             print("Kein Datenbankzugriff möglich.")
             return []  #leere Liste zurückgeben, damit die Tabelle später nicht crasht
 
-        query = "SELECT ticket_number, date_time, category, short_description, long_description FROM tickets WHERE user_id_ref = %s"
-        self.cursor.execute(query, (dummy_id,))
+        query = "SELECT ticket_number, date_time, category, short_description, long_description FROM tickets WHERE user_id_ref = %s OR (SELECT rank FROM userdata WHERE id = %s) = 'admin'"
+        self.cursor.execute(query, (user_id, user_id))
         mysql_data = self.cursor.fetchall()
         return mysql_data
 
@@ -119,3 +120,13 @@ class Database:
         except mysql.connector.Error as e:
             print(f"Fehler beim Erstellen des Tickets: {e}")
             return False
+
+    def delete_ticket(self):
+        if not self.cursor:
+            print("Kein Datenbankzugriff möglich.")
+            return False
+
+        print("delete ticket gestartet")
+        query = "DELETE FROM tickets WHERE ticket_number = %s"
+        self.cursor.execute(query, (ticket_number,))
+        self.connection.commit()

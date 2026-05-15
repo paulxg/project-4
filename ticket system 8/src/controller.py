@@ -11,6 +11,8 @@
 #todo user löschen/bearbeiten etc.
 #todo main.py window einführen, die den Controller startet (weil Konvention)
 #todo error handling: im Termal oder auch im Programm?
+#todo Wie kann der Admin mit dem Kunden in Kontakt treten? (Anstelle von Username vllt email?)
+
 from frontend.alltickets_window import AllTicketsWindow
 from frontend.start_window import StartWindow
 from frontend.login_window import LoginWindow

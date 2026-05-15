@@ -2,7 +2,6 @@
 class CurrentUserdata:
     id = None
     rank = None
-    company = None
 
 #mit CurrentUserdata.id in anderen Klassen darauf zugreifen
 

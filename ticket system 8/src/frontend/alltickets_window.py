@@ -1,9 +1,8 @@
-import csv
-
-from PyQt6.QtGui import QStandardItemModel, QStandardItem
-from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QAbstractItemView
+from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView
 from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from backend.database import Database
+from backend.universal_data import CurrentUserdata
 
 
 class AllTicketsWindow(QWidget):
@@ -11,8 +10,7 @@ class AllTicketsWindow(QWidget):
 
     def __init__(self):
         super().__init__()
-        print("AllTicketsWindow")
-        self.setWindowTitle("All Tickets")
+        self.setWindowTitle("MyTickets")
         self.resize(896, 504)
         self.setMinimumSize(600, 400)
 
@@ -20,12 +18,10 @@ class AllTicketsWindow(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        self.tableview = QTableView() #sorgt für das tabellenartige Aussehen
-        self.tableview.setWordWrap(True)  # Erlaube Textumbruch in Tabelle
+        self.tableview = QTableView()  # sorgt für das tabellenartige Aussehen
+        self.tableview.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)  # Unterbindung editing
 
-        self.tableview.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers) #Unterbindung editing
-
-        #Tabellenanpassung an Fenstergröße
+        # Tabellenanpassung an Fenstergröße
         self.tableview.resizeColumnsToContents()
         self.tableview.resizeRowsToContents()
         self.tableview.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
@@ -37,8 +33,10 @@ class AllTicketsWindow(QWidget):
         layout.addWidget(self.tableview)
         layout.addWidget(self.backtomain)
 
+        user_id = CurrentUserdata.id
+
         db = Database()
-        data = db.get_all_tickets()
+        data = db.get_user_tickets(user_id)
         self.load_table_data(data)
 
     def load_table_data(self, mysql_data):
@@ -49,3 +47,7 @@ class AllTicketsWindow(QWidget):
             items = [QStandardItem(str(field) if field else "") for field in row]
             model.appendRow(items)
         self.tableview.setModel(model)
+
+    def admin_features(self):
+        test = True
+        #User functions

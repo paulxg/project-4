@@ -17,23 +17,21 @@ class MainWindow(QWidget):
         layout = QHBoxLayout()
         self.setLayout(layout)
 
+        #CreateTicketButton
         create_ticket_button = QPushButton("Create Ticket")
-
         layout.addWidget(create_ticket_button)
 
         #AllTickets Button
-        if CurrentUserdata.rank == "admin":
+        if CurrentUserdata.rank == ".": #todo zum Test angepasst: Absprache über Allticketsintegration into Mytickets (admins) nötig
             alltickets_button = QPushButton("All Tickets")
             layout.addWidget(alltickets_button)
             alltickets_button.clicked.connect(self.request_alltickets_signal.emit)
-
         else:
             my_tickets_button = QPushButton("My Tickets")
             layout.addWidget(my_tickets_button)
             my_tickets_button.clicked.connect(self.mytickets_signal.emit)
 
-
-        #signout button
+        #SignoutButton
         signout_button = QPushButton("Signout")
         layout.addWidget(signout_button)
 

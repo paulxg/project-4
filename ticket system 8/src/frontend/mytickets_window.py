@@ -1,5 +1,6 @@
-from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView
-from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView, QHBoxLayout, \
+    QLineEdit
+from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from backend.database import Database
 from backend.universal_data import CurrentUserdata
@@ -15,8 +16,8 @@ class MyTicketsWindow(QWidget):
         self.setMinimumSize(600, 400)
 
         # Widget bekommt Tabellenraster
-        layout = QVBoxLayout()
-        self.setLayout(layout)
+        self.layout = QVBoxLayout()
+        self.setLayout(self.layout)
 
         self.tableview = QTableView() #sorgt für das tabellenartige Aussehen
         self.tableview.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers) #Unterbindung editing
@@ -30,14 +31,19 @@ class MyTicketsWindow(QWidget):
         self.backtomain = QPushButton("Back to Main Window")
         self.backtomain.clicked.connect(self.request_main_window.emit)
 
-        layout.addWidget(self.tableview)
-        layout.addWidget(self.backtomain)
+        self.layout.addWidget(self.tableview)
+        self.layout.addWidget(self.backtomain)
 
         user_id = CurrentUserdata.id
 
-        db = Database()
-        data = db.get_user_tickets(user_id)
+        self.db = Database()
+        data = self.db.get_user_tickets(user_id)
         self.load_table_data(data)
+        self.check_rank()
+
+    def check_rank(self):
+        if CurrentUserdata.rank == "admin":
+            self.admin_features()
 
     def load_table_data(self, mysql_data):
         model = QStandardItemModel()
@@ -47,6 +53,20 @@ class MyTicketsWindow(QWidget):
             model.appendRow(items)
         self.tableview.setModel(model)
 
-#todo dummy_id austauschen mit richtiger id
-#todo Sortierung überlegen
-#todo Spaltenbreite anpassen
+    def admin_features(self):
+        editing_layout = QHBoxLayout()
+
+        ticket_number_button = QLineEdit("Ticket number to be edited") #todo Text ausgrauen
+        delete_button = QPushButton("Delete Ticket")
+
+        ticket_number = ticket_number_button.text()
+
+        print("jetzt delete methode aufrufen")
+        #delete = self.db.delete_ticket(ticket_number)
+        print("jetzt delete methode aufrufen")
+        #delete_button.clicked.connect(delete)
+
+        editing_layout.addWidget(ticket_number_button)
+        editing_layout.addWidget(delete_button)
+        self.layout.addLayout(editing_layout)
+        #User functions

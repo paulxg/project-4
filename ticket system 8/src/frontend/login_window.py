@@ -77,8 +77,8 @@ class LoginWindow(QWidget):
             self.show_password.setToolTip("Passwort anzeigen")
 
     def check_login(self):
-        username = self.name_input.text().strip()
-        password = self.password_input.text().strip()
+        username = self.name_input.text().strip() #todo macht strip() hier sinn an der Stelle
+        password = self.password_input.text().strip() #todo macht strip() hier sinn an der Stelle
 
         if not username or not password:
             QMessageBox.warning(self, "Error", "Please enter username and pin!")
