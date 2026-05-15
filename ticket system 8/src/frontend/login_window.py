@@ -13,7 +13,8 @@ class LoginWindow(QWidget):
         # super().__init__() ruft den Bauplan von QWidget auf, damit wir ein echtes Fenster sind
         super().__init__()
         self.setWindowTitle("Login")
-        self.setFixedSize(300, 300)
+        self.resize(300, 300)
+        self.setMinimumSize(250, 250)
 
         #Layout erstellen
         layout = QVBoxLayout()

@@ -12,7 +12,8 @@ class CreateTicket(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Create Ticket")
-        self.setFixedSize(550,600)
+        self.resize(550, 600)
+        self.setMinimumSize(450, 500)
 
         layout = QVBoxLayout()
         self.setLayout(layout)
@@ -176,4 +177,3 @@ class CreateTicket(QWidget):
         if file:
             self.attachment_label.setText(f"Attachment: {file}")
             print("Attachment: ", file)
-

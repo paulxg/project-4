@@ -11,7 +11,8 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Ticket System")
-        self.setFixedSize(400, 400)
+        self.resize(400, 400)
+        self.setMinimumSize(300, 300)
 
         layout = QHBoxLayout()
         self.setLayout(layout)

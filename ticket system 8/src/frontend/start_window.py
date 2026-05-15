@@ -9,7 +9,8 @@ class StartWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Sign in/up")
-        self.setFixedSize(300, 300)
+        self.resize(300, 300)           # Startgröße (Preset)
+        self.setMinimumSize(250, 200)   # Mindestgröße, die nicht unterschritten werden darf
 
         layout = QHBoxLayout()
         self.setLayout(layout)

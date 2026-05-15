@@ -14,7 +14,8 @@ class AllTicketsWindow(QWidget):
         super().__init__()
         print("AllTicketsWindow")
         self.setWindowTitle("All Tickets")
-        self.setFixedSize(896, 504)
+        self.resize(896, 504)
+        self.setMinimumSize(600, 400)
 
         # Widget bekommt Tabellenraster
         layout = QVBoxLayout()
