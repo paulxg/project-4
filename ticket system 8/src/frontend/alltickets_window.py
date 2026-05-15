@@ -1,8 +1,7 @@
 import csv
 
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
-from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView
-from backend.universal_data import ProgramData
+from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QAbstractItemView
 from PyQt6.QtCore import pyqtSignal
 from backend.database import Database
 
@@ -25,6 +24,12 @@ class AllTicketsWindow(QWidget):
         self.tableview.setWordWrap(True)  # Erlaube Textumbruch in Tabelle
 
         self.tableview.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers) #Unterbindung editing
+
+        #Tabellenanpassung an Fenstergröße
+        self.tableview.resizeColumnsToContents()
+        self.tableview.resizeRowsToContents()
+        self.tableview.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.tableview.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
         self.backtomain = QPushButton("Back to Main Window")
         self.backtomain.clicked.connect(self.request_main_window.emit)
