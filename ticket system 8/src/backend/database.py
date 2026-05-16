@@ -72,6 +72,7 @@ class Database:
             print(f"Unerwarteter Fehler: {e}")
             return False
 
+    #Schreibt id und rank in CurrentUserdata
     def fetch_user_data(self, username, password):
         if not self.cursor:
             print("Kein Datenbankzugriff möglich.")
@@ -121,7 +122,7 @@ class Database:
             print(f"Fehler beim Erstellen des Tickets: {e}")
             return False
 
-    def delete_ticket(self):
+    def delete_ticket(self, ticket_number):
         if not self.cursor:
             print("Kein Datenbankzugriff möglich.")
             return False
@@ -130,3 +131,4 @@ class Database:
         query = "DELETE FROM tickets WHERE ticket_number = %s"
         self.cursor.execute(query, (ticket_number,))
         self.connection.commit()
+        return True

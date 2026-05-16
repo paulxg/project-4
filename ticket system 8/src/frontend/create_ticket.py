@@ -2,7 +2,6 @@ from PyQt6.QtWidgets import (QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabe
                              QMessageBox)
 from backend.universal_data import CurrentUserdata, ProgramData
 from PyQt6.QtCore import pyqtSignal
-from backend.prioritizing import Prioritizing
 from backend.database import Database
 from datetime import datetime
 
@@ -125,31 +124,32 @@ class CreateTicket(QWidget):
 
         self.character_counter.setText(f"{length}/{max_len}")
 
-# Funktion des Submit Button
+#Funktion des Submit Button
     def submit(self):
-        self.category = self.dropdown.currentText()
-        self.problem_quick = self.problem.text()
-        self.factor = ProgramData.support_categories[self.category]
-        self.datetime = datetime.now().strftime("%d/%m/%Y")
+        print("submit started")
+        category = self.dropdown.currentText()
+        problem_quick = self.problem.text()
+        #self.datetime = datetime.now().strftime("%d/%m/%Y")
         text = self.description.toPlainText()
         text_to_single_line = text.replace("\n", " ").replace("\r", "")
-        if len(text_to_single_line) > 250 and self.problem_quick != "":
+        print("text successfully fetched from widgets")
 
+        #text length check
+        if len(text_to_single_line) > 250 and self.problem_quick != "":
             #PopUp wenn zu lang und Submitted
             notification = QMessageBox()
             notification.setWindowTitle("Error")
             notification.setText("geht nich, mach kürzer aber füll alles aus! (hab nicht den ganzen Tag Zeit)")
             notification.setIcon(QMessageBox.Icon.Warning)
             notification.exec()
-
         else:
-            Prioritizing.status_calculation(self)
+            print("text length check successful")
             db = Database()
             db.create_ticket(
                 CurrentUserdata.id,
                 self.final_factor,
-                self.category,
-                self.problem_quick,
+                category,
+                problem_quick,
                 text_to_single_line
             )
 

@@ -31,19 +31,15 @@ class MyTicketsWindow(QWidget):
         self.backtomain = QPushButton("Back to Main Window")
         self.backtomain.clicked.connect(self.request_main_window.emit)
 
+        #Widgets ins Layout packen
         self.layout.addWidget(self.tableview)
-        self.layout.addWidget(self.backtomain)
-
-        user_id = CurrentUserdata.id
-
-        self.db = Database()
-        data = self.db.get_user_tickets(user_id)
-        self.load_table_data(data)
-        self.check_rank()
-
-    def check_rank(self):
         if CurrentUserdata.rank == "admin":
             self.admin_features()
+        self.layout.addWidget(self.backtomain)
+
+        db = Database()
+        data = db.get_user_tickets(CurrentUserdata.id)
+        self.load_table_data(data)
 
     def load_table_data(self, mysql_data):
         model = QStandardItemModel()
@@ -56,17 +52,23 @@ class MyTicketsWindow(QWidget):
     def admin_features(self):
         editing_layout = QHBoxLayout()
 
-        ticket_number_button = QLineEdit("Ticket number to be edited") #todo Text ausgrauen
+        ticket_number_input = QLineEdit()
+        ticket_number_input.setPlaceholderText("Ticket number to be edited") # Das graut den Text aus!
         delete_button = QPushButton("Delete Ticket")
 
-        ticket_number = ticket_number_button.text()
+        def delete_ticket_action():
+            ticket_number = ticket_number_input.text()
+            if ticket_number: # Nur löschen, wenn auch eine Nummer eingegeben wurde
+                db = Database()
+                print("jetzt delete methode aufrufen")
+                if db.delete_ticket(ticket_number):
+                    # Lade die Tabelle neu, damit das gelöschte Ticket verschwindet
+                    data = db.get_user_tickets(CurrentUserdata.id)
+                    self.load_table_data(data)
 
-        print("jetzt delete methode aufrufen")
-        #delete = self.db.delete_ticket(ticket_number)
-        print("jetzt delete methode aufrufen")
-        #delete_button.clicked.connect(delete)
+        delete_button.clicked.connect(delete_ticket_action)
 
-        editing_layout.addWidget(ticket_number_button)
+        editing_layout.addWidget(ticket_number_input)
         editing_layout.addWidget(delete_button)
         self.layout.addLayout(editing_layout)
         #User functions
