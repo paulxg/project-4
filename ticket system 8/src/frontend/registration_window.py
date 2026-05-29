@@ -24,6 +24,7 @@ class RegistrationWindow(QWidget):
         self.name_input.setPlaceholderText("Username")
 
         self.password_input = QLineEdit()
+        self.password_input.returnPressed.connect(self.transfer_user_data)  # fängt Enter-Taste ab und führt check_login durch
 
         self.password_input.setPlaceholderText("Pin")
 
@@ -55,8 +56,8 @@ class RegistrationWindow(QWidget):
         check_user_exists = db.check_login(username, password)
         if check_user_exists is False:
             print("Erkannt: Username noch nicht vergeben")
-            create_success = db.create_user(username, password)
-            if create_success is True:
+            success = db.create_user(username, password)
+            if success is True:
                 QMessageBox.information(self, "Success", "User created successfully!")
                 fetch_success = db.fetch_user_data(username, password)
                 if fetch_success is True:
@@ -69,5 +70,8 @@ class RegistrationWindow(QWidget):
                 print("User konnte nicht erstellt werden!")
                 self.return_signal()
 
-        else:
+        elif check_user_exists is True:
             QMessageBox.warning(self, "Warning", "This username already exists! Please choose another username!")
+
+        else:
+            QMessageBox.warning(self, "Error", "No database access")

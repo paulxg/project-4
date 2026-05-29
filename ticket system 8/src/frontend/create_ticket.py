@@ -27,12 +27,12 @@ class CreateTicket(QWidget):
         self.dropdown.setMaxVisibleItems(5)
 
         # Label für Dropdown
-        self.label = QLabel("I have a problem with:")
+        self.label = QLabel("I have a problem with:*")
         layout.addWidget(self.label)
         layout.addWidget(self.dropdown)
 
         # Problem-Kurzbeschreibung Input
-        problem_label = QLabel("Describe your problem briefly:")
+        problem_label = QLabel("Describe your problem briefly:*")
         self.problem = QLineEdit()
         self.problem.setPlaceholderText("max. 30 characters")
         self.problem.setMaxLength(30)
@@ -50,19 +50,15 @@ class CreateTicket(QWidget):
 
         # Character Counter
         self.character_counter = QLabel("0/250")
+        layout.addWidget(self.character_counter)
 
         # Signal für das Counter-Updating
         self.description.textChanged.connect(self.update_character_counter)
 
-        # Attachment anhängen
-        self.attachment_label = QLabel("Attachment:")
-        self.attachment_button = QPushButton("Attach")
-        layout.addWidget(self.character_counter)
+        #Pflichtfeld
+        required = QLabel("*required inputs")
+        layout.addWidget(required)
 
-        self.attachment_button.clicked.connect(self.choose_attachment)
-
-        layout.addWidget(self.attachment_label)
-        layout.addWidget(self.attachment_button)
 
         # Submit Button
         self.submit_button = QPushButton("Submit")
@@ -113,16 +109,16 @@ class CreateTicket(QWidget):
     def update_character_counter(self):
         text = self.description.toPlainText()
         length = len(text)
-        max_len = 250
+        self.max_len = 250
 
-        if length >= 230:
-            self.character_counter.setStyleSheet("color: orange;")
-        if length >= max_len:
-            self.character_counter.setStyleSheet("color: red;")
-        if length < 230:
+        if length <= self.max_len-50:
             self.character_counter.setStyleSheet("color: white;")
+        if length >= self.max_len :
+            self.character_counter.setStyleSheet("color: orange;")
+        if length > self.max_len:
+            self.character_counter.setStyleSheet("color: red;")
 
-        self.character_counter.setText(f"{length}/{max_len}")
+        self.character_counter.setText(f"{length}/{self.max_len}")
 
 #Funktion des Submit Button
     def submit(self):
@@ -135,13 +131,16 @@ class CreateTicket(QWidget):
         print("text successfully fetched from widgets")
 
         #text length check
-        if len(text_to_single_line) > 250 and self.problem_quick != "":
+        if len(text_to_single_line) > 250:
             #PopUp wenn zu lang und Submitted
-            notification = QMessageBox()
-            notification.setWindowTitle("Error")
-            notification.setText("geht nich, mach kürzer aber füll alles aus! (hab nicht den ganzen Tag Zeit)")
-            notification.setIcon(QMessageBox.Icon.Warning)
-            notification.exec()
+            print("Description too long!")
+            QMessageBox.warning(self, "Error", f"Description exceeds {self.max_len} characters")
+
+        elif len(problem_quick) == 0:
+            print("Quick description required")
+            QMessageBox.warning(self, "Error", "Quick description required!")
+
+
         else:
             print("text length check successful")
             db = Database()
@@ -169,11 +168,3 @@ class CreateTicket(QWidget):
         success.setWindowTitle("Success")
         success.setText(f"Your Ticket concerning {choice} has been received!")
         success.exec()
-
-    def choose_attachment(self):
-        file = QFileDialog.getOpenFileName(self, "Open File", " ",
-                                            "All Files ();; Pictures (.png .jpg.jpeg);;PDF (*.pdf)")
-
-        if file:
-            self.attachment_label.setText(f"Attachment: {file}")
-            print("Attachment: ", file)

@@ -1,15 +1,15 @@
-#todo (attachment fixen) [später]
-#todo claim/view (tickets (also abarbeiten))
-#todo Priorisierung von tickets
-#todo status von tickets in Bearbeitung
-#todo Fenstergrößen anpassen
-#todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
-#todo Login connecten Database (Lorena)
-#todo AllTickets & MyTickets Database (Paul)
-#todo Create ticket Database (Anton)
-#todo passwort hashen mit bcrypt (Paul)
-#todo user löschen/bearbeiten etc.
-#todo main.py window einführen, die den Controller startet (weil Konvention)
+# (attachment fixen) [später]
+# claim/view (tickets (also abarbeiten))
+# Priorisierung von tickets
+# status von tickets in Bearbeitung
+# Fenstergrößen anpassen
+# Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
+# Login connecten Database (Lorena)
+# AllTickets & MyTickets Database (Paul)
+# Create ticket Database (Anton)
+# passwort hashen mit bcrypt (Paul)
+# user löschen/bearbeiten etc.
+# main.py window einführen, die den Controller startet (weil Konvention)
 
 import sys
 from PyQt6.QtWidgets import (QApplication)

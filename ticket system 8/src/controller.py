@@ -1,15 +1,9 @@
-#todo (attachment fixen) [später]
 #todo claim/view (tickets (also abarbeiten))
 #todo Priorisierung von tickets
 #todo status von tickets in Bearbeitung
-#todo Fenstergrößen anpassen
 #todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
-#todo Login connecten Database (Lorena)
-#todo AllTickets & MyTickets Database (Paul)
-#todo Create ticket Database (Anton)
 #todo passwort hashen mit bcrypt (Paul)
 #todo user löschen/bearbeiten etc.
-#todo main.py window einführen, die den Controller startet (weil Konvention)
 #todo error handling: im Termal oder auch im Programm?
 #todo Wie kann der Admin mit dem Kunden in Kontakt treten? (Anstelle von Username vllt email?)
 
@@ -23,14 +17,13 @@ from backend.universal_data import CurrentUserdata
 from frontend.registration_window import RegistrationWindow
 
 
-# 1. Der Controller (Der Manager)
+#Controller
 class Controller:
     def __init__(self):
         self.current_window = None
         self.show_start_screen()
 
     def show_start_screen(self):
-        #Wir erstellen das Startfenster
         self.current_window = StartWindow()
 
         #Wir verbinden das Signal des Fensters mit unserer Methode
@@ -42,7 +35,6 @@ class Controller:
     def show_login_screen(self):
         self.current_window.close()
 
-        #Neues Fenster erstellen
         self.current_window = LoginWindow()
 
         self.current_window.request_main_window.connect(self.show_main_window)

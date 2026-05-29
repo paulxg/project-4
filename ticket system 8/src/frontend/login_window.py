@@ -26,7 +26,7 @@ class LoginWindow(QWidget):
 
         self.password_input = QLineEdit()
         self.password_input.returnPressed.connect(self.check_login) #fängt Enter-Taste ab und führt check_login durch
-        self.password_input.setPlaceholderText("Pin")
+        self.password_input.setPlaceholderText("Password")
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
         # Augen icon (ist ein PyQt Standard Icon)
@@ -42,7 +42,7 @@ class LoginWindow(QWidget):
         self.show_password = QToolButton()
         self.show_password.setIcon(icon)
         self.show_password.setCheckable(True)
-        self.show_password.setToolTip("show password")
+        self.show_password.setToolTip("Show password")
         self.show_password.clicked.connect(self.show_or_hide_password)
 
 
@@ -59,7 +59,7 @@ class LoginWindow(QWidget):
 
         layout.addWidget(QLabel("Username"))
         layout.addWidget(self.name_input)
-        layout.addWidget(QLabel("Pin"))
+        layout.addWidget(QLabel("Password"))
         layout.addLayout(password_layout)
         layout.addWidget(login_button)
         layout.addWidget(signout_button)
@@ -71,14 +71,14 @@ class LoginWindow(QWidget):
     def show_or_hide_password(self, checked):
         if checked:
             self.password_input.setEchoMode(QLineEdit.EchoMode.Normal)
-            self.show_password.setToolTip("Passwort verstecken")
+            self.show_password.setToolTip("Hide password")
         else:
             self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
-            self.show_password.setToolTip("Passwort anzeigen")
+            self.show_password.setToolTip("Show Password")
 
     def check_login(self):
-        username = self.name_input.text().strip() #todo macht strip() hier sinn an der Stelle
-        password = self.password_input.text().strip() #todo macht strip() hier sinn an der Stelle
+        username = self.name_input.text().strip() #.strip() um bspw. ungewollte Leerzeichen der Eingabe zu entfernen
+        password = self.password_input.text().strip()
 
         if not username or not password:
             QMessageBox.warning(self, "Error", "Please enter username and pin!")
@@ -91,5 +91,8 @@ class LoginWindow(QWidget):
             db.fetch_user_data(username, password)
             self.request_main_window.emit()
             print({"id": CurrentUserdata.id})
+        elif success is False:
+            QMessageBox.warning(self, "Error", "Wrong username or password!")
         else:
-            QMessageBox.warning(self, "Error", "Falscher Username oder Pin!")
+            QMessageBox.warning(self, "Error", "No database access")
+

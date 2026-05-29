@@ -24,6 +24,7 @@ class Database:
 
         except Error as e:
             print(f"Fehler bei der Verbindung zu MySQL: {e}")
+          
 
     def check_login(self, username, password):
         # Falls es keine Datenbankverbindung gibt, brich ab, bevor es kracht

@@ -11,14 +11,16 @@ class MyTicketsWindow(QWidget):
 
     def __init__(self):
         super().__init__()
+        #Window bekommt Abmaße
         self.setWindowTitle("MyTickets")
         self.resize(896, 504)
         self.setMinimumSize(600, 400)
 
-        # Widget bekommt Tabellenraster
+        #Widget bekommt vertical layout, für weitere buttons unter Tabelle
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
+        #QTableview für Tabellenansicht
         self.tableview = QTableView() #sorgt für das tabellenartige Aussehen
         self.tableview.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers) #Unterbindung editing
 
@@ -28,6 +30,7 @@ class MyTicketsWindow(QWidget):
         self.tableview.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.tableview.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
+        #backtomain pushbutton
         self.backtomain = QPushButton("Back to Main Window")
         self.backtomain.clicked.connect(self.request_main_window.emit)
 

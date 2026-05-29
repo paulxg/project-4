@@ -15,7 +15,7 @@ class ProgramData:
         "Files or Storage":1,
         "Security or Privacy":1,
         "Suggestions for Improvement / Missing Features":1,
-        "Miscellaneous":1
+        "Others":1
     }
 
 
