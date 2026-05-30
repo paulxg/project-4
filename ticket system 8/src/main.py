@@ -1,7 +1,8 @@
 import sys
 from PyQt6.QtWidgets import QApplication
 from controller import Controller
-
+#Todo Prioriation logik
+#Todo
 
 def main():
     # Die Basis für jede PyQt-App

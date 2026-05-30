@@ -133,3 +133,13 @@ class Database:
         self.cursor.execute(query, (ticket_number,))
         self.connection.commit()
         return True
+
+    def ticket_edit_fetch(self, ticket_number):
+        if not self.cursor:
+            print("Kein Datenbankzugriff möglich.")
+            return []
+
+        query = "SELECT ticket_number, date_time, category, short_description, long_description FROM tickets WHERE ticket_number = %s"
+        self.cursor.execute(query, (ticket_number,))
+        mysql_data = self.cursor.fetchone()
+        return mysql_data
