@@ -124,13 +124,17 @@ class TicketEdit(QWidget):
         cat_label = QLabel(f"I have a problem with: {mysql_data[2] or 'N/A'}")
         prob_label = QLabel(f"Describe your problem briefly: {mysql_data[3] or 'N/A'}")
         prob_label.setWordWrap(True)
-        long_prob_label = QLabel(f"Describe your problem in detail: {mysql_data[4] or 'N/A'}")
-        long_prob_label.setWordWrap(True)
+        long_prob_label = QLabel("Describe your problem in detail:")
+        long_prob_text = QTextEdit()
+        long_prob_text.setPlainText(mysql_data[4] or 'N/A')
+        long_prob_text.setReadOnly(True)
+        long_prob_text.setFixedHeight(60)
 
         layout.addWidget(date_label)
         layout.addWidget(cat_label)
         layout.addWidget(prob_label)
         layout.addWidget(long_prob_label)
+        layout.addWidget(long_prob_text)
 
         if mysql_data[5] in ["in progress", "closed"]:
             # Chat
@@ -181,7 +185,7 @@ class TicketEdit(QWidget):
 
     def load_messages(self):
         messages = Database().get_messages(self.ticket_number)
-        content = f"<i> Hello, an admin is currently reviewing your ticket and will get back to you as soon as possible. Please provide any further information if available below.</i> <br> <br>" + "".join(
+        content = f"<i> Hello, an admin is currently reviewing your ticket and will get back to you as soon as possible. Please provide any further information available below or pay for faster service.</i> <br> <br>" + "".join(
             f"<b>[{username}]</b> {timestamp} &mdash; {message}<br>"
             for username, message, timestamp in messages
         )
