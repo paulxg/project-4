@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView, QHBoxLayout, \
     QLineEdit, QTabWidget, QLabel, QTabBar, QTextEdit, QMessageBox, QComboBox, QTextBrowser
-from PyQt6.QtCore import pyqtSignal, QTimer
+from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from backend.database import Database
 from backend.universal_data import CurrentUserdata
@@ -149,6 +149,46 @@ class TicketEdit(QWidget):
         layout.addWidget(problem_label)
         layout.addWidget(long_problem_label)
 
+        # Chat section
+        chat_label = QLabel("Chat:")
+        self.chat_display = QTextBrowser()
+        self.chat_display.setFixedHeight(120)
+
+        chat_input_layout = QHBoxLayout()
+        self.chat_input = QLineEdit()
+        self.chat_input.setPlaceholderText("Enter message...")
+        self.chat_send_button = QPushButton("Send")
+        chat_input_layout.addWidget(self.chat_input)
+        chat_input_layout.addWidget(self.chat_send_button)
+
+        layout.addWidget(chat_label)
+        layout.addWidget(self.chat_display)
+        layout.addLayout(chat_input_layout)
+
+        def load_messages():
+            db = Database()
+            messages = db.get_messages(ticket_number)
+            content = ""
+            for username, message, timestamp in messages:  # Start Schleife, die Chat aus einzelnen Messages zusammenbaut
+                content += f"<b>[{username}]</b> {timestamp} &mdash; {message}<br>"
+            self.chat_display.setHtml(content)
+            self.chat_display.verticalScrollBar().setValue(
+                self.chat_display.verticalScrollBar().maximum()
+            )
+
+        def send_message():
+            text = self.chat_input.text().strip()
+            if text:
+                db = Database()
+                db.send_message(ticket_number, CurrentUserdata.id, text)
+                self.chat_input.clear()
+                load_messages()
+
+        self.chat_send_button.clicked.connect(send_message)
+        self.chat_input.returnPressed.connect(send_message)
+
+        load_messages()
+
         if CurrentUserdata.rank == "admin":
             # Status
             status_label = QLabel("Status:")
@@ -158,18 +198,8 @@ class TicketEdit(QWidget):
             if len(mysql_data) > 5 and mysql_data[5] in ["open", "in progress", "closed"]:
                 self.status_dropdown.setCurrentText(mysql_data[5])
 
-            # Comment
-            comment_label = QLabel("Comment:")
-            self.comment_input = QTextEdit()
-            self.comment_input.setFixedHeight(125)
-            # Assuming comment is at index 6 if it exists, otherwise default to empty
-            if len(mysql_data) > 6 and mysql_data[6]:
-                self.comment_input.setText(str(mysql_data[6]))
-
             layout.addWidget(status_label)
             layout.addWidget(self.status_dropdown) # Add status dropdown to layout
-            layout.addWidget(comment_label)
-            layout.addWidget(self.comment_input) # Add comment input to layout
 
             # Submit Button
             self.submit_button = QPushButton("Submit")
@@ -191,88 +221,39 @@ class TicketEdit(QWidget):
 
             def submit_action():
                 status = self.status_dropdown.currentText() # Get status from dropdown
-                comment = self.comment_input.toPlainText() # Get comment from QTextEdit
 
-                if status or comment: # Only update if a status or comment is provided
+                if status: # Only update if a status is provided
                     db = Database()
-                    db.comment_status(status, comment, ticket_number)
-                    QMessageBox.information(self, "Success", "Ticket status and/or comment updated!")
+                    db.comment_status(status, "", ticket_number)
+                    QMessageBox.information(self, "Success", "Ticket status updated!")
                 else:
-                    QMessageBox.warning(self, "Warning", "No status or comment provided to update.")
+                    QMessageBox.warning(self, "Warning", "No status provided to update.")
 
             self.submit_button.clicked.connect(submit_action)
 
-        if CurrentUserdata.rank == "admin" or CurrentUserdata.rank == "user":
-            #Delete Button
-            self.delete_button = QPushButton("Delete")
-            self.delete_button.setStyleSheet("""
-                           QPushButton {
-                               background-color: #3B0000;      
-                               color: #FFFFFF;
-                           }
-                           QPushButton:hover {
-                               background-color: #420000;      
-                           }
-                           QPushButton:pressed {
-                               background-color: #3B0000;      
-                           }
-                           """)
-            layout.addWidget(self.delete_button)
+        #Delete Button
+        self.delete_button = QPushButton("Delete")
+        self.delete_button.setStyleSheet("""
+                       QPushButton {
+                           background-color: #3B0000;      
+                           color: #FFFFFF;
+                       }
+                       QPushButton:hover {
+                           background-color: #420000;      
+                       }
+                       QPushButton:pressed {
+                           background-color: #3B0000;      
+                       }
+                       """)
+        layout.addWidget(self.delete_button)
 
-            def delete_ticket_action():
-                # ticket_number_input.text() gibt es nicht, wir nehmen stattdessen die lokale Variable
-                if ticket_number:
-                    db = Database()
-                    print("jetzt delete methode aufrufen")
-                    if db.delete_ticket(ticket_number):
-                        print("Ticket gelöscht!")
-                        # Hinweis: self.load_table_data() klappt hier nicht, da das TicketEdit-Widget keinen Zugriff auf die Tabellen-Methode hat.
-
-            self.delete_button.clicked.connect(delete_ticket_action)
-
-            # Chat section
-            chat_label = QLabel("Chat:")
-            self.chat_display = QTextBrowser()
-            self.chat_display.setFixedHeight(200)
-
-            chat_input_layout = QHBoxLayout()
-            self.chat_input = QLineEdit()
-            self.chat_input.setPlaceholderText("Nachricht eingeben...")
-            self.chat_send_button = QPushButton("Senden")
-            chat_input_layout.addWidget(self.chat_input)
-            chat_input_layout.addWidget(self.chat_send_button)
-
-            layout.addWidget(chat_label)
-            layout.addWidget(self.chat_display)
-            layout.addLayout(chat_input_layout)
-
-            def load_messages():
+        def delete_ticket_action():
+            # ticket_number_input.text() gibt es nicht, wir nehmen stattdessen die lokale Variable
+            if ticket_number:
                 db = Database()
-                messages = db.get_messages(ticket_number)
-                content = ""
-                for username, message, timestamp in messages:
-                    content += f"<b>[{username}]</b> {timestamp} &mdash; {message}<br>"
-                self.chat_display.setHtml(content)
-                self.chat_display.verticalScrollBar().setValue(
-                    self.chat_display.verticalScrollBar().maximum()
-                )
+                print("jetzt delete methode aufrufen")
+                if db.delete_ticket(ticket_number):
+                    print("Ticket gelöscht!")
+                    # Hinweis: self.load_table_data() klappt hier nicht, da das TicketEdit-Widget keinen Zugriff auf die Tabellen-Methode hat.
 
-            def send_message():
-                text = self.chat_input.text().strip()
-                if text:
-                    db = Database()
-                    db.send_message(ticket_number, CurrentUserdata.id, text)
-                    self.chat_input.clear()
-                    load_messages()
-
-            self.chat_send_button.clicked.connect(send_message)
-            self.chat_input.returnPressed.connect(send_message)
-
-            self.chat_timer = QTimer(self)
-            self.chat_timer.timeout.connect(load_messages)
-            self.chat_timer.start(5000)
-
-            load_messages()
-
-        else:
-            QMessageBox.warning(self,"Error", "rank conflict!")
+        self.delete_button.clicked.connect(delete_ticket_action)
