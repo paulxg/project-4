@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView, QHBoxLayout, \
-    QLineEdit, QTabWidget, QLabel, QTabBar
+    QLineEdit, QTabWidget, QLabel, QTabBar, QTextEdit, QMessageBox
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from backend.database import Database
@@ -120,31 +120,42 @@ class TicketEdit(QWidget):
         self.setLayout(layout)
 
         #Date of Issueing
-        date_issuing_label = QLabel("Date of issueing")
-        #str() nötig, da MySQL datetime-Objekt liefert
-        date_issuing_output = QLabel(str(mysql_data[1]) if mysql_data[1] else "")
+        date_val = str(mysql_data[1]) if mysql_data[1] else "N/A"
+        date_issuing_label = QLabel(f"Date of issueing: {date_val}")
 
         #Support Category
-        support_category_label = QLabel("I have a problem with:")
-        support_category_output = QLabel(str(mysql_data[2]) if mysql_data[2] else "")
+        cat_val = str(mysql_data[2]) if mysql_data[2] else "N/A"
+        support_category_label = QLabel(f"I have a problem with: {cat_val}")
 
         # Problem-Kurzbeschreibung Input
-        problem_label = QLabel("Describe your problem briefly:")
-        problem_output = QLabel(str(mysql_data[3]) if mysql_data[3] else "")
+        prob_val = str(mysql_data[3]) if mysql_data[3] else "N/A"
+        problem_label = QLabel(f"Describe your problem briefly: {prob_val}")
+        problem_label.setWordWrap(True)
 
         #Detaillierte Problembeschreibung
-        long_problem_label = QLabel("Describe your problem in detail:")
-        long_problem_output = QLabel(str(mysql_data[4]) if mysql_data[4] else "")
+        long_prob_val = str(mysql_data[4]) if mysql_data[4] else "N/A"
+        long_problem_label = QLabel(f"Describe your problem in detail: {long_prob_val}")
+        long_problem_label.setWordWrap(True)
+
+        #Status ändern
+        status_label = QLabel("Change Status:")
+        status_input = QLineEdit()
+
+
+        #comment
+        comment_label = QLabel("Comment:")
+        comment_input = QTextEdit()
+        comment_input.setFixedHeight(125)
 
         #Adding to Layout
         layout.addWidget(date_issuing_label)
-        layout.addWidget(date_issuing_output)
         layout.addWidget(support_category_label)
-        layout.addWidget(support_category_output)
         layout.addWidget(problem_label)
-        layout.addWidget(problem_output)
         layout.addWidget(long_problem_label)
-        layout.addWidget(long_problem_output)
+        layout.addWidget(status_label)
+        layout.addWidget(status_input)
+        layout.addWidget(comment_label)
+        layout.addWidget(comment_input)
 
         # Submit Button
         self.submit_button = QPushButton("Submit")
@@ -162,12 +173,25 @@ class TicketEdit(QWidget):
                             background-color: #003B00;      
                         }
                         """)
-        # self.submit_button.clicked.connect(self.submit) # VERURSACHT CRASH: self.submit existiert nicht
 
         layout.addWidget(self.submit_button)
 
+
         # NEU: Button muss zuerst erstellt werden!
         self.delete_button = QPushButton("Delete")
+
+        def submit_action():
+            status = status_input.text()
+            comment = comment_input.toPlainText()
+
+            if comment or status:
+                db = Database()
+                db.comment_status(status, comment, ticket_number)
+
+            else:
+                QMessageBox.warning(self, "Warning", "No status or comment provided")
+                
+        self.submit_button.clicked.connect(submit_action)
 
         def delete_ticket_action():
             # ticket_number_input.text() gibt es nicht, wir nehmen stattdessen die lokale Variable

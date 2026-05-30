@@ -143,3 +143,14 @@ class Database:
         self.cursor.execute(query, (ticket_number,))
         mysql_data = self.cursor.fetchone()
         return mysql_data
+
+    def comment_status(self, status, comment,ticket_number):
+        if not self.cursor:
+            print("Kein Datenbankzugriff möglich.")
+            return False
+
+        query = "UPDATE tickets SET status = %s, comment = %s WHERE ticket_number = %s"
+        self.cursor.execute(query, (status, comment, ticket_number))
+        self.connection.commit()
+        print("Status / Comment Update successful")
+        return True
