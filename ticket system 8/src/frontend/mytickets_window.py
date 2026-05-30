@@ -132,24 +132,25 @@ class TicketEdit(QWidget):
         layout.addWidget(prob_label)
         layout.addWidget(long_prob_label)
 
-        # Chat
-        self.chat_display = QTextBrowser()
-        self.chat_display.setFixedHeight(120)
-        self.chat_input = QLineEdit()
-        self.chat_input.setPlaceholderText("Enter message...")
-        self.chat_send_button = QPushButton("Send")
-        self.chat_send_button.clicked.connect(self.send_message)
-        self.chat_input.returnPressed.connect(self.send_message)
+        if mysql_data[5] in ["in progress", "closed"]:
+            # Chat
+            self.chat_display = QTextBrowser()
+            self.chat_display.setFixedHeight(120)
+            self.chat_input = QLineEdit()
+            self.chat_input.setPlaceholderText("Enter message...")
+            self.chat_send_button = QPushButton("Send")
+            self.chat_send_button.clicked.connect(self.send_message)
+            self.chat_input.returnPressed.connect(self.send_message)
+            layout.addWidget(QLabel("Chat:"))
+            layout.addWidget(self.chat_display)
 
-        chat_input_layout = QHBoxLayout()
-        chat_input_layout.addWidget(self.chat_input)
-        chat_input_layout.addWidget(self.chat_send_button)
+            if mysql_data[5] in ["in progress"]:
+                chat_input_layout = QHBoxLayout()
+                chat_input_layout.addWidget(self.chat_input)
+                chat_input_layout.addWidget(self.chat_send_button)
+                layout.addLayout(chat_input_layout)
 
-        layout.addWidget(QLabel("Chat:"))
-        layout.addWidget(self.chat_display)
-        layout.addLayout(chat_input_layout)
-
-        self.load_messages()
+            self.load_messages()
 
         if CurrentUserdata.rank == "admin":
             self.status_dropdown = QComboBox()
@@ -180,7 +181,7 @@ class TicketEdit(QWidget):
 
     def load_messages(self):
         messages = Database().get_messages(self.ticket_number)
-        content = "".join(
+        content = f"<i> Hello, an admin is currently reviewing your ticket and will get back to you as soon as possible. Please provide any further information if available below.</i> <br> <br>" + "".join(
             f"<b>[{username}]</b> {timestamp} &mdash; {message}<br>"
             for username, message, timestamp in messages
         )
