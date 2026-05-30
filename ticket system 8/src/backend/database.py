@@ -73,18 +73,55 @@ class Database:
             print(f"Unerwarteter Fehler: {e}")
             return False
 
-    #Schreibt id und rank in CurrentUserdata
+    def create_messages_table(self):
+        if not self.cursor:
+            return
+        self.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS ticket_messages (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                ticket_id INT NOT NULL,
+                sender_id INT NOT NULL,
+                message TEXT NOT NULL,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        self.connection.commit()
+
+    def send_message(self, ticket_id, sender_id, message):
+        if not self.cursor:
+            return False
+        query = "INSERT INTO ticket_messages (ticket_id, sender_id, message) VALUES (%s, %s, %s)"
+        self.cursor.execute(query, (ticket_id, sender_id, message))
+        self.connection.commit()
+        return True
+
+    def get_messages(self, ticket_id):
+        if not self.cursor:
+            return []
+        query = """
+            SELECT userdata.username, ticket_messages.message, DATE_FORMAT(ticket_messages.timestamp, '%d.%m. %H:%i')
+            FROM ticket_messages
+            JOIN userdata ON ticket_messages.sender_id = userdata.id
+            WHERE ticket_messages.ticket_id = %s
+            ORDER BY ticket_messages.timestamp ASC
+        """
+        #Join-> Matcht sender_id aus ticket_messages mit id aus userdata und gibt username zurück
+        self.cursor.execute(query, (ticket_id,))
+        return self.cursor.fetchall()
+
+    #Schreibt id, rank und username in CurrentUserdata
     def fetch_user_data(self, username, password):
         if not self.cursor:
             print("Kein Datenbankzugriff möglich.")
             return []  #leere Liste zurückgeben, damit die Tabelle später nicht crasht
 
         print("Fetching user data...")
-        query = "SELECT id,rank FROM userdata WHERE username = %s AND password = %s"
+        query = "SELECT id, rank, username FROM userdata WHERE username = %s AND password = %s"
         self.cursor.execute(query, (username, password,))
         mysql_data = self.cursor.fetchone()
         CurrentUserdata.id = mysql_data[0]
         CurrentUserdata.rank = mysql_data[1]
+        CurrentUserdata.username = mysql_data[2]
         print(f"current rank of acitve user: {CurrentUserdata.rank}")
         return True
 

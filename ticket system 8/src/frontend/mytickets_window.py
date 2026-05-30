@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView, QHBoxLayout, \
-    QLineEdit, QTabWidget, QLabel, QTabBar, QTextEdit, QMessageBox, QComboBox
-from PyQt6.QtCore import pyqtSignal
+    QLineEdit, QTabWidget, QLabel, QTabBar, QTextEdit, QMessageBox, QComboBox, QTextBrowser
+from PyQt6.QtCore import pyqtSignal, QTimer
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from backend.database import Database
 from backend.universal_data import CurrentUserdata
@@ -52,7 +52,10 @@ class TicketManagerWindow(QWidget):
         self.tabs.setCurrentWidget(tab_edit)  # Wechselt automatisch direkt in den neuen Tab
 
     def close_tab(self, index):
+        widget = self.tabs.widget(index)
         self.tabs.removeTab(index)
+        if widget:
+            widget.deleteLater()
 
 
 class MyTicketsWindow(QWidget):
@@ -226,6 +229,50 @@ class TicketEdit(QWidget):
                         # Hinweis: self.load_table_data() klappt hier nicht, da das TicketEdit-Widget keinen Zugriff auf die Tabellen-Methode hat.
 
             self.delete_button.clicked.connect(delete_ticket_action)
+
+            # Chat section
+            chat_label = QLabel("Chat:")
+            self.chat_display = QTextBrowser()
+            self.chat_display.setFixedHeight(200)
+
+            chat_input_layout = QHBoxLayout()
+            self.chat_input = QLineEdit()
+            self.chat_input.setPlaceholderText("Nachricht eingeben...")
+            self.chat_send_button = QPushButton("Senden")
+            chat_input_layout.addWidget(self.chat_input)
+            chat_input_layout.addWidget(self.chat_send_button)
+
+            layout.addWidget(chat_label)
+            layout.addWidget(self.chat_display)
+            layout.addLayout(chat_input_layout)
+
+            def load_messages():
+                db = Database()
+                messages = db.get_messages(ticket_number)
+                content = ""
+                for username, message, timestamp in messages:
+                    content += f"<b>[{username}]</b> {timestamp} &mdash; {message}<br>"
+                self.chat_display.setHtml(content)
+                self.chat_display.verticalScrollBar().setValue(
+                    self.chat_display.verticalScrollBar().maximum()
+                )
+
+            def send_message():
+                text = self.chat_input.text().strip()
+                if text:
+                    db = Database()
+                    db.send_message(ticket_number, CurrentUserdata.id, text)
+                    self.chat_input.clear()
+                    load_messages()
+
+            self.chat_send_button.clicked.connect(send_message)
+            self.chat_input.returnPressed.connect(send_message)
+
+            self.chat_timer = QTimer(self)
+            self.chat_timer.timeout.connect(load_messages)
+            self.chat_timer.start(5000)
+
+            load_messages()
 
         else:
             QMessageBox.warning(self,"Error", "rank conflict!")
