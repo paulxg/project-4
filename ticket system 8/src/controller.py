@@ -1,11 +1,12 @@
 #todo claim/view (tickets (also abarbeiten))
 #todo zeitbasierte Priorisierung von tickets
-#todo error handling: im Termal oder auch im Programm?
+#todo error handling: im Terminal oder auch im Programm?
 #todo ticket autolöschen nach ticketschließen; alternativ: prio=0
 #todo automatisch Fenster close nach comment (admin)
-#todo User muss Ticket erneut bearbeiten können
 #todo admin braucht Info über user
 #todo finale Problemlösung: Entscheidung durch Kunde (auto close nach 30 Tagen unbeantwortet, bei nein: statussetzen auf open)
+#todo chat erst wenn ticket auf in progress; inkls. Startnachricht
+#todo ticket close: finaler comment in Chat
 
 #todo Fenster schöner machen [Anton ist wieder im Game!]
 #todo passwort hashen mit bcrypt (Paul)
