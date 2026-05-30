@@ -108,14 +108,14 @@ class Database:
         mysql_data = self.cursor.fetchall()
         return mysql_data
 
-    def create_ticket(self, user_id, factor, category, short_description, long_description):
+    def create_ticket(self, user_id, factor, category, short_description, long_description, status):
         if not self.cursor:
             print("Kein Datenbankzugriff möglich.")
             return False
 
         try:
-            query = "INSERT INTO tickets (user_id_ref, factor, category, short_description, long_description) VALUES (%s, %s, %s, %s, %s)"
-            self.cursor.execute(query, (user_id, factor, category, short_description, long_description))
+            query = "INSERT INTO tickets (user_id_ref, factor, category, short_description, long_description, status) VALUES (%s, %s, %s, %s, %s, %s)"
+            self.cursor.execute(query, (user_id, factor, category, short_description, long_description, status))
             self.connection.commit()
             return True
 
