@@ -85,8 +85,8 @@ class MyTicketsWindow(QWidget):
 
     def load_table_data(self, mysql_data):
         model = QStandardItemModel()
-        # Added "status" to the header labels
-        model.setHorizontalHeaderLabels(["ticket number", "time of issuing", "category", "short description", "detailed description", "status"])
+        # Added "status" and "comment" to the header labels
+        model.setHorizontalHeaderLabels(["ticket number", "time of issuing", "category", "short description", "detailed description", "status", "comment"])
         for row in mysql_data:
             items = [QStandardItem(str(field) if field else "") for field in row]
             model.appendRow(items)
@@ -115,9 +115,9 @@ class TicketEdit(QWidget):
         mysql_data = db.ticket_edit_fetch(ticket_number)
         
         #Error handling, falls Datenbank nichts zurückgibt
-        # Added "N/A" for status (index 5)
+        # Added "N/A" for status (index 5) and comment (index 6)
         if not mysql_data:
-            mysql_data = ["", "N/A", "N/A", "N/A", "N/A", "N/A"]
+            mysql_data = ["", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A"]
 
         layout = QVBoxLayout()
         self.setLayout(layout)
