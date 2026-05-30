@@ -8,7 +8,7 @@ class CurrentUserdata:
 class ProgramData:
 
     support_categories = {
-        "Installation or Updates":1,
+        "Installation or Updates":1234,
         "Network or Connection Issues":1,
         "Licenses or Accounts":1,
         "Application Issues":1,

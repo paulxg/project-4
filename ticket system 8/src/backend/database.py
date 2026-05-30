@@ -93,7 +93,7 @@ class Database:
             print("Kein Datenbankzugriff möglich.")
             return []  #leere Liste zurückgeben, damit die Tabelle später nicht crasht
 
-        query = "SELECT ticket_number, date_time, category, short_description, long_description FROM tickets WHERE user_id_ref = %s OR (SELECT rank FROM userdata WHERE id = %s) = 'admin'"
+        query = "SELECT ticket_number, date_time, category, short_description, long_description FROM tickets WHERE user_id_ref = %s OR (SELECT rank FROM userdata WHERE id = %s) = 'admin' ORDER BY factor DESC"
         self.cursor.execute(query, (user_id, user_id))
         mysql_data = self.cursor.fetchall()
         return mysql_data

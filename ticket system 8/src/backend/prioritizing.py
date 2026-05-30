@@ -1,12 +1,10 @@
-from backend.universal_data import CurrentUserdata
+from backend.universal_data import ProgramData
+
 
 class Prioritizing:
     def __init__(self):
-        self.final_factor = None
+        super().__init__()
+        self.prio = None
 
-    def status_calculation(self):
-        if CurrentUserdata.company == "company":
-            self.final_factor = self.factor * 1.1
-
-        else:
-            self.final_factor = self.factor
+    def setprio(self,category):
+        self.prio = ProgramData.support_categories[category]

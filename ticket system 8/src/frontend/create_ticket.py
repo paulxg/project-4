@@ -1,13 +1,13 @@
 from PyQt6.QtWidgets import (QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabel, QComboBox, QFileDialog, QTextEdit,
                              QMessageBox)
 from backend.universal_data import CurrentUserdata, ProgramData
+from backend.prioritizing import Prioritizing
 from PyQt6.QtCore import pyqtSignal
 from backend.database import Database
-from datetime import datetime
+
 
 class CreateTicket(QWidget):
     request_main_window = pyqtSignal()
-
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Create Ticket")
@@ -103,8 +103,6 @@ class CreateTicket(QWidget):
         self.datetime = ""
         self.factor = ""
 
-        self.final_factor = ""
-
 # Update des Character Counters
     def update_character_counter(self):
         text = self.description.toPlainText()
@@ -130,6 +128,11 @@ class CreateTicket(QWidget):
         text_to_single_line = text.replace("\n", " ").replace("\r", "")
         print("text successfully fetched from widgets")
 
+        p = Prioritizing()
+        p.setprio(category)
+        print(f"Deine Ticket Priority ist {p.prio}")
+        self.factor = p.prio
+
         #text length check
         if len(text_to_single_line) > 250:
             #PopUp wenn zu lang und Submitted
@@ -146,7 +149,7 @@ class CreateTicket(QWidget):
             db = Database()
             db.create_ticket(
                 CurrentUserdata.id,
-                self.final_factor,
+                self.factor,
                 category,
                 problem_quick,
                 text_to_single_line
