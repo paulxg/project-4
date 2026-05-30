@@ -2,10 +2,7 @@
 #todo zeitbasierte Priorisierung von tickets
 #todo error handling: im Terminal oder auch im Programm?
 #todo ticket autolöschen nach ticketschließen; alternativ: prio=0
-#todo automatisch Fenster close nach comment (admin)
-#todo admin braucht Info über user
-#todo chat Startnachricht
-#todo ticket close: finaler comment in Chat
+#todo automatisch Fenster close nach comment (admin) WEEEEEEN juckt das
 
 #todo Fenster schöner machen [Anton ist wieder im Game!]
 #todo passwort hashen mit bcrypt (Paul)

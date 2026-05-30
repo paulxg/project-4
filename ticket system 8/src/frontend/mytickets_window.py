@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView, QHBoxLayout, \
-    QLineEdit, QTabWidget, QLabel, QTabBar, QTextEdit, QMessageBox, QComboBox, QTextBrowser
+    QLineEdit, QTabWidget, QLabel, QTabBar, QTextEdit, QMessageBox, QComboBox, QTextBrowser, QInputDialog
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from backend.database import Database
@@ -201,6 +201,18 @@ class TicketEdit(QWidget):
 
     def submit_action(self):
         status = self.status_dropdown.currentText()
+
+        if status == "closed":
+            text, ok = QInputDialog.getText(self, "Final Comment", "Please enter a final comment to close the ticket:")
+            if ok and text.strip(): # Prüfen, ob OK geklickt wurde und der Text nicht leer ist
+                Database().send_message(self.ticket_number, CurrentUserdata.id, text.strip())
+                # Chatfenster direkt updaten, falls es bereits gerendert ist
+                if hasattr(self, 'chat_display'):
+                    self.load_messages()
+            else:
+                QMessageBox.warning(self, "Warning", "A final comment is required to close the ticket.")
+                return # Funktion abbrechen, das Ticket wird noch nicht geschlossen!
+
         if status:
             Database().comment_status(status, "", self.ticket_number)
             QMessageBox.information(self, "Success", "Ticket status updated!")
