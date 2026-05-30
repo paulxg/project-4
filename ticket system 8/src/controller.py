@@ -7,7 +7,6 @@
 #todo error handling: im Termal oder auch im Programm?
 #todo Wie kann der Admin mit dem Kunden in Kontakt treten? (Anstelle von Username vllt email?)
 #todo Status überall einbauen (Lorena)- in create tickets automatisch offen - status angezeigt wird in my tickts
-#todo Status überall einbauen (Lorena)- in create tickets automatisch offen - status angezeigt wird in my tickets
 #todo Filterfunktion (mit order/Group by sql befehl)
 #todo my account view / profil zum ändern von Name etc
 #todo anschauen von rank userinfo etc
@@ -24,21 +23,20 @@
 #todo claim ticket/ bearbeiter definieren
 #todo tickets als pdf csv exportieren
 #todo log, wer hat wann was gelöscht
-#passwort stärlke bei rewgistrtierung
-#todo Datenbankverbindung auto wieder herstellen wen weg ohne restart
-# todo Animierter Übergang zwischen Fenstern (vllt einfach stacked widget)
+#passwort stärlke bei registrtierung
+#todo Datenbankverbindung auto wieder herstellen wenn weg ohne restart
+#todo Animierter Übergang zwischen Fenstern (vllt einfach stacked widget)
 #todo Farbige Kategorie-Badges in der Ticket-Tabelle
 #todo Ticket-Zähler als Badge auf dem „My Tickets"-Button
 #todo Ticket-Dringlichkeit automatisch aus der Beschreibung erkennen (Schlüsselwörter wie „dringend", „funktioniert nicht")
 #todo Dark/Light Mode pro Nutzer gespeichert in der Datenbank
 #todo filter nach insults
 
-from frontend.alltickets_window import AllTicketsWindow
 from frontend.start_window import StartWindow
 from frontend.login_window import LoginWindow
 from frontend.main_window import MainWindow
 from frontend.create_ticket import CreateTicket
-from frontend.mytickets_window import MyTicketsWindow, TicketManagerWindow
+from frontend.mytickets_window import TicketManagerWindow
 from backend.universal_data import CurrentUserdata
 from frontend.registration_window import RegistrationWindow
 
@@ -93,7 +91,6 @@ class Controller:
         self.current_window.create_ticket_signal.connect(self.create_ticket)
         self.current_window.mytickets_signal.connect(self.myticket_window)
         self.current_window.signout_signal.connect(self.show_start_screen)
-        self.current_window.request_alltickets_signal.connect(self.alltickets_window)
 
         self.current_window.show()
 
@@ -111,15 +108,6 @@ class Controller:
 
         print("TicketManager aufrufen")
         self.current_window = TicketManagerWindow()
-
-        self.current_window.request_main_window.connect(self.show_main_window)
-
-        self.current_window.show()
-
-    def alltickets_window(self):
-        self.current_window.close()
-
-        self.current_window = AllTicketsWindow()
 
         self.current_window.request_main_window.connect(self.show_main_window)
 

@@ -140,88 +140,92 @@ class TicketEdit(QWidget):
         long_problem_label = QLabel(f"Describe your problem in detail: {long_prob_val}")
         long_problem_label.setWordWrap(True)
 
-        # Status
-        status_label = QLabel("Status:")
-        self.status_dropdown = QComboBox()
-        self.status_dropdown.addItems(["open", "in progress", "closed"])
-        # Set current status from mysql_data (index 5 for status)
-        if len(mysql_data) > 5 and mysql_data[5] in ["open", "in progress", "closed"]:
-            self.status_dropdown.setCurrentText(mysql_data[5])
-        
-        # Comment
-        comment_label = QLabel("Comment:")
-        self.comment_input = QTextEdit()
-        self.comment_input.setFixedHeight(125)
-        # Assuming comment is at index 6 if it exists, otherwise default to empty
-        if len(mysql_data) > 6 and mysql_data[6]:
-            self.comment_input.setText(str(mysql_data[6]))
-        
         #Adding to Layout
         layout.addWidget(date_issuing_label)
         layout.addWidget(support_category_label)
         layout.addWidget(problem_label)
         layout.addWidget(long_problem_label)
-        layout.addWidget(status_label)
-        layout.addWidget(self.status_dropdown) # Add status dropdown to layout
-        layout.addWidget(comment_label)
-        layout.addWidget(self.comment_input) # Add comment input to layout
 
-        # Submit Button
-        self.submit_button = QPushButton("Submit")
+        if CurrentUserdata.rank == "admin":
+            # Status
+            status_label = QLabel("Status:")
+            self.status_dropdown = QComboBox()
+            self.status_dropdown.addItems(["open", "in progress", "closed"])
+            # Set current status from mysql_data (index 5 for status)
+            if len(mysql_data) > 5 and mysql_data[5] in ["open", "in progress", "closed"]:
+                self.status_dropdown.setCurrentText(mysql_data[5])
 
-        # Layouting des Submit Button
-        self.submit_button.setStyleSheet("""
-                        QPushButton {
-                            background-color: #003B00;      
-                            color: #FFFFFF;
-                        }
-                        QPushButton:hover {
-                            background-color: #004200;      
-                        }
-                        QPushButton:pressed {
-                            background-color: #003B00;      
-                        }
-                        """)
+            # Comment
+            comment_label = QLabel("Comment:")
+            self.comment_input = QTextEdit()
+            self.comment_input.setFixedHeight(125)
+            # Assuming comment is at index 6 if it exists, otherwise default to empty
+            if len(mysql_data) > 6 and mysql_data[6]:
+                self.comment_input.setText(str(mysql_data[6]))
 
-        layout.addWidget(self.submit_button)
+            layout.addWidget(status_label)
+            layout.addWidget(self.status_dropdown) # Add status dropdown to layout
+            layout.addWidget(comment_label)
+            layout.addWidget(self.comment_input) # Add comment input to layout
 
-        # NEU: Button muss zuerst erstellt werden!
-        self.delete_button = QPushButton("Delete")
+            # Submit Button
+            self.submit_button = QPushButton("Submit")
 
-        def submit_action():
-            status = self.status_dropdown.currentText() # Get status from dropdown
-            comment = self.comment_input.toPlainText() # Get comment from QTextEdit
+            # Layouting des Submit Button
+            self.submit_button.setStyleSheet("""
+                            QPushButton {
+                                background-color: #003B00;      
+                                color: #FFFFFF;
+                            }
+                            QPushButton:hover {
+                                background-color: #004200;      
+                            }
+                            QPushButton:pressed {
+                                background-color: #003B00;      
+                            }
+                            """)
+            layout.addWidget(self.submit_button)
 
-            if status or comment: # Only update if a status or comment is provided
-                db = Database()
-                db.comment_status(status, comment, ticket_number)
-                QMessageBox.information(self, "Success", "Ticket status and/or comment updated!")
-            else:
-                QMessageBox.warning(self, "Warning", "No status or comment provided to update.")
-                
-        self.submit_button.clicked.connect(submit_action)
+            def submit_action():
+                status = self.status_dropdown.currentText() # Get status from dropdown
+                comment = self.comment_input.toPlainText() # Get comment from QTextEdit
 
-        def delete_ticket_action():
-            # ticket_number_input.text() gibt es nicht, wir nehmen stattdessen die lokale Variable
-            if ticket_number:  
-                db = Database()
-                print("jetzt delete methode aufrufen")
-                if db.delete_ticket(ticket_number):
-                    print("Ticket gelöscht!")
-                    # Hinweis: self.load_table_data() klappt hier nicht, da das TicketEdit-Widget keinen Zugriff auf die Tabellen-Methode hat.
+                if status or comment: # Only update if a status or comment is provided
+                    db = Database()
+                    db.comment_status(status, comment, ticket_number)
+                    QMessageBox.information(self, "Success", "Ticket status and/or comment updated!")
+                else:
+                    QMessageBox.warning(self, "Warning", "No status or comment provided to update.")
 
-        self.delete_button.clicked.connect(delete_ticket_action)
+            self.submit_button.clicked.connect(submit_action)
 
-        self.delete_button.setStyleSheet("""
-                QPushButton {
-                    background-color: #3B0000;      
-                    color: #FFFFFF;
-                }
-                QPushButton:hover {
-                    background-color: #420000;      
-                }
-                QPushButton:pressed {
-                    background-color: #3B0000;      
-                }
-                """)
-        layout.addWidget(self.delete_button)
+        if CurrentUserdata.rank == "admin" or CurrentUserdata.rank == "user":
+            #Delete Button
+            self.delete_button = QPushButton("Delete")
+            self.delete_button.setStyleSheet("""
+                           QPushButton {
+                               background-color: #3B0000;      
+                               color: #FFFFFF;
+                           }
+                           QPushButton:hover {
+                               background-color: #420000;      
+                           }
+                           QPushButton:pressed {
+                               background-color: #3B0000;      
+                           }
+                           """)
+            layout.addWidget(self.delete_button)
+
+            def delete_ticket_action():
+                # ticket_number_input.text() gibt es nicht, wir nehmen stattdessen die lokale Variable
+                if ticket_number:
+                    db = Database()
+                    print("jetzt delete methode aufrufen")
+                    if db.delete_ticket(ticket_number):
+                        print("Ticket gelöscht!")
+                        # Hinweis: self.load_table_data() klappt hier nicht, da das TicketEdit-Widget keinen Zugriff auf die Tabellen-Methode hat.
+
+            self.delete_button.clicked.connect(delete_ticket_action)
+
+        else:
+            QMessageBox.warning(self,"Error", "rank conflict!")

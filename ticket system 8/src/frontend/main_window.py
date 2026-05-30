@@ -4,7 +4,6 @@ from backend.universal_data import CurrentUserdata
 
 class MainWindow(QWidget):
     create_ticket_signal = pyqtSignal()
-    request_alltickets_signal = pyqtSignal()
     mytickets_signal = pyqtSignal()
     signout_signal = pyqtSignal()
 
