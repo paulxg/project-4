@@ -12,7 +12,7 @@ from frontend.start_window import StartWindow
 from frontend.login_window import LoginWindow
 from frontend.main_window import MainWindow
 from frontend.create_ticket import CreateTicket
-from frontend.mytickets_window import MyTicketsWindow
+from frontend.mytickets_window import MyTicketsWindow, TicketManagerWindow
 from backend.universal_data import CurrentUserdata
 from frontend.registration_window import RegistrationWindow
 
@@ -83,7 +83,8 @@ class Controller:
     def myticket_window(self):
         self.current_window.close()
 
-        self.current_window = MyTicketsWindow()
+        print("TicketManager aufrufen")
+        self.current_window = TicketManagerWindow()
 
         self.current_window.request_main_window.connect(self.show_main_window)
 
