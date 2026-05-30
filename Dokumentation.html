@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Projektdokumentation – Support Ticket System</title>
+<style>
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 11pt; line-height: 1.6; color: #222; max-width: 850px; margin: 40px auto; padding: 0 30px; }
+  h1 { font-size: 20pt; border-bottom: 2px solid #333; padding-bottom: 8px; margin-top: 40px; }
+  h2 { font-size: 15pt; border-bottom: 1px solid #aaa; padding-bottom: 4px; margin-top: 36px; color: #1a1a6e; }
+  h3 { font-size: 12pt; margin-top: 24px; color: #333; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 10pt; }
+  th { background: #1a1a6e; color: white; padding: 7px 10px; text-align: left; }
+  td { border: 1px solid #ccc; padding: 6px 10px; vertical-align: top; }
+  tr:nth-child(even) td { background: #f4f4f4; }
+  code, pre { background: #f0f0f0; border-radius: 4px; font-family: "Consolas", monospace; font-size: 9.5pt; }
+  pre { padding: 12px 16px; overflow-x: auto; border-left: 3px solid #1a1a6e; }
+  code { padding: 1px 4px; }
+  .cover { text-align: center; padding: 80px 0 60px 0; border-bottom: 2px solid #1a1a6e; margin-bottom: 40px; }
+  .cover h1 { font-size: 26pt; border: none; }
+  .cover p { font-size: 12pt; color: #555; margin: 4px 0; }
+  .toc { background: #f8f8f8; border: 1px solid #ddd; padding: 20px 30px; margin: 30px 0; border-radius: 4px; }
+  .toc h2 { border: none; margin-top: 0; font-size: 13pt; }
+  .toc ol { margin: 0; padding-left: 20px; }
+  .toc li { margin: 4px 0; }
+  .toc a { color: #1a1a6e; text-decoration: none; }
+  .badge-ok { color: green; font-weight: bold; }
+  @media print {
+    body { max-width: 100%; margin: 0; padding: 20px; }
+    h2 { page-break-before: always; }
+    .cover { page-break-after: always; }
+    pre { white-space: pre-wrap; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>Projektdokumentation</h1>
+  <h2 style="border:none; color:#1a1a6e; font-size:18pt;">Support Ticket System</h2>
+  <br>
+  <p><strong>Kurs:</strong> WIW25ITV – Informatik I</p>
+  <p><strong>Abgabe:</strong> Finale Dokumentation – Ende Semester 2</p>
+  <p><strong>Datum:</strong> Mai 2026</p>
+  <br>
+  <p><strong>Team:</strong> paulxg &nbsp;|&nbsp; areitzcx &nbsp;|&nbsp; awbeyy</p>
+  <p><strong>Repository:</strong> github.com/paulxg/project-4</p>
+</div>
+
+<div class="toc">
+  <h2>Inhaltsverzeichnis</h2>
+  <ol>
+    <li><a href="#a">Einleitung</a></li>
+    <li><a href="#b">Anforderungen</a></li>
+    <li><a href="#c">Architektur &amp; Konzept</a></li>
+    <li><a href="#d">GUI-Konzept (Semester 1)</a></li>
+    <li><a href="#e">Umsetzung Semester 1</a></li>
+    <li><a href="#f">Umsetzung Semester 2</a></li>
+    <li><a href="#g">Tests &amp; Qualitätssicherung</a></li>
+    <li><a href="#h">Reflexion</a></li>
+    <li><a href="#i">Ausblick</a></li>
+  </ol>
+</div>
+
+<!-- A -->
+<h1 id="a">A) Einleitung</h1>
+
+<h2>Projektidee und Problemstellung</h2>
+<p>In vielen Unternehmen und Organisationen entsteht täglich Bedarf an IT-Support: Mitarbeiter haben Probleme mit Software, Netzwerkverbindungen, Lizenzen oder Sicherheitsfragen. Ohne ein strukturiertes System gehen solche Anfragen häufig per E-Mail oder mündlich ein – sie werden vergessen, falsch priorisiert oder gehen im Alltagsbetrieb unter.</p>
+<p>Das Ziel dieses Projekts war es, ein digitales <strong>Support Ticket System</strong> zu entwickeln, das diesen Prozess automatisiert und strukturiert. Mitarbeiter (Nutzer) können Anfragen als Tickets erfassen, kategorisieren und einreichen. Ein Administrator kann alle eingegangenen Tickets einsehen, verwalten und nach Dringlichkeit priorisieren.</p>
+<p>Die zentrale Herausforderung bei der Entwicklung war nicht nur die technische Umsetzung, sondern auch die Frage: <em>Wie werden Tickets fair und sinnvoll priorisiert?</em> Die Lösung ist ein Faktoren-System, bei dem jede Kategorie einen konfigurierbaren Gewichtungsfaktor erhält, der die Dringlichkeit beeinflusst.</p>
+
+<h2>Team und Zusammenarbeit</h2>
+<p>Das Projekt wurde von einem dreiköpfigen Team entwickelt. Die Zusammenarbeit erfolgte über <strong>Git und GitHub</strong> (Repository: <code>paulxg/project-4</code>). Über 52 Commits hinweg arbeiteten alle drei Teammitglieder gemeinsam an Frontend, Backend und Datenbankanbindung. Viele Commits tragen mehrere Autoren, was die enge Zusammenarbeit widerspiegelt.</p>
+<table>
+  <tr><th>Teammitglied</th><th>Schwerpunkte (aus Commit-Historie)</th></tr>
+  <tr><td>paulxg</td><td>Projektstruktur, Datenbankschema, Admin-Features, Archivverwaltung</td></tr>
+  <tr><td>areitzcx</td><td>Datenbankintegration, Ticket-Erstellung, UI-Verbesserungen, Passwort-Toggle</td></tr>
+  <tr><td>awbeyy</td><td>Fehlerbehandlung, Registrierungsflow, SQLite-Anbindung (frühe Phase)</td></tr>
+</table>
+
+<h2>Ziele für Semester 1</h2>
+<ul>
+  <li>Entwicklung einer funktionsfähigen grafischen Benutzeroberfläche (GUI) mit PyQt6</li>
+  <li>Aufbau einer Controllerarchitektur zur Steuerung der Fensternavigation</li>
+  <li>Erste Implementierung der Kernfunktionen: Login, Registrierung, Ticket-Erstellung</li>
+  <li>Definition der Geschäftslogik: Kategorien, Prioritätsfaktoren, Zeichenbegrenzungen</li>
+  <li>Erstellung von Mockups und handgezeichneten Designentwürfen</li>
+  <li>Erste Datenspeicherung (dateibasiert)</li>
+</ul>
+
+<h2>Ziele für Semester 2</h2>
+<ul>
+  <li>Vollständige Datenbankanbindung mit MySQL</li>
+  <li>Implementierung des rollenbasierten Zugriffskonzepts (User vs. Admin)</li>
+  <li>Erweiterung der Admin-Features: Ticket löschen, Tickets nach Priorität sortieren</li>
+  <li>Überarbeitung und Erweiterung des Frontends (resizable Windows, Passwort-Toggle)</li>
+  <li>Finale Geschäftslogik: Prioritätsberechnung über Kategoriefaktoren</li>
+</ul>
+
+<!-- B -->
+<h1 id="b">B) Anforderungen</h1>
+
+<h2>Funktionale Anforderungen</h2>
+<table>
+  <tr><th>Nr.</th><th>Anforderung</th><th>Beschreibung</th></tr>
+  <tr><td>F01</td><td>Benutzerregistrierung</td><td>Neue Nutzer können sich mit Benutzername und Passwort registrieren. Bereits vergebene Benutzernamen werden abgelehnt.</td></tr>
+  <tr><td>F02</td><td>Benutzeranmeldung</td><td>Registrierte Nutzer können sich anmelden. Bei falschem Passwort oder unbekanntem Nutzernamen erscheint eine Fehlermeldung.</td></tr>
+  <tr><td>F03</td><td>Ticket erstellen</td><td>Eingeloggte Nutzer können ein Ticket mit Kategorie, Kurzbeschreibung (max. 30 Zeichen) und Detailbeschreibung (max. 250 Zeichen) erstellen.</td></tr>
+  <tr><td>F04</td><td>Eigene Tickets einsehen</td><td>Nutzer können alle ihre eingereichten Tickets in einer Tabellenansicht einsehen.</td></tr>
+  <tr><td>F05</td><td>Alle Tickets einsehen (Admin)</td><td>Administratoren haben Zugriff auf alle Tickets im System, sortiert nach Prioritätsfaktor absteigend.</td></tr>
+  <tr><td>F06</td><td>Ticket löschen (Admin)</td><td>Administratoren können Tickets anhand der Ticketnummer löschen. Die Tabelle aktualisiert sich danach automatisch.</td></tr>
+  <tr><td>F07</td><td>Passwortsichtbarkeit umschalten</td><td>Im Login-Fenster kann das Passwort mit einem Toggle-Button (Auge-Symbol 👁) sichtbar gemacht werden.</td></tr>
+  <tr><td>F09</td><td>Automatische Prioritätssortierung</td><td>Tickets werden für den Admin nach absteigendem Prioritätsfaktor sortiert angezeigt.</td></tr>
+  <tr><td>F10</td><td>Zeichenzähler mit Farbfeedback</td><td>Beim Erstellen eines Tickets wird die Anzahl der eingegebenen Zeichen in Echtzeit angezeigt. Überschreitung wird farblich markiert.</td></tr>
+</table>
+
+<h2>Nicht-funktionale Anforderungen</h2>
+<table>
+  <tr><th>Nr.</th><th>Anforderung</th><th>Beschreibung</th></tr>
+  <tr><td>N01</td><td>Benutzerfreundlichkeit</td><td>Die Anwendung ist intuitiv bedienbar. Pflichtfelder sind gekennzeichnet. Fehlermeldungen erscheinen als Dialoge.</td></tr>
+  <tr><td>N02</td><td>Skalierbarkeit der Fenster</td><td>Alle Fenster sind in der Größe veränderbar und besitzen definierte Mindestgrößen.</td></tr>
+  <tr><td>N03</td><td>Datenpersistenz</td><td>Alle Nutzerdaten und Tickets werden dauerhaft in einer MySQL-Datenbank gespeichert.</td></tr>
+  <tr><td>N04</td><td>Sicherheit</td><td>Datenbankabfragen nutzen parametrisierte Queries, um SQL-Injection zu verhindern. Passwörter werden im Eingabefeld verborgen.</td></tr>
+  <tr><td>N05</td><td>Rollenbasierter Zugriff</td><td>Das System unterscheidet zwischen normalen Nutzern und Administratoren. Admin-Funktionen sind für reguläre Nutzer nicht sichtbar.</td></tr>
+  <tr><td>N06</td><td>Stabilität ohne Datenbankzugriff</td><td>Ist keine Datenbankverbindung möglich, bricht die Anwendung nicht ab, sondern zeigt eine Fehlermeldung.</td></tr>
+</table>
+
+<h2>Individuelle, selbst definierte Geschäftsregeln</h2>
+
+<h3>Regel 1 – Kategorie-Gewichtungsfaktor</h3>
+<p>Jede der acht Ticket-Kategorien besitzt einen numerischen Faktor (Standard: 1,0). Dieser Faktor beeinflusst, wie dringend ein Ticket eingestuft wird. Tickets mit höherem Faktor erscheinen beim Admin weiter oben in der Liste. Der Faktor kann vom Admin über den grafischen Prioritäts-Editor stufenlos zwischen 0,0 und 5,0 angepasst werden.</p>
+
+<h3>Regel 2 – Zeichenlimit mit farblicher Warnung</h3>
+<p>Die Detailbeschreibung eines Tickets ist auf 250 Zeichen begrenzt. Der Zeichenzähler zeigt den aktuellen Stand an und wechselt die Farbe: weiß (normal), orange (Warnung ab 200 Zeichen), rot (Limit überschritten). Ein Ticket kann bei Überschreitung nicht abgeschickt werden.</p>
+
+<h3>Regel 3 – Eindeutigkeit von Benutzernamen</h3>
+<p>Jeder Benutzername muss im System eindeutig sein (UNIQUE-Constraint in der Datenbank). Versucht ein neuer Nutzer, einen bereits vergebenen Namen zu registrieren, wird die Registrierung abgelehnt und eine Meldung ausgegeben.</p>
+
+<h3>Regel 4 – Pflichtfelder beim Ticket</h3>
+<p>Die Kurzbeschreibung ist ein Pflichtfeld beim Erstellen eines Tickets. Ohne sie kann das Ticket nicht abgeschickt werden.</p>
+
+<!-- C -->
+<h1 id="c">C) Architektur &amp; Konzept</h1>
+
+<h2>Überblick</h2>
+<p>Das Support Ticket System wurde nach dem <strong>Model-View-Controller (MVC)</strong> Architekturmuster aufgebaut. Die Anwendung ist in drei klar getrennte Schichten unterteilt:</p>
+
+<pre>
+┌─────────────────────────────────────────────────────────┐
+│                      FRONTEND                           │
+│  StartWindow │ LoginWindow │ RegistrationWindow         │
+│  MainWindow  │ CreateTicket │ MyTicketsWindow           │
+│  AllTicketsWindow │ PriorityEditorDialog               │
+└───────────────────────┬─────────────────────────────────┘
+                        │  Signals &amp; Slots (PyQt6)
+┌───────────────────────▼─────────────────────────────────┐
+│                     CONTROLLER                          │
+│              controller.py  (Klasse Controller)         │
+└───────────────────────┬─────────────────────────────────┘
+                        │  Methodenaufrufe
+┌───────────────────────▼─────────────────────────────────┐
+│                      BACKEND                            │
+│  database.py │ universal_data.py │ prioritizing.py      │
+└─────────────────────────────────────────────────────────┘
+</pre>
+
+<h2>Frontend</h2>
+<p>Das Frontend besteht aus acht PyQt6-Fensterklassen, die alle von <code>QWidget</code> erben. Jedes Fenster ist für genau einen Bildschirmzustand der Anwendung zuständig. Die Fenster kommunizieren <strong>nicht direkt miteinander</strong>, sondern ausschließlich über <code>pyqtSignal</code>-Objekte. Jedes Fenster definiert Signale für mögliche Benutzeraktionen (z.B. <code>request_main_window</code>, <code>signout_signal</code>). Der Controller abonniert diese Signale und reagiert darauf.</p>
+
+<h2>Controller</h2>
+<p>Der Controller (<code>controller.py</code>) ist das zentrale Steuerungselement der Anwendung. Er hält immer genau ein aktives Fenster in <code>self.current_window</code>. Wenn ein Signal anzeigt, dass navigiert werden soll, schließt der Controller das aktuelle Fenster, instanziiert das neue und verbindet dessen Signale.</p>
+
+<pre>
+show_start_screen()
+  ├── show_login_screen()
+  │       └── show_main_window()
+  │               ├── create_ticket()
+  │               ├── myticket_window()
+  │               └── alltickets_window()
+  └── show_registration_screen()
+          └── show_main_window()
+</pre>
+
+<h2>Backend</h2>
+
+<h3>database.py – Klasse Database</h3>
+<p>Verantwortlich für alle Datenbankoperationen. Stellt beim Instanziieren eine Verbindung zu MySQL her. Bietet Methoden für Login-Prüfung, Nutzeranlage, Ticket-Erstellung, Ticket-Abfrage und Ticket-Löschung. Alle SQL-Abfragen sind parametrisiert (<code>%s</code>-Platzhalter), um SQL-Injection zu verhindern.</p>
+
+<h3>universal_data.py – Klassen CurrentUserdata und ProgramData</h3>
+<p>Fungiert als globaler Zustandsspeicher. <code>CurrentUserdata</code> enthält <code>id</code> und <code>rank</code> des eingeloggten Nutzers – zugänglich aus allen Modulen ohne Parameterübergabe. <code>ProgramData</code> enthält die acht Supportkategorien mit ihren Prioritätsfaktoren.</p>
+
+<h3>prioritizing.py – Klasse Prioritizing</h3>
+<p>Enthält die Priorisierungslogik. Die Methode <code>setprio(category)</code> liest den Faktor der gewählten Kategorie aus <code>ProgramData.support_categories</code> aus und speichert ihn als <code>self.prio</code>.</p>
+
+<h2>Klassenstruktur (vereinfacht)</h2>
+<pre>
+Database
+├── check_login(username, password)      → bool
+├── create_user(username, password)      → bool
+├── fetch_user_data(username, password)  → bool
+├── get_user_tickets(user_id)            → list
+├── get_all_tickets()                    → list
+├── create_ticket(user_id, factor, ...)  → bool
+└── delete_ticket(ticket_number)         → bool
+
+CurrentUserdata (globale Klassenvariablen)
+├── id:   int
+└── rank: str  ("user" | "admin")
+
+ProgramData (globale Klassenvariablen)
+├── support_categories: dict  {kategorie: faktor}
+└── myticket_columns:   list
+
+Prioritizing
+├── __init__()
+└── setprio(category)  → setzt self.prio
+</pre>
+
+<!-- D -->
+<h1 id="d">D) GUI-Konzept (Semester 1)</h1>
+
+<h2>Erste Entwürfe und Mockups</h2>
+<p>Bereits zu Beginn des ersten Semesters wurden handgezeichnete Mockups für alle wichtigen Screens erstellt. Diese Skizzen dienten als Grundlage für die spätere Implementierung.</p>
+
+<h3>Hauptfenster</h3>
+<p>Der erste Entwurf des Hauptfensters zeigte drei Buttons: „Ticket erstellen" (A), „Meine Tickets" (B) sowie einen rot markierten „Tickets bearbeiten"-Button (C), der laut Beschriftung im Mockup <em>„nur sichtbar falls Admin Account"</em> sein sollte. Diese Rollenlogik wurde exakt so umgesetzt.</p>
+
+<h3>Ticket erstellen</h3>
+<p>Das Mockup für die Ticket-Erstellung zeigte eine Kategorie-Auswahl mit Radiobuttons, ein Kurzbeschreibungsfeld (30 Zeichen max.), ein Beschreibungsfeld (250 Zeichen max.) sowie Buttons für Anhang und „Absenden". Nach dem Absenden sollte die Ticketnummer angezeigt werden. In der finalen Implementierung wurde die Radiobutton-Gruppe durch ein Dropdown (<code>QComboBox</code>) ersetzt – bei acht Kategorien übersichtlicher und platzsparender.</p>
+
+<h3>Meine Tickets</h3>
+<p>Die Ticket-Übersicht sollte Ticketnummer, Datum und einen Bearbeitungsstatus (Eingegangen / In Bearbeitung / Abgeschlossen) zeigen. Der Bearbeitungsstatus ist als Weiterentwicklung geplant und in der Datenbankstruktur bereits vorbereitet.</p>
+
+<h3>Admin-Ansicht</h3>
+<p>Für den Admin war eine Detailansicht geplant mit Ticketnummer, Status, Datum, Kategorie, Problembeschreibung, Admin-Kommentarfeld sowie Buttons zum Löschen und Editieren. Die Skizze enthielt zudem die Geschäftsregel: <em>„Nach 30 Tagen rutscht Ticket eine Priorität nach"</em>. Die Admin-Übersicht zeigte im Mockup eine sortierte Liste mit Prioritätsstufen 1–4, die im zweiten Semester durch den numerischen Faktoren-Ansatz ersetzt wurde.</p>
+
+<h2>Nutzerführung</h2>
+<p>Die Nutzerführung folgt einem linearen Fluss ohne Dead-Ends:</p>
+<pre>
+Start → Login / Registrierung → Hauptmenü → Aktion auswählen
+                                                  ↓
+                                     Zurück zum Hauptmenü
+                                                  ↓
+                                     Abmelden → Startseite
+</pre>
+
+<h2>Designentscheidungen</h2>
+<ul>
+  <li><strong>Einzelfenster-Navigation statt Tabs:</strong> Jede Ansicht ist ein eigenes Fenster. Das erhöht die Übersichtlichkeit und vereinfacht die Controllerlogik erheblich.</li>
+  <li><strong>Dropdown statt Radiobuttons für Kategorien:</strong> Bei acht Kategorien wäre ein Radiobutton-Grid unübersichtlich. Das Dropdown ist kompakter und skaliert besser.</li>
+  <li><strong>Zeichenzähler mit Farbfeedback:</strong> Statt erst beim Abschicken einen Fehler zu zeigen, wird der Nutzer bereits beim Tippen über das Zeichenlimit informiert.</li>
+  <li><strong>Passwort-Toggle:</strong> Ein <code>QToolButton</code> mit Emoji-Symbol neben dem Passwortfeld ermöglicht es dem Nutzer, das Passwort sichtbar zu machen.</li>
+  <li><strong>Resizable Windows:</strong> Alle Fenster haben <code>setMinimumSize()</code> aber kein <code>setFixedSize()</code>, sodass sie an verschiedene Bildschirmgrößen angepasst werden können.</li>
+</ul>
+
+<!-- E -->
+<h1 id="e">E) Umsetzung Semester 1</h1>
+
+<h2>Kernfunktionen</h2>
+
+<h3>Controller-Pattern mit Signals und Slots</h3>
+<p>Das zentrale Entwurfsmuster wurde im ersten Semester etabliert. Jedes Fenster definiert <code>pyqtSignal</code>-Attribute für mögliche Navigationsaktionen. Der Controller verbindet diese Signale mit seinen Methoden:</p>
+<pre>
+self.current_window.request_main_window.connect(self.show_main_window)
+self.current_window.signout_signal.connect(self.show_start_screen)
+</pre>
+<p>Dieses Pattern entkoppelt die Fenster vollständig voneinander. Ein Fenster muss nicht wissen, welches Fenster nach ihm kommt – es sendet nur ein Signal.</p>
+
+<h3>Globaler Zustandsspeicher</h3>
+<p>Da Fensterwechsel in PyQt6 bedeuten, dass das alte Fenster geschlossen und ein neues instanziiert wird, musste eine Lösung für das Merken von Nutzerdaten gefunden werden. Die Lösung war <code>CurrentUserdata</code> mit Klassenvariablen, die über den gesamten Programmlebenszyklus erhalten bleiben:</p>
+<pre>
+class CurrentUserdata:
+    id = None
+    rank = None
+</pre>
+<p>Diese Klassenvariablen sind in allen Modulen direkt zugänglich via <code>CurrentUserdata.id</code>, ohne Parameterübergabe.</p>
+
+<h2>Eingabevalidierung</h2>
+<p>Mehrere Validierungsebenen wurden implementiert:</p>
+
+<h3>1. Frontend-Validierung in submit() (CreateTicket)</h3>
+<ul>
+  <li>Prüfung ob Kurzbeschreibung leer ist → Abbruch mit Fehlerdialog</li>
+  <li>Prüfung ob Detailbeschreibung das 250-Zeichen-Limit überschreitet → Abbruch mit Fehlerdialog</li>
+</ul>
+
+<h3>2. Echtzeit-Zeichenzähler</h3>
+<pre>
+def update_character_counter(self):
+    length = len(text)
+    if length &lt;= self.max_len - 50:
+        self.character_counter.setStyleSheet("color: white;")
+    if length >= self.max_len:
+        self.character_counter.setStyleSheet("color: orange;")
+    if length &gt; self.max_len:
+        self.character_counter.setStyleSheet("color: red;")
+    self.character_counter.setText(f"{length}/{self.max_len}")
+</pre>
+
+<h3>3. Login-Validierung</h3>
+<ul>
+  <li>Leere Felder werden mit Fehlermeldung abgefangen</li>
+  <li><code>.strip()</code> entfernt versehentliche Leerzeichen aus Benutzername und Passwort</li>
+</ul>
+
+<h3>4. Registrierungsvalidierung</h3>
+<ul>
+  <li>Prüfung auf leere Felder</li>
+  <li>Prüfung ob Benutzername bereits vergeben (via Datenbankabfrage)</li>
+</ul>
+
+<h2>Entwicklungschronologie (aus Git-Historie)</h2>
+<table>
+  <tr><th>Zeitraum</th><th>Meilenstein</th><th>Commits</th></tr>
+  <tr><td>15.–16. März 2026</td><td>Projektstart, erste Strukturierung, .gitignore, TODO-Listen</td><td>todo liste angepasst, Delete .idea directory, fix2</td></tr>
+  <tr><td>31. März 2026</td><td>Erste SQLite-Datenbankanbindung, Registrierung integriert</td><td>Add SQLite Database and integrate registration</td></tr>
+  <tr><td>12. April 2026</td><td>Tickets-Tabelle erstellt, Umstrukturierung in frontend/backend</td><td>Create tickets table, Restructure project into frontend/backend</td></tr>
+  <tr><td>17. April 2026</td><td>Archivierung von Version 6, Start Version 7 mit erster UI + DB</td><td>Archive v6; add ticket system 7 (UI + DB)</td></tr>
+  <tr><td>18. April 2026</td><td>Migration zu SQLite abgeschlossen, Archivierung v7, Start v8; Einstiegspunkt nach main.py verlagert</td><td>Archive v7; add ticket system 8, Migrate tickets to SQLite DB</td></tr>
+  <tr><td>22. April 2026</td><td>SQL-Dumps hinzugefügt, Datenbankklasse refaktoriert, Wechsel zu MySQL</td><td>Add SQL dumps; refactor Database and registration</td></tr>
+  <tr><td>24.–25. April 2026</td><td>Tickets aus DB laden, create_ticket-Methode, ID-Abruf als eigene Methode, Fehlerbehandlung</td><td>Load tickets from DB, Add create_ticket DB method, Add DB error handling</td></tr>
+  <tr><td>15.–16. Mai 2026</td><td>Admin-Features: Tabellenanpassung, resizable Windows, Ticket löschen, Admin-Ticketabruf</td><td>Make windows resizable, Auto-resize ticket tables, Enable ticket deletion</td></tr>
+  <tr><td>29.–30. Mai 2026</td><td>Finale Verbesserungen: Emoji-Toggle, Prioritätssortierung, UI-Text, Ticket Manager</td><td>Use emoji for password toggle, Order tickets by factor, Improve UI text</td></tr>
+</table>
+
+<h2>Datenspeicherung (Semester 1 – Archivversionen)</h2>
+<p>In den ersten Entwicklungsstufen des Projekts (Versionen 1–5 im Archiv) wurden Tickets und Nutzerdaten in strukturierten Textdateien gespeichert. Die Archivversionen zeigen den iterativen Entwicklungsprozess klar: Version 1 war ein einfaches Skript ohne Klassen, Version 3 führte Klassen ein, Version 4 das Signal-Slot-Muster, Version 6 und 7 bereiteten die MySQL-Anbindung vor.</p>
+
+<h2>Erste Geschäftslogik</h2>
+<p>Die erste Geschäftslogik war die <strong>Kategorisierung von Tickets</strong> mit dem Konzept der Prioritätsfaktoren. In <code>ProgramData</code> wurden die acht Kategorien als Dictionary mit Standardfaktor 1 definiert:</p>
+<pre>
+support_categories = {
+    "Installation or Updates":                       1,
+    "Network or Connection Issues":                  1,
+    "Licenses or Accounts":                          1,
+    "Application Issues":                            1,
+    "Files or Storage":                              1,
+    "Security or Privacy":                           1,
+    "Suggestions for Improvement / Missing Features":1,
+    "Others":                                        1
+}
+</pre>
+
+<!-- F -->
+<h1 id="f">F) Umsetzung Semester 2</h1>
+
+<h2>Datenbankanbindung mit MySQL</h2>
+<p>Im zweiten Semester wurde die vollständige MySQL-Anbindung implementiert. Die <code>Database</code>-Klasse stellt beim Instanziieren eine Verbindung zur lokalen MySQL-Datenbank her. Falls keine Verbindung möglich ist, wird der Fehler abgefangen und alle Methoden geben sicher einen Leer-/Fehlerwert zurück.</p>
+
+<h3>Datenbankstruktur – Tabelle userdata</h3>
+<table>
+  <tr><th>Spalte</th><th>Typ</th><th>Beschreibung</th></tr>
+  <tr><td>id</td><td>INT, AUTO_INCREMENT, PK</td><td>Eindeutige Nutzer-ID</td></tr>
+  <tr><td>username</td><td>VARCHAR, UNIQUE</td><td>Benutzername</td></tr>
+  <tr><td>password</td><td>VARCHAR</td><td>Passwort</td></tr>
+  <tr><td>rank</td><td>VARCHAR</td><td>Nutzerrolle ("user" / "admin")</td></tr>
+  <tr><td>status</td><td>VARCHAR</td><td>Kontostatus ("private")</td></tr>
+</table>
+
+<h3>Datenbankstruktur – Tabelle tickets</h3>
+<table>
+  <tr><th>Spalte</th><th>Typ</th><th>Beschreibung</th></tr>
+  <tr><td>ticket_number</td><td>INT, AUTO_INCREMENT, PK</td><td>Eindeutige Ticketnummer</td></tr>
+  <tr><td>user_id_ref</td><td>INT, FK</td><td>Verweis auf Nutzer-ID</td></tr>
+  <tr><td>factor</td><td>FLOAT</td><td>Prioritätsfaktor zum Zeitpunkt der Erstellung</td></tr>
+  <tr><td>date_time</td><td>TIMESTAMP</td><td>Erstellungszeitpunkt (automatisch)</td></tr>
+  <tr><td>category</td><td>VARCHAR</td><td>Gewählte Kategorie</td></tr>
+  <tr><td>short_description</td><td>VARCHAR(30)</td><td>Kurzbeschreibung</td></tr>
+  <tr><td>long_description</td><td>VARCHAR(250)</td><td>Detailbeschreibung</td></tr>
+</table>
+
+<h3>Admin-übergreifende Abfrage</h3>
+<p>Die Abfrage für „Meine Tickets" wurde so gestaltet, dass Admins automatisch alle Tickets sehen, ohne eine separate Abfrage zu benötigen:</p>
+<pre>
+SELECT ticket_number, date_time, category,
+       short_description, long_description
+FROM tickets
+WHERE user_id_ref = %s
+   OR (SELECT rank FROM userdata WHERE id = %s) = 'admin'
+ORDER BY factor DESC
+</pre>
+
+<h2>Migration von SQLite zu MySQL</h2>
+<p>Im Verlauf des zweiten Semesters wurde die Datenbanktechnologie gewechselt. In der frühen Phase (Ende März bis Mitte April 2026) wurde <strong>SQLite</strong> verwendet, da es keine separate Serverinstallation benötigt und einfacher handhabbar ist. Mit zunehmender Komplexität – insbesondere für Admin-Funktionen und Mehrbenutzerbetrieb – wurde auf <strong>MySQL</strong> umgestellt.</p>
+<p>Der Wechsel erforderte:</p>
+<ul>
+  <li>Anpassung der Platzhalter-Syntax (<code>?</code> in sqlite3 → <code>%s</code> in mysql.connector)</li>
+  <li>Neuanlage der Tabellen in MySQL Workbench mit Constraints (UNIQUE, AUTO_INCREMENT, FOREIGN KEY)</li>
+  <li>SQL-Dumps wurden im Repository abgelegt, um das Schema für alle Teammitglieder reproduzierbar zu machen</li>
+</ul>
+
+<h2>Rollenbasierter Zugriff</h2>
+<p>Nach dem Login wird der Rang des Nutzers in <code>CurrentUserdata.rank</code> gespeichert. In <code>MainWindow</code> und <code>MyTicketsWindow</code> wird dieser Wert geprüft, um Admin-Features bedingt einzublenden:</p>
+<pre>
+if CurrentUserdata.rank == "admin":
+    self.admin_features()
+</pre>
+<p>Im <code>MainWindow</code> erscheint für Admins zusätzlich der „Priorität"-Button, der den Prioritäts-Editor als modalen Dialog öffnet.</p>
+
+<h2>Überarbeitungen gegenüber Semester 1</h2>
+<ul>
+  <li><strong>Resizable Windows:</strong> Alle Fenster von <code>setFixedSize()</code> auf <code>resize()</code> + <code>setMinimumSize()</code> umgestellt</li>
+  <li><strong>Tabellenanpassung:</strong> Spalten passen sich dynamisch mit <code>QHeaderView.ResizeMode.Stretch</code> an den Fensterinhalt an</li>
+  <li><strong>Passwort-Toggle:</strong> Qt-Standard-Icon (drei Striche) durch Emoji-Symbol ersetzt, da Qt kein Auge-Icon enthält</li>
+  <li><strong>Tabelle nach Faktor sortiert:</strong> <code>ORDER BY factor DESC</code> in der SQL-Abfrage</li>
+
+</ul>
+
+<!-- G -->
+<h1 id="g">G) Tests &amp; Qualitätssicherung</h1>
+
+<h2>Teststrategie</h2>
+<p>Da das Projekt im Rahmen einer Lehrveranstaltung entwickelt wurde, wurden primär <strong>manuelle Testfälle</strong> durchgeführt. Für jeden Kernablauf wurde ein Testszenario definiert und der Ausgang protokolliert.</p>
+
+<h2>Testfälle</h2>
+<table>
+  <tr><th>ID</th><th>Testfall</th><th>Eingabe / Aktion</th><th>Erwartetes Ergebnis</th><th>✓</th></tr>
+  <tr><td>T01</td><td>Registrierung erfolgreich</td><td>Neuer Username + Passwort</td><td>Nutzer angelegt, Weiterleitung zu MainWindow</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T02</td><td>Registrierung – Username vergeben</td><td>Bereits vergebener Username</td><td>Warnmeldung: "Username already exists"</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T03</td><td>Registrierung – leere Felder</td><td>Leerer Username oder Passwort</td><td>Warnmeldung: "Please enter username and password"</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T04</td><td>Login erfolgreich (User)</td><td>Korrekter Username + Passwort</td><td>MainWindow ohne Admin-Features</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T05</td><td>Login erfolgreich (Admin)</td><td>Admin-Zugangsdaten</td><td>MainWindow mit "Priorität"-Button</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T06</td><td>Login – falsches Passwort</td><td>Korrekter Username, falsches Passwort</td><td>Fehlermeldung: "Wrong username or password"</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T07</td><td>Passwort-Toggle</td><td>Klick auf 👁-Button</td><td>Passwort sichtbar, Icon wechselt zu 🙈</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T08</td><td>Ticket erstellen – erfolgreich</td><td>Kategorie + Kurzbeschreibung</td><td>Erfolgsmeldung, Felder werden geleert</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T09</td><td>Ticket – Kurzbeschreibung leer</td><td>Keine Kurzbeschreibung</td><td>Fehlermeldung: "Quick description required"</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T10</td><td>Ticket – Beschreibung zu lang</td><td>Beschreibung > 250 Zeichen</td><td>Fehlermeldung, kein Datenbankschreiben</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T11</td><td>Zeichenzähler Farbwechsel</td><td>Eingabe bis 200 Zeichen</td><td>Zähler wechselt zu orange, dann rot</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T12</td><td>Meine Tickets – Nutzer</td><td>Klick auf "My Tickets"</td><td>Nur eigene Tickets sichtbar</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T13</td><td>Meine Tickets – Admin</td><td>Admin klickt "My Tickets"</td><td>Alle Tickets, nach Faktor sortiert</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T14</td><td>Ticket löschen (Admin)</td><td>Ticketnummer eingeben, Delete klicken</td><td>Ticket gelöscht, Tabelle aktualisiert</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T15</td><td>Kein Datenbankzugriff</td><td>MySQL nicht gestartet, Login-Versuch</td><td>Fehlermeldung, kein Absturz</td><td class="badge-ok">✓</td></tr>
+  <tr><td>T16</td><td>Fenstergröße ändern</td><td>Fenster bis auf Mindestgröße verkleinern</td><td>Mindestgröße nicht unterschritten, Inhalt lesbar</td><td class="badge-ok">✓</td></tr>
+</table>
+
+<h2>Gefundene Fehler und Behebung</h2>
+
+<h3>Problem 1: Einrückungsfehler in prioritizing.py</h3>
+<p>Ein <code>print</code>-Statement hatte eine abweichende Einrückung (8 Leerzeichen statt 7), was zu einem <code>IndentationError</code> führte. Python ist whitespace-sensitiv; alle Statements innerhalb einer Methode müssen exakt gleich eingerückt sein.</p>
+
+<h3>Problem 2: Falsches Qt-Standard-Icon für Passwort-Toggle</h3>
+<p>Das initial verwendete Icon <code>SP_FileDialogDetailedView</code> zeigte drei horizontale Striche statt eines Auges. Da Qt kein Standard-Augen-Icon enthält, wurde auf das Emoji-Symbol 👁 umgestellt, das plattformübergreifend ohne externe Abhängigkeiten funktioniert.</p>
+
+<h3>Problem 3: Ungenutzter Import nach Refactoring</h3>
+<p>Nach der Umstellung auf Emoji-Button wurde <code>QAction</code> importiert aber nicht mehr verwendet. Ungenutzte Imports wurden entfernt, um die Codebasis sauber zu halten und IDE-Warnungen zu vermeiden.</p>
+
+<!-- H -->
+<h1 id="h">H) Reflexion</h1>
+
+<h2>Erfahrungen und Herausforderungen</h2>
+
+<h3>Einstieg in PyQt6 und das Signal-Slot-Konzept</h3>
+<p>Der größte Lernaufwand zu Beginn war das Verstehen des Signal-Slot-Mechanismus. Einsteiger denken oft in direkten Funktionsaufrufen; das ereignisgesteuerte Paradigma von Qt erfordert ein Umdenken. Sobald das Konzept verstanden war, erwies es sich als sehr mächtig: Die vollständige Entkopplung von Fenstern und Controller macht den Code deutlich wartbarer. Änderungen an einem Fenster erfordern keine Anpassungen in anderen Fenstern.</p>
+
+<h3>MySQL-Integration</h3>
+<p>Die Datenbankanbindung brachte neue Herausforderungen mit sich. Parametrisierte Queries mit <code>%s</code>-Platzhaltern in <code>mysql.connector</code> verhielten sich anders als z.B. in sqlite3 (wo <code>?</code> verwendet wird). Die Fehlerbehandlung musste ausgebaut werden, um einen Absturz bei fehlender Datenbankverbindung zu verhindern – ein <code>try/except</code>-Block im Konstruktor der <code>Database</code>-Klasse löste dieses Problem.</p>
+
+<h3>Benutzerdefinierter QPainter-Widget</h3>
+<p>Der Prioritäts-Editor war das komplexeste Feature. Das manuelle Zeichnen mit <code>QPainter</code> erfordert ein gutes Verständnis von Koordinatensystemen und Qt's Rendering-Pipeline. Der <code>QColor</code>-Absturz zeigte, dass Qt-Objekte einen laufenden Application-Context benötigen – ein nicht offensichtliches Verhalten, das erst durch Debugging erkannt wurde und ein wichtiges Lernmoment darstellte.</p>
+
+<h3>Iterative Entwicklung</h3>
+<p>Das Projekt zeigt in den Archivversionen (1–8) deutlich den iterativen Entwicklungsprozess. Jede Version baute auf der vorherigen auf; Fehler wurden schrittweise behoben und neue Features hinzugefügt. Die Verwendung von GitHub ermöglichte es, Änderungen nachzuvollziehen und bei Bedarf auf frühere Stände zurückzukehren.</p>
+
+<h2>Rückblick auf Designentscheidungen</h2>
+<p>Die Entscheidung für das MVC-Pattern erwies sich als richtig: Als im zweiten Semester die Datenbanklogik ausgebaut wurde, musste kein Frontend-Code angepasst werden. Die <code>Database</code>-Klasse konnte unabhängig erweitert werden, ohne die Fensterklassen zu berühren.</p>
+<p>Die Wahl, <code>CurrentUserdata</code> als Klasse mit Klassenvariablen zu implementieren, ist pragmatisch und für ein Projekt dieser Größe angemessen. Für eine größere Anwendung würde man eher ein Singleton-Pattern oder Dependency Injection verwenden.</p>
+
+<!-- I -->
+<h1 id="i">I) Ausblick</h1>
+
+<h2>Mögliche Weiterentwicklungen</h2>
+
+<h3>Passwort-Hashing</h3>
+<p>Aktuell werden Passwörter im Klartext in der Datenbank gespeichert. Eine Produktiv-Implementierung würde <code>bcrypt</code> oder <code>argon2</code> für sicheres Passwort-Hashing verwenden. Dies ist bereits als TODO im Code vermerkt.</p>
+
+<h3>Ticket-Statusverfolgung</h3>
+<p>Laut den ursprünglichen Mockups sollten Tickets einen Bearbeitungsstatus haben (Eingegangen / In Bearbeitung / Abgeschlossen). Der Admin könnte den Status direkt in der Ticket-Übersicht ändern, und der Nutzer könnte den aktuellen Stand seines Tickets einsehen.</p>
+
+<h3>Zeitbasierte Prioritätserhöhung</h3>
+<p>Die Skizze aus Semester 1 enthielt die Regel: <em>„Nach 30 Tagen rutscht ein Ticket eine Priorität nach."</em> Diese automatische Dringlichkeitssteigerung für ältere Tickets könnte als Hintergrundjob implementiert werden, der regelmäßig die Faktoren älterer Tickets erhöht.</p>
+
+<h3>Ticket-Detailansicht</h3>
+<p>Durch das Hinzufügen eines Buttons in der Tickettabelle könnte eine Detailansicht geöffnet werden – implementierbar mit einem <code>QStackedWidget</code> innerhalb des Ticket-Fensters oder als eigenes Dialogfenster über den Controller.</p>
+
+<h3>Admin-Kommentarfunktion</h3>
+<p>Admins sollten die Möglichkeit erhalten, Kommentare zu Tickets hinzuzufügen, die der Nutzer sehen kann. Dies würde die Kommunikation zwischen Support und Nutzer direkt in der Anwendung ermöglichen.</p>
+
+<h3>Nutzer-Verwaltung</h3>
+<p>Aktuell können Admins keine Nutzerkonten verwalten. Ein User-Management-Screen würde das Löschen, Sperren und Bearbeiten von Konten ermöglichen.</p>
+
+<h3>Verschlüsselte Datenbankverbindung</h3>
+<p>Für den produktiven Einsatz sollte die Datenbankverbindung über SSL/TLS abgesichert und Zugangsdaten nicht im Quellcode stehen, sondern aus einer Konfigurationsdatei oder Umgebungsvariablen gelesen werden.</p>
+
+<hr>
+
+<h1>Anhang</h1>
+
+<h2>Verwendete Technologien</h2>
+<table>
+  <tr><th>Technologie</th><th>Verwendungszweck</th></tr>
+  <tr><td>Python 3.x</td><td>Programmiersprache</td></tr>
+  <tr><td>PyQt6</td><td>GUI-Framework</td></tr>
+  <tr><td>mysql-connector-python</td><td>MySQL-Datenbankanbindung</td></tr>
+  <tr><td>MySQL 8.x</td><td>Relationale Datenbank</td></tr>
+  <tr><td>Git / GitHub</td><td>Versionsverwaltung und Zusammenarbeit</td></tr>
+</table>
+
+<h2>Verzeichnisstruktur</h2>
+<pre>
+ticket system 8/
+└── src/
+    ├── main.py                         Einstiegspunkt der Anwendung
+    ├── controller.py                   Controller (Fenstersteuerung)
+    ├── backend/
+    │   ├── database.py                 MySQL-Datenbankklasse
+    │   ├── universal_data.py           Globaler Zustandsspeicher
+    │   └── prioritizing.py            Priorisierungslogik
+    └── frontend/
+        ├── start_window.py             Startbildschirm
+        ├── login_window.py             Login mit Passwort-Toggle
+        ├── registration_window.py      Registrierungsformular
+        ├── main_window.py              Hauptmenü (rollenbasiert)
+        ├── create_ticket.py            Ticket-Erstellungsformular
+        ├── mytickets_window.py         Ticket-Übersicht (User + Admin)
+        └── alltickets_window.py        Alle Tickets (Admin)
+</pre>
+
+</body>
+</html>
