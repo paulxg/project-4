@@ -11,7 +11,7 @@ class TicketManagerWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Ticket Manager")
-        self.resize(950, 600)
+        self.resize(1000, 600)
         self.setMinimumSize(600, 400)
         print("Fenster Size definiert")
 
@@ -86,7 +86,7 @@ class MyTicketsWindow(QWidget):
     def load_table_data(self, mysql_data):
         model = QStandardItemModel()
         # Added "status" and "comment" to the header labels
-        model.setHorizontalHeaderLabels(["ticket number", "time of issuing", "category", "short description", "detailed description", "status", "comment"])
+        model.setHorizontalHeaderLabels(["ticket number", "time of issuing", "category", "short description", "detailed description", "status", "comment", "responsible admin id"])
         for row in mysql_data:
             items = [QStandardItem(str(field) if field else "") for field in row]
             model.appendRow(items)

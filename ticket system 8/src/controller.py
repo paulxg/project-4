@@ -1,7 +1,11 @@
 #todo claim/view (tickets (also abarbeiten))
 #todo zeitbasierte Priorisierung von tickets
-#todo error handling: im Terminal oder auch im Programm?
+#todo error handling: im Termal oder auch im Programm?
 #todo ticket autolöschen nach ticketschließen; alternativ: prio=0
+#todo automatisch Fenster close nach comment (admin)
+#todo User muss Ticket erneut bearbeiten können
+#todo admin braucht Info über user
+#todo finale Problemlösung: Entscheidung durch Kunde (auto close nach 30 Tagen unbeantwortet, bei nein: statussetzen auf open)
 
 #todo Fenster schöner machen [Anton ist wieder im Game!]
 #todo passwort hashen mit bcrypt (Paul)
@@ -13,7 +17,7 @@
 #todo created tickets resolved tickets open tickets (count)
 #todo Suchfeld in Ticket Tabelle zum Suchen nach stichwörtern
 #todo passwort ändern im Profil
-#todo admin dashboard (wv tickets sinbd offen/ in bearbeitung pro kategorie etc)
+#todo admin dashboard ( wv tickets sinbd offen/ in bearbeitung pro kategorie etc)
 #fehlerlog?
 #todo ticket nur bearbeiten/zurückziewhen wenn auch offen
 #todo alte tickets im log?
@@ -29,6 +33,7 @@
 #todo Ticket-Dringlichkeit automatisch aus der Beschreibung erkennen (Schlüsselwörter wie „dringend", „funktioniert nicht")
 #todo Dark/Light Mode pro Nutzer gespeichert in der Datenbank
 #todo filter nach insults
+#todo user notification bei Ticket Bearbeitung
 
 from frontend.start_window import StartWindow
 from frontend.login_window import LoginWindow

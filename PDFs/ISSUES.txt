@@ -2,7 +2,7 @@ Ticketsystem für Unternehmen, das Software vertreibt:
 
 Benötigte Daten vom Kunden:
 
-Aufbau/Unterteilung des Tickets
+Aufbau/Unterteilung des Tickets:
 1.Unterscheidung 
 	a.Privatperson
 	b.Unternehmen

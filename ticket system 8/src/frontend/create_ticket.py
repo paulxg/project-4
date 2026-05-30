@@ -123,7 +123,6 @@ class CreateTicket(QWidget):
         print("submit started")
         category = self.dropdown.currentText()
         problem_quick = self.problem.text()
-        #self.datetime = datetime.now().strftime("%d/%m/%Y")
         text = self.description.toPlainText()
         text_to_single_line = text.replace("\n", " ").replace("\r", "")
         print("text successfully fetched from widgets")
