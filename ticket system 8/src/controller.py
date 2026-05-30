@@ -1,21 +1,19 @@
 #todo claim/view (tickets (also abarbeiten))
-#todo Priorisierung von tickets
-#todo status von tickets in Bearbeitung
-#todo Fenster schöner machen [Anton ist ragequitet] Lorena wirds versuchen
+#todo zeitbasierte Priorisierung von tickets
+#todo error handling: im Termal oder auch im Programm?
+#todo ticket autolöschen nach ticketschließen; alternativ: prio=0
+
+#todo Fenster schöner machen [Anton ist wieder im Game!]
 #todo passwort hashen mit bcrypt (Paul)
 #todo user löschen/bearbeiten etc.
-#todo error handling: im Termal oder auch im Programm?
 #todo Wie kann der Admin mit dem Kunden in Kontakt treten? (Anstelle von Username vllt email?)
-#todo Status überall einbauen (Lorena)- in create tickets automatisch offen - status angezeigt wird in my tickts
 #todo Filterfunktion (mit order/Group by sql befehl)
 #todo my account view / profil zum ändern von Name etc
 #todo anschauen von rank userinfo etc
 #todo created tickets resolved tickets open tickets (count)
-#todo ticket status in my tisckets
 #todo Suchfeld in Ticket Tabelle zum Suchen nach stichwörtern
 #todo passwort ändern im Profil
 #todo admin dashboard ( wv tickets sinbd offen/ in bearbeitung pro kategorie etc)
-#todo Zeitbasierte prio länger erstellt wichtiger
 #fehlerlog?
 #todo ticket nur bearbeiten/zurückziewhen wenn auch offen
 #todo alte tickets im log?
@@ -23,7 +21,7 @@
 #todo claim ticket/ bearbeiter definieren
 #todo tickets als pdf csv exportieren
 #todo log, wer hat wann was gelöscht
-#passwort stärlke bei registrtierung
+#passwort stärke bei registrtierung
 #todo Datenbankverbindung auto wieder herstellen wenn weg ohne restart
 #todo Animierter Übergang zwischen Fenstern (vllt einfach stacked widget)
 #todo Farbige Kategorie-Badges in der Ticket-Tabelle
