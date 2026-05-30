@@ -1,6 +1,6 @@
 #todo claim/view (tickets (also abarbeiten))
 #todo zeitbasierte Priorisierung von tickets
-#todo error handling: im Termal oder auch im Programm?
+#todo error handling: im Terminal oder auch im Programm?
 #todo ticket autolöschen nach ticketschließen; alternativ: prio=0
 
 #todo Fenster schöner machen [Anton ist wieder im Game!]
@@ -13,7 +13,7 @@
 #todo created tickets resolved tickets open tickets (count)
 #todo Suchfeld in Ticket Tabelle zum Suchen nach stichwörtern
 #todo passwort ändern im Profil
-#todo admin dashboard ( wv tickets sinbd offen/ in bearbeitung pro kategorie etc)
+#todo admin dashboard (wv tickets sinbd offen/ in bearbeitung pro kategorie etc)
 #fehlerlog?
 #todo ticket nur bearbeiten/zurückziewhen wenn auch offen
 #todo alte tickets im log?

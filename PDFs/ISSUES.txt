@@ -1,4 +1,4 @@
-Ticketsystem für Unternehmen, das Datenmanagementsoftware vertreibt:
+Ticketsystem für Unternehmen, das Software vertreibt:
 
 Benötigte Daten vom Kunden:
 
