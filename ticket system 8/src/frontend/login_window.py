@@ -1,6 +1,5 @@
 from PyQt6.QtWidgets import QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabel, QMessageBox, QToolButton, QHBoxLayout
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtGui import QAction
 
 from backend.universal_data import CurrentUserdata
 from backend.database import Database
@@ -29,18 +28,10 @@ class LoginWindow(QWidget):
         self.password_input.setPlaceholderText("Password")
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
-        # Augen icon (ist ein PyQt Standard Icon)
-
-        icon = self.style().standardIcon(
-            self.style().StandardPixmap.SP_FileDialogDetailedView
-        )
-
         login_button = QPushButton("Submit")
 
-        # Augen-Button ist eine QAction (welches icon wird angezeigt, text zum icon, self -> im fenster)
-
         self.show_password = QToolButton()
-        self.show_password.setIcon(icon)
+        self.show_password.setText("👁")
         self.show_password.setCheckable(True)
         self.show_password.setToolTip("Show password")
         self.show_password.clicked.connect(self.show_or_hide_password)
@@ -71,10 +62,12 @@ class LoginWindow(QWidget):
     def show_or_hide_password(self, checked):
         if checked:
             self.password_input.setEchoMode(QLineEdit.EchoMode.Normal)
+            self.show_password.setText("🙈")
             self.show_password.setToolTip("Hide password")
         else:
             self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
-            self.show_password.setToolTip("Show Password")
+            self.show_password.setText("👁")
+            self.show_password.setToolTip("Show password")
 
     def check_login(self):
         username = self.name_input.text().strip() #.strip() um bspw. ungewollte Leerzeichen der Eingabe zu entfernen
