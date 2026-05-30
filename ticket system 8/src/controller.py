@@ -6,7 +6,7 @@
 #todo user löschen/bearbeiten etc.
 #todo error handling: im Termal oder auch im Programm?
 #todo Wie kann der Admin mit dem Kunden in Kontakt treten? (Anstelle von Username vllt email?)
-#todo Status überall einbauen (Lorena)- in create tickets automatisch offen - status angezeigt wird in my tickts
+#Status überall einbauen (Lorena)- in create tickets automatisch offen - status angezeigt wird in my tickts
 
 from frontend.alltickets_window import AllTicketsWindow
 from frontend.start_window import StartWindow
