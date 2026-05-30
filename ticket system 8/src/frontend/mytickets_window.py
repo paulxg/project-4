@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView, QHBoxLayout, \
-    QLineEdit, QTabWidget, QLabel
+    QLineEdit, QTabWidget, QLabel, QTabBar
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from backend.database import Database
@@ -21,11 +21,17 @@ class TicketManagerWindow(QWidget):
 
         # 1. QTabWidget erstellen
         self.tabs = QTabWidget()
+        self.tabs.setTabsClosable(True)
+        self.tabs.tabCloseRequested.connect(self.close_tab)
         print("QTabWidget erstellt")
 
         # 2. Instanz deines bestehenden Windows erstellen (jetzt als Widget)
         self.tab_mytickets = MyTicketsWindow()
         self.tabs.addTab(self.tab_mytickets, "My Tickets")
+        
+        # Remove the close button (x) for the first tab (index 0)
+        self.tabs.tabBar().setTabButton(0, QTabBar.ButtonPosition.RightSide, None)
+        self.tabs.tabBar().setTabButton(0, QTabBar.ButtonPosition.LeftSide, None)
 
         # NEU: Das Signal aus MyTicketsWindow abfangen, um den Tab sicher hier zu öffnen
         self.tab_mytickets.request_edit_ticket.connect(self.open_edit_tab)
@@ -39,14 +45,17 @@ class TicketManagerWindow(QWidget):
         main_layout.addWidget(self.backtomain)
         
     # NEU: Diese Methode kümmert sich um das Erstellen und Anzeigen des Tabs
-    def open_edit_tab(self, ticket_number):
+    def open_edit_tab(self, ticket_number, category):
         tab_edit = TicketEdit(ticket_number)
-        self.tabs.addTab(tab_edit, f"Edit #{ticket_number}")
+        # Using the full category name directly in the tab title
+        self.tabs.addTab(tab_edit, f"#{ticket_number} - {category}")
         self.tabs.setCurrentWidget(tab_edit)  # Wechselt automatisch direkt in den neuen Tab
 
+    def close_tab(self, index):
+        self.tabs.removeTab(index)
 
 class MyTicketsWindow(QWidget):
-    request_edit_ticket = pyqtSignal(str) # NEU: Signal definieren
+    request_edit_ticket = pyqtSignal(str, str) # NEU: Signal transmits ticket number and category
 
     def __init__(self):
         super().__init__()
@@ -88,10 +97,12 @@ class MyTicketsWindow(QWidget):
         model = self.tableview.model()
         # Den Wert aus der angeklickten Zeile, Spalte 0 (ticket number) auslesen
         ticket_number = model.index(row, 0).data()
+        # Den Wert aus der angeklickten Zeile, Spalte 2 (category) auslesen
+        category = model.index(row, 2).data()
         
         # Ticketnummer per Signal an TicketManagerWindow schicken, falls wir nicht ins Leere geklickt haben
-        if ticket_number:
-            self.request_edit_ticket.emit(str(ticket_number))
+        if ticket_number and category:
+            self.request_edit_ticket.emit(str(ticket_number), str(category))
 
 
 class TicketEdit(QWidget):
