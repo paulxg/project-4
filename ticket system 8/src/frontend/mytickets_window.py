@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHeaderView, QAbstractItemView, QHBoxLayout, \
-    QLineEdit, QTabWidget, QLabel, QTabBar, QTextEdit, QMessageBox
+    QLineEdit, QTabWidget, QLabel, QTabBar, QTextEdit, QMessageBox, QComboBox
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from backend.database import Database
@@ -54,6 +54,7 @@ class TicketManagerWindow(QWidget):
     def close_tab(self, index):
         self.tabs.removeTab(index)
 
+
 class MyTicketsWindow(QWidget):
     request_edit_ticket = pyqtSignal(str, str) # NEU: Signal transmits ticket number and category
 
@@ -84,7 +85,8 @@ class MyTicketsWindow(QWidget):
 
     def load_table_data(self, mysql_data):
         model = QStandardItemModel()
-        model.setHorizontalHeaderLabels(["ticket number", "time of issuing", "category", "short description", "detailed description"])
+        # Added "status" to the header labels
+        model.setHorizontalHeaderLabels(["ticket number", "time of issuing", "category", "short description", "detailed description", "status"])
         for row in mysql_data:
             items = [QStandardItem(str(field) if field else "") for field in row]
             model.appendRow(items)
@@ -113,8 +115,9 @@ class TicketEdit(QWidget):
         mysql_data = db.ticket_edit_fetch(ticket_number)
         
         #Error handling, falls Datenbank nichts zurückgibt
+        # Added "N/A" for status (index 5)
         if not mysql_data:
-            mysql_data = ["", "N/A", "N/A", "N/A", "N/A"]
+            mysql_data = ["", "N/A", "N/A", "N/A", "N/A", "N/A"]
 
         layout = QVBoxLayout()
         self.setLayout(layout)
@@ -137,25 +140,31 @@ class TicketEdit(QWidget):
         long_problem_label = QLabel(f"Describe your problem in detail: {long_prob_val}")
         long_problem_label.setWordWrap(True)
 
-        #Status ändern
-        status_label = QLabel("Change Status:")
-        status_input = QLineEdit()
-
-
-        #comment
+        # Status
+        status_label = QLabel("Status:")
+        self.status_dropdown = QComboBox()
+        self.status_dropdown.addItems(["open", "in progress", "closed"])
+        # Set current status from mysql_data (index 5 for status)
+        if len(mysql_data) > 5 and mysql_data[5] in ["open", "in progress", "closed"]:
+            self.status_dropdown.setCurrentText(mysql_data[5])
+        
+        # Comment
         comment_label = QLabel("Comment:")
-        comment_input = QTextEdit()
-        comment_input.setFixedHeight(125)
-
+        self.comment_input = QTextEdit()
+        self.comment_input.setFixedHeight(125)
+        # Assuming comment is at index 6 if it exists, otherwise default to empty
+        if len(mysql_data) > 6 and mysql_data[6]:
+            self.comment_input.setText(str(mysql_data[6]))
+        
         #Adding to Layout
         layout.addWidget(date_issuing_label)
         layout.addWidget(support_category_label)
         layout.addWidget(problem_label)
         layout.addWidget(long_problem_label)
         layout.addWidget(status_label)
-        layout.addWidget(status_input)
+        layout.addWidget(self.status_dropdown) # Add status dropdown to layout
         layout.addWidget(comment_label)
-        layout.addWidget(comment_input)
+        layout.addWidget(self.comment_input) # Add comment input to layout
 
         # Submit Button
         self.submit_button = QPushButton("Submit")
@@ -176,20 +185,19 @@ class TicketEdit(QWidget):
 
         layout.addWidget(self.submit_button)
 
-
         # NEU: Button muss zuerst erstellt werden!
         self.delete_button = QPushButton("Delete")
 
         def submit_action():
-            status = status_input.text()
-            comment = comment_input.toPlainText()
+            status = self.status_dropdown.currentText() # Get status from dropdown
+            comment = self.comment_input.toPlainText() # Get comment from QTextEdit
 
-            if comment or status:
+            if status or comment: # Only update if a status or comment is provided
                 db = Database()
                 db.comment_status(status, comment, ticket_number)
-
+                QMessageBox.information(self, "Success", "Ticket status and/or comment updated!")
             else:
-                QMessageBox.warning(self, "Warning", "No status or comment provided")
+                QMessageBox.warning(self, "Warning", "No status or comment provided to update.")
                 
         self.submit_button.clicked.connect(submit_action)
 

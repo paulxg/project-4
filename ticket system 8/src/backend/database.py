@@ -93,7 +93,8 @@ class Database:
             print("Kein Datenbankzugriff möglich.")
             return []  #leere Liste zurückgeben, damit die Tabelle später nicht crasht
 
-        query = "SELECT ticket_number, date_time, category, short_description, long_description FROM tickets WHERE user_id_ref = %s OR (SELECT rank FROM userdata WHERE id = %s) = 'admin' ORDER BY factor DESC"
+        # Modified to include 'status' in the SELECT statement
+        query = "SELECT ticket_number, date_time, category, short_description, long_description, status FROM tickets WHERE user_id_ref = %s OR (SELECT rank FROM userdata WHERE id = %s) = 'admin' ORDER BY factor DESC"
         self.cursor.execute(query, (user_id, user_id))
         mysql_data = self.cursor.fetchall()
         return mysql_data
@@ -103,7 +104,8 @@ class Database:
             print("Kein Datenbankzugriff möglich.")
             return []  #leere Liste zurückgeben, damit die Tabelle später nicht crasht
 
-        query = "SELECT ticket_number, date_time, category, short_description, long_description FROM tickets"
+        # Modified to include 'status' in the SELECT statement
+        query = "SELECT ticket_number, date_time, category, short_description, long_description, status FROM tickets"
         self.cursor.execute(query,)
         mysql_data = self.cursor.fetchall()
         return mysql_data
@@ -139,7 +141,8 @@ class Database:
             print("Kein Datenbankzugriff möglich.")
             return []
 
-        query = "SELECT ticket_number, date_time, category, short_description, long_description FROM tickets WHERE ticket_number = %s"
+        # Modified to include 'status' and 'comment' in the SELECT statement
+        query = "SELECT ticket_number, date_time, category, short_description, long_description, status, comment FROM tickets WHERE ticket_number = %s"
         self.cursor.execute(query, (ticket_number,))
         mysql_data = self.cursor.fetchone()
         return mysql_data
