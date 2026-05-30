@@ -113,147 +113,95 @@ class MyTicketsWindow(QWidget):
 class TicketEdit(QWidget):
     def __init__(self, ticket_number):
         super().__init__()
+        self.ticket_number = ticket_number
 
-        db = Database()
-        mysql_data = db.ticket_edit_fetch(ticket_number)
-        
-        #Error handling, falls Datenbank nichts zurückgibt
-        # Added "N/A" for status (index 5) and comment (index 6)
-        if not mysql_data:
-            mysql_data = ["", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A"]
+        mysql_data = Database().ticket_edit_fetch(ticket_number) or ["", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A"]
 
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        #Date of Issueing
-        date_val = str(mysql_data[1]) if mysql_data[1] else "N/A"
-        date_issuing_label = QLabel(f"Date of issueing: {date_val}")
+        date_label = QLabel(f"Date of issueing: {mysql_data[1] or 'N/A'}")
+        cat_label = QLabel(f"I have a problem with: {mysql_data[2] or 'N/A'}")
+        prob_label = QLabel(f"Describe your problem briefly: {mysql_data[3] or 'N/A'}")
+        prob_label.setWordWrap(True)
+        long_prob_label = QLabel(f"Describe your problem in detail: {mysql_data[4] or 'N/A'}")
+        long_prob_label.setWordWrap(True)
 
-        #Support Category
-        cat_val = str(mysql_data[2]) if mysql_data[2] else "N/A"
-        support_category_label = QLabel(f"I have a problem with: {cat_val}")
+        layout.addWidget(date_label)
+        layout.addWidget(cat_label)
+        layout.addWidget(prob_label)
+        layout.addWidget(long_prob_label)
 
-        # Problem-Kurzbeschreibung Input
-        prob_val = str(mysql_data[3]) if mysql_data[3] else "N/A"
-        problem_label = QLabel(f"Describe your problem briefly: {prob_val}")
-        problem_label.setWordWrap(True)
-
-        #Detaillierte Problembeschreibung
-        long_prob_val = str(mysql_data[4]) if mysql_data[4] else "N/A"
-        long_problem_label = QLabel(f"Describe your problem in detail: {long_prob_val}")
-        long_problem_label.setWordWrap(True)
-
-        #Adding to Layout
-        layout.addWidget(date_issuing_label)
-        layout.addWidget(support_category_label)
-        layout.addWidget(problem_label)
-        layout.addWidget(long_problem_label)
-
-        # Chat section
-        chat_label = QLabel("Chat:")
+        # Chat
         self.chat_display = QTextBrowser()
         self.chat_display.setFixedHeight(120)
-
-        chat_input_layout = QHBoxLayout()
         self.chat_input = QLineEdit()
         self.chat_input.setPlaceholderText("Enter message...")
         self.chat_send_button = QPushButton("Send")
+        self.chat_send_button.clicked.connect(self.send_message)
+        self.chat_input.returnPressed.connect(self.send_message)
+
+        chat_input_layout = QHBoxLayout()
         chat_input_layout.addWidget(self.chat_input)
         chat_input_layout.addWidget(self.chat_send_button)
 
-        layout.addWidget(chat_label)
+        layout.addWidget(QLabel("Chat:"))
         layout.addWidget(self.chat_display)
         layout.addLayout(chat_input_layout)
 
-        def load_messages():
-            db = Database()
-            messages = db.get_messages(ticket_number)
-            content = ""
-            for username, message, timestamp in messages:  # Start Schleife, die Chat aus einzelnen Messages zusammenbaut
-                content += f"<b>[{username}]</b> {timestamp} &mdash; {message}<br>"
-            self.chat_display.setHtml(content)
-            self.chat_display.verticalScrollBar().setValue(
-                self.chat_display.verticalScrollBar().maximum()
-            )
-
-        def send_message():
-            text = self.chat_input.text().strip()
-            if text:
-                db = Database()
-                db.send_message(ticket_number, CurrentUserdata.id, text)
-                self.chat_input.clear()
-                load_messages()
-
-        self.chat_send_button.clicked.connect(send_message)
-        self.chat_input.returnPressed.connect(send_message)
-
-        load_messages()
+        self.load_messages()
 
         if CurrentUserdata.rank == "admin":
-            # Status
-            status_label = QLabel("Status:")
             self.status_dropdown = QComboBox()
             self.status_dropdown.addItems(["open", "in progress", "closed"])
-            # Set current status from mysql_data (index 5 for status)
-            if len(mysql_data) > 5 and mysql_data[5] in ["open", "in progress", "closed"]:
+            if mysql_data[5] in ["open", "in progress", "closed"]:
                 self.status_dropdown.setCurrentText(mysql_data[5])
 
-            layout.addWidget(status_label)
-            layout.addWidget(self.status_dropdown) # Add status dropdown to layout
-
-            # Submit Button
             self.submit_button = QPushButton("Submit")
-
-            # Layouting des Submit Button
             self.submit_button.setStyleSheet("""
-                            QPushButton {
-                                background-color: #003B00;      
-                                color: #FFFFFF;
-                            }
-                            QPushButton:hover {
-                                background-color: #004200;      
-                            }
-                            QPushButton:pressed {
-                                background-color: #003B00;      
-                            }
-                            """)
+                QPushButton { background-color: #003B00; color: #FFFFFF; }
+                QPushButton:hover { background-color: #004200; }
+                QPushButton:pressed { background-color: #003B00; }
+            """)
+            self.submit_button.clicked.connect(self.submit_action)
+
+            layout.addWidget(QLabel("Status:"))
+            layout.addWidget(self.status_dropdown)
             layout.addWidget(self.submit_button)
 
-            def submit_action():
-                status = self.status_dropdown.currentText() # Get status from dropdown
-
-                if status: # Only update if a status is provided
-                    db = Database()
-                    db.comment_status(status, "", ticket_number)
-                    QMessageBox.information(self, "Success", "Ticket status updated!")
-                else:
-                    QMessageBox.warning(self, "Warning", "No status provided to update.")
-
-            self.submit_button.clicked.connect(submit_action)
-
-        #Delete Button
         self.delete_button = QPushButton("Delete")
         self.delete_button.setStyleSheet("""
-                       QPushButton {
-                           background-color: #3B0000;      
-                           color: #FFFFFF;
-                       }
-                       QPushButton:hover {
-                           background-color: #420000;      
-                       }
-                       QPushButton:pressed {
-                           background-color: #3B0000;      
-                       }
-                       """)
+            QPushButton { background-color: #3B0000; color: #FFFFFF; }
+            QPushButton:hover { background-color: #420000; }
+            QPushButton:pressed { background-color: #3B0000; }
+        """)
+        self.delete_button.clicked.connect(self.delete_ticket)
         layout.addWidget(self.delete_button)
 
-        def delete_ticket_action():
-            # ticket_number_input.text() gibt es nicht, wir nehmen stattdessen die lokale Variable
-            if ticket_number:
-                db = Database()
-                print("jetzt delete methode aufrufen")
-                if db.delete_ticket(ticket_number):
-                    print("Ticket gelöscht!")
-                    # Hinweis: self.load_table_data() klappt hier nicht, da das TicketEdit-Widget keinen Zugriff auf die Tabellen-Methode hat.
+    def load_messages(self):
+        messages = Database().get_messages(self.ticket_number)
+        content = "".join(
+            f"<b>[{username}]</b> {timestamp} &mdash; {message}<br>"
+            for username, message, timestamp in messages
+        )
+        self.chat_display.setHtml(content)
+        self.chat_display.verticalScrollBar().setValue(self.chat_display.verticalScrollBar().maximum())
 
-        self.delete_button.clicked.connect(delete_ticket_action)
+    def send_message(self):
+        text = self.chat_input.text().strip()
+        if text:
+            Database().send_message(self.ticket_number, CurrentUserdata.id, text)
+            self.chat_input.clear()
+            self.load_messages()
+
+    def submit_action(self):
+        status = self.status_dropdown.currentText()
+        if status:
+            Database().comment_status(status, "", self.ticket_number)
+            QMessageBox.information(self, "Success", "Ticket status updated!")
+        else:
+            QMessageBox.warning(self, "Warning", "No status provided to update.")
+
+    def delete_ticket(self):
+        if self.ticket_number:
+            Database().delete_ticket(self.ticket_number)
