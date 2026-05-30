@@ -70,8 +70,12 @@ class LoginWindow(QWidget):
             self.show_password.setToolTip("Show password")
 
     def check_login(self):
-        username = self.name_input.text().strip() #.strip() um bspw. ungewollte Leerzeichen der Eingabe zu entfernen
+        username = self.name_input.text().strip()
+        #.strip() um bspw. ungewollte Leerzeichen der Eingabe zu entfernen
         password = self.password_input.text().strip()
+
+        if username == "Lorena":
+            QMessageBox.warning(self, "Capcha", "∫ 1/(x² - 1) dx <br> <br> Tipp: Partialbruchzerlegung")
 
         if not username or not password:
             QMessageBox.warning(self, "Error", "Please enter username and pin!")
