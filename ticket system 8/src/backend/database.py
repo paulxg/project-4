@@ -113,25 +113,29 @@ class Database:
     def fetch_user_data(self, username, password):
         if not self.cursor:
             print("Kein Datenbankzugriff möglich.")
-            return []  #leere Liste zurückgeben, damit die Tabelle später nicht crasht
+            return False
 
         print("Fetching user data...")
         query = "SELECT id, rank, username FROM userdata WHERE username = %s AND password = %s"
         self.cursor.execute(query, (username, password,))
         mysql_data = self.cursor.fetchone()
-        CurrentUserdata.id = mysql_data[0]
-        CurrentUserdata.rank = mysql_data[1]
-        CurrentUserdata.username = mysql_data[2]
-        print(f"current rank of acitve user: {CurrentUserdata.rank}")
-        return True
+        
+        if mysql_data is not None:
+            CurrentUserdata.id = mysql_data[0]
+            CurrentUserdata.rank = mysql_data[1]
+            CurrentUserdata.username = mysql_data[2]
+            print(f"current rank of acitve user: {CurrentUserdata.rank}")
+            return True
+        else:
+            print("Benutzerdaten konnten nicht abgerufen werden (Nutzer nicht gefunden).")
+            return False
 
     def get_user_tickets(self, user_id):
         if not self.cursor:
             print("Kein Datenbankzugriff möglich.")
             return []  #leere Liste zurückgeben, damit die Tabelle später nicht crasht
 
-        # Modified to include 'status' and 'comment' in the SELECT statement
-        query = "SELECT ticket_number, date_time, category, short_description, long_description, status, comment, handled_by FROM tickets WHERE user_id_ref = %s OR (SELECT rank FROM userdata WHERE id = %s) = 'admin' ORDER BY (factor + (DATEDIFF(NOW(), date_time) * 0.2)) DESC"
+        query = "SELECT ticket_number, date_time, category, short_description, long_description, status, handled_by FROM tickets WHERE user_id_ref = %s OR (SELECT rank FROM userdata WHERE id = %s) = 'admin' ORDER BY (factor + (DATEDIFF(NOW(), date_time) * 0.2)) DESC"
         self.cursor.execute(query, (user_id, user_id))
         mysql_data = self.cursor.fetchall()
         return mysql_data
@@ -167,19 +171,18 @@ class Database:
             print("Kein Datenbankzugriff möglich.")
             return []
 
-        # Modified to include 'status' and 'comment' in the SELECT statement
-        query = "SELECT ticket_number, date_time, category, short_description, long_description, status, comment FROM tickets WHERE ticket_number = %s"
+        query = "SELECT ticket_number, date_time, category, short_description, long_description, status FROM tickets WHERE ticket_number = %s"
         self.cursor.execute(query, (ticket_number,))
         mysql_data = self.cursor.fetchone()
         return mysql_data
 
-    def comment_status(self, status, comment,ticket_number):
+    def update_status(self, status, ticket_number):
         if not self.cursor:
             print("Kein Datenbankzugriff möglich.")
             return False
 
-        query = "UPDATE tickets SET status = %s, comment = %s, handled_by = %s WHERE ticket_number = %s"
-        self.cursor.execute(query, (status, comment, CurrentUserdata.id, ticket_number))
+        query = "UPDATE tickets SET status = %s, handled_by = %s WHERE ticket_number = %s"
+        self.cursor.execute(query, (status, CurrentUserdata.id, ticket_number))
         self.connection.commit()
-        print("Status / Comment Update successful")
+        print("Status Update successful")
         return True

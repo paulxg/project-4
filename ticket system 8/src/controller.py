@@ -1,7 +1,9 @@
 #claim/view (tickets (also abarbeiten))
 #zeitbasierte Priorisierung von tickets
+#todo Priorisierung nach company/private
 #todo error handling: im Terminal oder auch im Programm?
 #todo ticket autolöschen nach ticketschließen; alternativ: prio=0
+#todo comment spalte wieder entfernen aus MySQL
 #automatisch Fenster close nach comment (admin) WEEEEEEN juckt das
 
 #todo Fenster schöner machen [Anton ist wieder im Game!]

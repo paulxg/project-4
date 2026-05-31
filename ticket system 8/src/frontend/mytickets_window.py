@@ -109,8 +109,7 @@ class MyTicketsWindow(QWidget):
 
     def load_table_data(self, mysql_data):
         model = QStandardItemModel()
-        # Added "status" and "comment" to the header labels
-        model.setHorizontalHeaderLabels(["ticket number", "time of issuing", "category", "short description", "detailed description", "status", "comment", "responsible admin id"])
+        model.setHorizontalHeaderLabels(["ticket number", "time of issuing", "category", "short description", "detailed description", "status", "responsible admin id"])
         for row in mysql_data:
             items = [QStandardItem(str(field) if field else "") for field in row]
             model.appendRow(items)
@@ -138,7 +137,7 @@ class TicketEdit(QWidget):
         super().__init__()
         self.ticket_number = ticket_number
 
-        mysql_data = Database().ticket_edit_fetch(ticket_number) or ["", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A"]
+        mysql_data = Database().ticket_edit_fetch(ticket_number) or ["", "N/A", "N/A", "N/A", "N/A", "N/A"]
 
         layout = QVBoxLayout()
         self.setLayout(layout)
@@ -237,7 +236,7 @@ class TicketEdit(QWidget):
                 return # Funktion abbrechen, das Ticket wird noch nicht geschlossen!
 
         if status:
-            Database().comment_status(status, "", self.ticket_number)
+            Database().update_status(status, self.ticket_number)
             QMessageBox.information(self, "Success", "Ticket status updated!")
         else:
             QMessageBox.warning(self, "Warning", "No status provided to update.")
