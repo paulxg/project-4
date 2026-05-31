@@ -39,14 +39,26 @@ class TicketManagerWindow(QWidget):
         # 4. Das Tab-Widget in das Hauptfenster-Layout packen
         main_layout.addWidget(self.tabs)
 
+        #Refresh Button
+        self.refresh_button = QPushButton("Refresh")
+        self.refresh_button.clicked.connect(self.refresh_ticket_table)
+        main_layout.addWidget(self.refresh_button)
+
         #backtomain pushbutton
         self.backtomain = QPushButton("Back to Main Window")
         self.backtomain.clicked.connect(self.request_main_window.emit)
         main_layout.addWidget(self.backtomain)
-        
+
+    def refresh_ticket_table(self):
+        """Leert die aktuelle Tabelle und lädt die Tickets neu aus der Datenbank."""
+        db = Database()
+        mysql_data = db.get_user_tickets(CurrentUserdata.id)
+        self.tab_mytickets.load_table_data(mysql_data)
+
     # NEU: Diese Methode kümmert sich um das Erstellen und Anzeigen des Tabs
     def open_edit_tab(self, ticket_number, category):
         tab_edit = TicketEdit(ticket_number)
+        tab_edit.ticket_deleted.connect(self.handle_ticket_deleted)
         # Using the full category name directly in the tab title
         self.tabs.addTab(tab_edit, f"#{ticket_number} - {category}")
         self.tabs.setCurrentWidget(tab_edit)  # Wechselt automatisch direkt in den neuen Tab
@@ -56,6 +68,15 @@ class TicketManagerWindow(QWidget):
         self.tabs.removeTab(index)
         if widget:
             widget.deleteLater()
+
+    def handle_ticket_deleted(self):
+        """Schließt den Tab des gelöschten Tickets und aktualisiert die Tabelle."""
+        widget = self.sender()  # Holt sich das Widget, welches das Signal ausgelöst hat
+        if widget:
+            index = self.tabs.indexOf(widget)
+            if index != -1:
+                self.close_tab(index)
+        self.refresh_ticket_table()
 
 
 class MyTicketsWindow(QWidget):
@@ -83,8 +104,8 @@ class MyTicketsWindow(QWidget):
         self.layout.addWidget(self.tableview)
 
         db = Database()
-        data = db.get_user_tickets(CurrentUserdata.id)
-        self.load_table_data(data)
+        mysql_data = db.get_user_tickets(CurrentUserdata.id)
+        self.load_table_data(mysql_data)
 
     def load_table_data(self, mysql_data):
         model = QStandardItemModel()
@@ -111,6 +132,8 @@ class MyTicketsWindow(QWidget):
 
 
 class TicketEdit(QWidget):
+    ticket_deleted = pyqtSignal()
+
     def __init__(self, ticket_number):
         super().__init__()
         self.ticket_number = ticket_number
@@ -222,3 +245,4 @@ class TicketEdit(QWidget):
     def delete_ticket(self):
         if self.ticket_number:
             Database().delete_ticket(self.ticket_number)
+            self.ticket_deleted.emit()

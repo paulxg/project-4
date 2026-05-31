@@ -1,8 +1,8 @@
-#todo claim/view (tickets (also abarbeiten))
-#todo zeitbasierte Priorisierung von tickets
+#claim/view (tickets (also abarbeiten))
+#zeitbasierte Priorisierung von tickets
 #todo error handling: im Terminal oder auch im Programm?
 #todo ticket autolöschen nach ticketschließen; alternativ: prio=0
-#todo automatisch Fenster close nach comment (admin) WEEEEEEN juckt das
+#automatisch Fenster close nach comment (admin) WEEEEEEN juckt das
 
 #todo Fenster schöner machen [Anton ist wieder im Game!]
 #todo passwort hashen mit bcrypt (Paul)
