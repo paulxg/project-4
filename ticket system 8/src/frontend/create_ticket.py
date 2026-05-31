@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import (QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabe
 from backend.universal_data import CurrentUserdata, ProgramData
 from backend.prioritizing import Prioritizing
 from PyQt6.QtCore import pyqtSignal
-from backend.database import Database
+from backend.database import Database, DatabaseError
 
 
 class CreateTicket(QWidget):
@@ -129,7 +129,7 @@ class CreateTicket(QWidget):
 
         p = Prioritizing()
         p.setprio(category)
-        print(f"Deine Ticket Priority ist {p.prio}")
+        print(f"Your ticket priority is {p.prio}")
         self.factor = p.prio
 
         #text length check
@@ -145,25 +145,28 @@ class CreateTicket(QWidget):
 
         else:
             print("text length check successful")
-            db = Database()
-            db.create_ticket(
-                CurrentUserdata.id,
-                self.factor,
-                category,
-                problem_quick,
-                text_to_single_line,
-                "open"  # Automatically assign "open" status
-            )
+            try:
+                db = Database()
+                db.create_ticket(
+                    CurrentUserdata.id,
+                    self.factor,
+                    category,
+                    problem_quick,
+                    text_to_single_line,
+                    "open"  # Automatically assign "open" status
+                )
 
-# Inputs in die Textboxen löschen nach dem schreiben (noch im "with")
-            inputs1 = self.findChildren(QLineEdit)
-            for input_field in inputs1:
-                input_field.clear()
+                # Inputs in die Textboxen löschen nach dem schreiben
+                inputs1 = self.findChildren(QLineEdit)
+                for input_field in inputs1:
+                    input_field.clear()
 
-            inputs2 = self.findChildren(QTextEdit)
-            for input_field in inputs2:
-                input_field.clear()
-            self.success_notification()
+                inputs2 = self.findChildren(QTextEdit)
+                for input_field in inputs2:
+                    input_field.clear()
+                self.success_notification()
+            except DatabaseError as e:
+                QMessageBox.critical(self, "Database Error", str(e))
 
     def success_notification(self):
         success = QMessageBox()

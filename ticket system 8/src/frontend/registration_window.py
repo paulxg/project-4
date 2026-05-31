@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QLabel, QLineEdit,QMessageBox
 from PyQt6.QtCore import pyqtSignal
 
-from backend.database import Database
+from backend.database import Database, DatabaseError
 
 
 class RegistrationWindow(QWidget):
@@ -52,26 +52,25 @@ class RegistrationWindow(QWidget):
             QMessageBox.warning(self, "Warning", "Please enter your username and password!")
             return
 
-        db = Database()
-        check_user_exists = db.check_login(username, password)
-        if check_user_exists is False:
-            print("Erkannt: Username noch nicht vergeben")
-            success = db.create_user(username, password)
-            if success is True:
-                QMessageBox.information(self, "Success", "User created successfully!")
-                fetch_success = db.fetch_user_data(username, password)
-                if fetch_success is True:
-                    self.request_main_window.emit()
+        try:
+            db = Database()
+            check_user_exists = db.check_login(username, password)
+            
+            if check_user_exists is False:
+                success = db.create_user(username, password)
+                if success is True:
+                    QMessageBox.information(self, "Success", "User created successfully!")
+                    fetch_success = db.fetch_user_data(username, password)
+                    if fetch_success is True:
+                        self.request_main_window.emit()
+                    else:
+                        QMessageBox.warning(self, "Error", "User data could not be loaded after registration.")
+                        self.return_signal.emit()
                 else:
-                    print("id fetching error")
-                    self.return_signal()
-
-            else:
-                print("User konnte nicht erstellt werden!")
-                self.return_signal()
-
-        elif check_user_exists is True:
-            QMessageBox.warning(self, "Warning", "This username already exists! Please choose another username!")
-
-        else:
-            QMessageBox.warning(self, "Error", "No database access")
+                    QMessageBox.warning(self, "Error", "User konnte nicht erstellt werden!")
+                    self.return_signal.emit()
+            elif check_user_exists is True:
+                QMessageBox.warning(self, "Warning", "This username already exists! Please choose another username!")
+                
+        except DatabaseError as e:
+            QMessageBox.critical(self, "Database Error", str(e))

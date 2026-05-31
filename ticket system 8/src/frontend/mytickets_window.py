@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QTableView, QWidget, QVBoxLayout, QPushButton, QHead
     QLineEdit, QTabWidget, QLabel, QTabBar, QTextEdit, QMessageBox, QComboBox, QTextBrowser, QInputDialog
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
-from backend.database import Database
+from backend.database import Database, DatabaseError
 from backend.universal_data import CurrentUserdata
 
 class TicketManagerWindow(QWidget):
@@ -13,17 +13,17 @@ class TicketManagerWindow(QWidget):
         self.setWindowTitle("Ticket Manager")
         self.resize(1000, 600)
         self.setMinimumSize(600, 400)
-        print("Fenster Size definiert")
+        print("Window size defined")
 
         # Hauptlayout für dieses Fenster
         main_layout = QVBoxLayout(self)
-        print("Hauptlayout erstellt")
+        print("Main layout created")
 
         # 1. QTabWidget erstellen
         self.tabs = QTabWidget()
         self.tabs.setTabsClosable(True)
         self.tabs.tabCloseRequested.connect(self.close_tab)
-        print("QTabWidget erstellt")
+        print("QTabWidget created")
 
         # 2. Instanz deines bestehenden Windows erstellen (jetzt als Widget)
         self.tab_mytickets = MyTicketsWindow()
@@ -51,9 +51,12 @@ class TicketManagerWindow(QWidget):
 
     def refresh_ticket_table(self):
         """Leert die aktuelle Tabelle und lädt die Tickets neu aus der Datenbank."""
-        db = Database()
-        mysql_data = db.get_user_tickets(CurrentUserdata.id)
-        self.tab_mytickets.load_table_data(mysql_data)
+        try:
+            db = Database()
+            mysql_data = db.get_user_tickets(CurrentUserdata.id)
+            self.tab_mytickets.load_table_data(mysql_data)
+        except DatabaseError as e:
+            QMessageBox.critical(self, "Database Error", str(e))
 
     # NEU: Diese Methode kümmert sich um das Erstellen und Anzeigen des Tabs
     def open_edit_tab(self, ticket_number, category):
@@ -103,9 +106,13 @@ class MyTicketsWindow(QWidget):
         #Widgets ins Layout packen
         self.layout.addWidget(self.tableview)
 
-        db = Database()
-        mysql_data = db.get_user_tickets(CurrentUserdata.id)
-        self.load_table_data(mysql_data)
+        try:
+            db = Database()
+            mysql_data = db.get_user_tickets(CurrentUserdata.id)
+            self.load_table_data(mysql_data)
+        except DatabaseError as e:
+            QMessageBox.critical(self, "Database Error", str(e))
+            self.load_table_data([])  # Verhindert Abstürze durch leere Modellerstellung
 
     def load_table_data(self, mysql_data):
         model = QStandardItemModel()
@@ -137,7 +144,13 @@ class TicketEdit(QWidget):
         super().__init__()
         self.ticket_number = ticket_number
 
-        mysql_data = Database().ticket_edit_fetch(ticket_number) or ["", "N/A", "N/A", "N/A", "N/A", "N/A"]
+        try:
+            mysql_data = Database().ticket_edit_fetch(ticket_number)
+            if not mysql_data:
+                mysql_data = ["", "N/A", "N/A", "N/A", "N/A", "N/A"]
+        except DatabaseError as e:
+            QMessageBox.critical(self, "Database Error", str(e))
+            mysql_data = ["", "N/A", "N/A", "N/A", "N/A", "N/A"]
 
         layout = QVBoxLayout()
         self.setLayout(layout)
@@ -206,20 +219,26 @@ class TicketEdit(QWidget):
         layout.addWidget(self.delete_button)
 
     def load_messages(self):
-        messages = Database().get_messages(self.ticket_number)
-        content = f"<i> Hello, an admin is currently reviewing your ticket and will get back to you as soon as possible. Please provide any further information available below or pay for faster service.</i> <br> <br>" + "".join(
-            f"<b>[{username}]</b> {timestamp} &mdash; {message}<br>"
-            for username, message, timestamp in messages
-        )
-        self.chat_display.setHtml(content)
-        self.chat_display.verticalScrollBar().setValue(self.chat_display.verticalScrollBar().maximum())
+        try:
+            messages = Database().get_messages(self.ticket_number)
+            content = f"<i> Hello, an admin is currently reviewing your ticket and will get back to you as soon as possible. Please provide any further information available below or pay for faster service.</i> <br> <br>" + "".join(
+                f"<b>[{username}]</b> {timestamp} &mdash; {message}<br>"
+                for username, message, timestamp in messages
+            )
+            self.chat_display.setHtml(content)
+            self.chat_display.verticalScrollBar().setValue(self.chat_display.verticalScrollBar().maximum())
+        except DatabaseError as e:
+            QMessageBox.critical(self, "Database Error", str(e))
 
     def send_message(self):
         text = self.chat_input.text().strip()
         if text:
-            Database().send_message(self.ticket_number, CurrentUserdata.id, text)
-            self.chat_input.clear()
-            self.load_messages()
+            try:
+                Database().send_message(self.ticket_number, CurrentUserdata.id, text)
+                self.chat_input.clear()
+                self.load_messages()
+            except DatabaseError as e:
+                QMessageBox.critical(self, "Database Error", str(e))
 
     def submit_action(self):
         status = self.status_dropdown.currentText()
@@ -227,21 +246,31 @@ class TicketEdit(QWidget):
         if status == "closed":
             text, ok = QInputDialog.getText(self, "Final Comment", "Please enter a final comment to close the ticket:")
             if ok and text.strip(): # Prüfen, ob OK geklickt wurde und der Text nicht leer ist
-                Database().send_message(self.ticket_number, CurrentUserdata.id, text.strip())
-                # Chatfenster direkt updaten, falls es bereits gerendert ist
-                if hasattr(self, 'chat_display'):
-                    self.load_messages()
+                try:
+                    Database().send_message(self.ticket_number, CurrentUserdata.id, text.strip())
+                    # Chatfenster direkt updaten, falls es bereits gerendert ist
+                    if hasattr(self, 'chat_display'):
+                        self.load_messages()
+                except DatabaseError as e:
+                    QMessageBox.critical(self, "Database Error", str(e))
+                    return
             else:
                 QMessageBox.warning(self, "Warning", "A final comment is required to close the ticket.")
                 return # Funktion abbrechen, das Ticket wird noch nicht geschlossen!
 
         if status:
-            Database().update_status(status, self.ticket_number)
-            QMessageBox.information(self, "Success", "Ticket status updated!")
+            try:
+                Database().update_status(status, self.ticket_number)
+                QMessageBox.information(self, "Success", "Ticket status updated!")
+            except DatabaseError as e:
+                QMessageBox.critical(self, "Database Error", str(e))
         else:
             QMessageBox.warning(self, "Warning", "No status provided to update.")
 
     def delete_ticket(self):
         if self.ticket_number:
-            Database().delete_ticket(self.ticket_number)
-            self.ticket_deleted.emit()
+            try:
+                Database().delete_ticket(self.ticket_number)
+                self.ticket_deleted.emit()
+            except DatabaseError as e:
+                QMessageBox.critical(self, "Database Error", str(e))

@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabel
 from PyQt6.QtCore import pyqtSignal
 
 from backend.universal_data import CurrentUserdata
-from backend.database import Database
+from backend.database import Database, DatabaseError
 
 class LoginWindow(QWidget):
     request_main_window = pyqtSignal()
@@ -81,15 +81,15 @@ class LoginWindow(QWidget):
             QMessageBox.warning(self, "Error", "Please enter username and pin!")
             return
 
-        db = Database()
-        success = db.check_login(username, password)
+        try:
+            db = Database()
+            success = db.check_login(username, password)
 
-        if success is True:
-            db.fetch_user_data(username, password)
-            self.request_main_window.emit()
-            print({"id": CurrentUserdata.id})
-        elif success is False:
-            QMessageBox.warning(self, "Error", "Wrong username or password!")
-        else:
-            QMessageBox.warning(self, "Error", "No database access")
-
+            if success is True:
+                db.fetch_user_data(username, password)
+                self.request_main_window.emit()
+                print({"id": CurrentUserdata.id})
+            elif success is False:
+                QMessageBox.warning(self, "Error", "Wrong username or password!")
+        except DatabaseError as e:
+            QMessageBox.critical(self, "Database Error", str(e))

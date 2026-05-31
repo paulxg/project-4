@@ -108,7 +108,7 @@ class Controller:
     def myticket_window(self):
         self.current_window.close()
 
-        print("TicketManager aufrufen")
+        print("Calling TicketManager")
         self.current_window = TicketManagerWindow()
 
         self.current_window.request_main_window.connect(self.show_main_window)

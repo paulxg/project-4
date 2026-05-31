@@ -23,3 +23,7 @@ Aufbau/Unterteilung des Tickets:
 
 4.Zuweisung 
 5.Details (freies Feld)
+
+
+Kommentare Dokumentation:
+-Entscheidung UI auf Englisch
