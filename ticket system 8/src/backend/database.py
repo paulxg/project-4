@@ -142,7 +142,7 @@ class Database:
     def update_status(self, status, ticket_number):
         try:
             query = "UPDATE tickets SET status = %s, handled_by = %s WHERE ticket_number = %s"
-            self.cursor.execute(query, (status, CurrentUserdata.id, ticket_number))
+            self.cursor.execute(query, (status, CurrentUserdata.username, ticket_number))
             self.connection.commit()
             print("Status Update successful")
             return True
