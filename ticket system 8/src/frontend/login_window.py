@@ -74,9 +74,6 @@ class LoginWindow(QWidget):
         #.strip() um bspw. ungewollte Leerzeichen der Eingabe zu entfernen
         password = self.password_input.text().strip()
 
-        if username == "Lorena":
-            QMessageBox.warning(self, "Capcha", "∫ 1/(x² - 1) dx <br> <br> Tipp: Partialbruchzerlegung")
-
         if not username or not password:
             QMessageBox.warning(self, "Error", "Please enter username and pin!")
             return

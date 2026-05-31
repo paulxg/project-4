@@ -106,7 +106,13 @@ class Database:
 
     def get_user_tickets(self, user_id):
         try:
-            query = "SELECT ticket_number, date_time, category, short_description, long_description, status, handled_by FROM tickets WHERE user_id_ref = %s OR (SELECT rank FROM userdata WHERE id = %s) = 'admin' ORDER BY (factor + (DATEDIFF(NOW(), date_time) * 0.2)) DESC"
+            query = """SELECT ticket_number, date_time, category, short_description, long_description, t.status, handled_by 
+                       FROM tickets t
+                        JOIN userdata u ON user_id_ref = u.id 
+                       WHERE user_id_ref = %s 
+                          OR (SELECT rank FROM userdata WHERE id = %s) = 'admin' 
+                       ORDER BY (t.factor * (CASE WHEN u.status = 'company' THEN 1.3 ELSE 1 END) + (DATEDIFF(NOW(), date_time) * 0.2)) DESC
+                    """
             self.cursor.execute(query, (user_id, user_id))
             return self.cursor.fetchall()
         except Error as e:

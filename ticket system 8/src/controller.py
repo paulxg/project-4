@@ -1,12 +1,15 @@
 #claim/view (tickets (also abarbeiten))
 #zeitbasierte Priorisierung von tickets
-#todo Priorisierung nach company/private
-#todo error handling: im Terminal oder auch im Programm?
+#Priorisierung nach company/private
+#error handling: im Terminal oder auch im Programm?
 #todo ticket autolöschen nach ticketschließen; alternativ: prio=0
 #todo comment spalte wieder entfernen aus MySQL
 #automatisch Fenster close nach comment (admin) WEEEEEEN juckt das
 #todo chat anzeigen nach submit statusänderung (zu aufwändig)
+#todo mytickets responsible admin ID: Username hinzufügen
 
+#todo Ticketlöschen nach 30 Tagen im closed Zustand
+#todo User bestätigt gelöstes Problem bevor finaler close des tickets
 #todo Fenster schöner machen [Anton ist wieder im Game!]
 #todo passwort hashen mit bcrypt (Paul)
 #todo user löschen/bearbeiten etc.
@@ -17,7 +20,7 @@
 #todo created tickets resolved tickets open tickets (count)
 #todo Suchfeld in Ticket Tabelle zum Suchen nach stichwörtern
 #todo passwort ändern im Profil
-#todo admin dashboard ( wv tickets sinbd offen/ in bearbeitung pro kategorie etc)
+#todo admin dashboard (wv tickets sind offen/ in bearbeitung pro kategorie etc)
 #fehlerlog?
 #todo ticket nur bearbeiten/zurückziewhen wenn auch offen
 #todo alte tickets im log?

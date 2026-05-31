@@ -9,14 +9,14 @@ class CurrentUserdata:
 class ProgramData:
 
     support_categories = {
-        "Installation or Updates":1234,
-        "Network or Connection Issues":1,
-        "Licenses or Accounts":1,
-        "Application Issues":1,
-        "Files or Storage":1,
-        "Security or Privacy":1,
-        "Suggestions for Improvement / Missing Features":1,
-        "Others":1
+        "Installation or Updates": 5,
+        "Network or Connection Issues": 8,
+        "Licenses or Accounts": 5,
+        "Application Issues": 6,
+        "Files or Storage": 4,
+        "Security or Privacy": 15,
+        "Suggestions for Improvement / Missing Features": 1,
+        "Others": 2
     }
 
 
