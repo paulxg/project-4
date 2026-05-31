@@ -1,6 +1,5 @@
 from PyQt6.QtWidgets import (QHBoxLayout, QPushButton, QWidget)
 from PyQt6.QtCore import pyqtSignal
-from backend.universal_data import CurrentUserdata
 
 class MainWindow(QWidget):
     create_ticket_signal = pyqtSignal()

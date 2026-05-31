@@ -48,7 +48,7 @@ class Database:
         except Error as e:
             raise DatabaseError(f"General SQL error while creating the user: {e}")
 
-    def create_messages_table(self):
+    def create_messages_table(self): #todo CREATE Table löschen?
         try:
             self.cursor.execute("""
                 CREATE TABLE IF NOT EXISTS ticket_messages (

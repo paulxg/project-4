@@ -58,7 +58,7 @@ class TicketManagerWindow(QWidget):
         except DatabaseError as e:
             QMessageBox.critical(self, "Database Error", str(e))
 
-    # NEU: Diese Methode kümmert sich um das Erstellen und Anzeigen des Tabs
+    #Erstellen und Anzeigen Tab
     def open_edit_tab(self, ticket_number, category):
         tab_edit = TicketEdit(ticket_number)
         tab_edit.ticket_deleted.connect(self.handle_ticket_deleted)
@@ -116,7 +116,7 @@ class MyTicketsWindow(QWidget):
 
     def load_table_data(self, mysql_data):
         model = QStandardItemModel()
-        model.setHorizontalHeaderLabels(["ticket number", "time of issuing", "category", "short description", "detailed description", "status", "responsible admin id"])
+        model.setHorizontalHeaderLabels(["ticket number", "time of issuing", "category", "short description", "detailed description", "status", "responsible admin"])
         for row in mysql_data:
             items = [QStandardItem(str(field) if field else "") for field in row]
             model.appendRow(items)
