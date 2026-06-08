@@ -147,7 +147,7 @@ class Database:
 
     def update_status(self, status, ticket_number):
         try:
-            # Reset priority (factor) to 0 if the new status is 'closed'
+            #Reset factor to 0 if new status is 'closed'
             query = """
                 UPDATE tickets 
                 SET status = %s, 

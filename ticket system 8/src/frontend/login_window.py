@@ -38,7 +38,6 @@ class LoginWindow(QWidget):
 
 
         # Augen Button ins Passwort input Feld
-
         password_layout = QHBoxLayout()
         password_layout.addWidget(self.password_input)
         password_layout.addWidget(self.show_password)
@@ -47,7 +46,6 @@ class LoginWindow(QWidget):
         signout_button = QPushButton("Return to start page")
 
         # Widgets zum Layout hinzufügen
-
         layout.addWidget(QLabel("Username"))
         layout.addWidget(self.name_input)
         layout.addWidget(QLabel("Password"))
@@ -55,7 +53,7 @@ class LoginWindow(QWidget):
         layout.addWidget(login_button)
         layout.addWidget(signout_button)
 
-        # Button verbinden
+        #Button verbinden
         login_button.clicked.connect(self.check_login)
         signout_button.clicked.connect(self.signout_signal.emit)
 

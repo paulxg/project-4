@@ -103,7 +103,7 @@ class CreateTicket(QWidget):
         self.datetime = ""
         self.factor = ""
 
-# Update des Character Counters
+# Update Character Counter
     def update_character_counter(self):
         text = self.description.toPlainText()
         length = len(text)

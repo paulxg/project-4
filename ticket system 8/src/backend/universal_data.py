@@ -1,4 +1,4 @@
-# Universal userdata
+#Universal userdata
 class CurrentUserdata:
     id = None
     rank = None

@@ -9,17 +9,17 @@ class RegistrationWindow(QWidget):
     return_signal = pyqtSignal()
 
     def __init__(self):
-        # super().__init__() ruft den Bauplan von QWidget auf, damit wir ein echtes Fenster sind
+        # super().__init__() ruft den Bauplan von QWidget auf
         super().__init__()
         self.setWindowTitle("Create your account")
         self.resize(300, 300)
         self.setMinimumSize(250, 250)
 
-        # Layout erstellen
+        #Layout erstellen
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        # Widgets erstellen
+        #Widgets erstellen
         self.name_input = QLineEdit()
         self.name_input.setPlaceholderText("Username")
 

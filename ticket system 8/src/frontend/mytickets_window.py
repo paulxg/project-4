@@ -83,7 +83,7 @@ class TicketManagerWindow(QWidget):
 
 
 class MyTicketsWindow(QWidget):
-    request_edit_ticket = pyqtSignal(str, str) # NEU: Signal transmits ticket number and category
+    request_edit_ticket = pyqtSignal(str, str) #NEU: Signal transmits ticket number and category
 
     def __init__(self):
         super().__init__()
@@ -112,7 +112,7 @@ class MyTicketsWindow(QWidget):
             self.load_table_data(mysql_data)
         except DatabaseError as e:
             QMessageBox.critical(self, "Database Error", str(e))
-            self.load_table_data([])  # Verhindert Abstürze durch leere Modellerstellung
+            self.load_table_data([])  #crash prevention durch leere Modellerstellung
 
     def load_table_data(self, mysql_data):
         model = QStandardItemModel()
@@ -248,7 +248,7 @@ class TicketEdit(QWidget):
             if ok and text.strip(): # Prüfen, ob OK geklickt wurde und der Text nicht leer ist
                 try:
                     Database().send_message(self.ticket_number, CurrentUserdata.id, text.strip())
-                    # Chatfenster direkt updaten, falls es bereits gerendert ist
+                    #Chatfenster direkt updaten, falls geladen ist
                     if hasattr(self, 'chat_display'):
                         self.load_messages()
                 except DatabaseError as e:
@@ -256,7 +256,7 @@ class TicketEdit(QWidget):
                     return
             else:
                 QMessageBox.warning(self, "Warning", "A final comment is required to close the ticket.")
-                return # Funktion abbrechen, das Ticket wird noch nicht geschlossen!
+                return #Funktion abbrechen, return lässt ticket aber nicht schließen
 
         if status:
             try:
