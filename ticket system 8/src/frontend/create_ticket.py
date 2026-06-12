@@ -44,7 +44,7 @@ class CreateTicket(QWidget):
         long_problem_label = QLabel("Describe your problem in detail:")
         self.description = QTextEdit()
         self.description.setFixedHeight(125)
-        self.description.setPlaceholderText("Max 200 characters")
+        self.description.setPlaceholderText("Max 250 characters")
         layout.addWidget(long_problem_label)
         layout.addWidget(self.description)
 
