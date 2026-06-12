@@ -111,7 +111,9 @@ class Database:
                         JOIN userdata u ON user_id_ref = u.id 
                        WHERE user_id_ref = %s 
                           OR (SELECT rank FROM userdata WHERE id = %s) = 'admin' 
-                       ORDER BY (t.factor * (CASE WHEN u.status = 'company' THEN 1.3 ELSE 1 END) + (DATEDIFF(NOW(), date_time) * 0.2)) DESC
+                       ORDER BY (CASE WHEN t.factor = 0 THEN 0
+                                      ELSE t.factor * (CASE WHEN u.status = 'company' THEN 1.3 ELSE 1 END) + (DATEDIFF(NOW(), date_time) * 0.2)
+                                 END) DESC
                     """
             self.cursor.execute(query, (user_id, user_id))
             return self.cursor.fetchall()
