@@ -56,7 +56,7 @@ class Database:
                 return True #erfolgreich angelegt
 
         except sqlite3.IntegrityError:
-            # Dieser Fehler tritt auf, wenn z.B. der Username schon existiert (UNIQUE)
+            # Fehler tritt auf, wenn z.B. der Username schon existiert (UNIQUE)
             return False
 
     def create_ticket(self, user_id, factor, category, shortdescription, longdescription):

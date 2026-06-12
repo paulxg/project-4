@@ -18,21 +18,17 @@ class CreateTicket(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        #Dropdown Menü
         self.dropdown = QComboBox()
         self.dropdown_Items = ProgramData.support_categories
         self.dropdown.addItems(self.dropdown_Items)
         self.category = ""
 
-        # Begrenzung der Anzeige
         self.dropdown.setMaxVisibleItems(5)
 
-        # Label für Dropdown
         self.label = QLabel("I have a problem with:")
         layout.addWidget(self.label)
         layout.addWidget(self.dropdown)
 
-        #Problem-Kurzbeschreibung
         problem_label = QLabel("Describe your problem briefly:")
         self.problem = QLineEdit()
         self.problem.setPlaceholderText("max. 30 characters")
@@ -41,7 +37,6 @@ class CreateTicket(QWidget):
         layout.addWidget(problem_label)
         layout.addWidget(self.problem)
 
-        #detaillierte Problembeschreibung
         long_problem_label = QLabel("Describe your problem in detail:")
         self.description = QTextEdit()
         self.description.setFixedHeight(125)
@@ -49,13 +44,10 @@ class CreateTicket(QWidget):
         layout.addWidget(long_problem_label)
         layout.addWidget(self.description)
 
-        # Character Counter
         self.character_counter = QLabel("0/250")
 
-        # Signal für das Counter-Updating
         self.description.textChanged.connect(self.update_character_counter)
 
-        # Attachment anhängen
         self.attachment_label = QLabel("Attachment:")
         self.attachment_button = QPushButton("Attach")
         layout.addWidget(self.character_counter)
@@ -65,10 +57,8 @@ class CreateTicket(QWidget):
         layout.addWidget(self.attachment_label)
         layout.addWidget(self.attachment_button)
 
-        # Submit Button
         self.submit_button = QPushButton("Submit")
 
-        #Layouting des Submit Button
         self.submit_button.setStyleSheet("""
                 QPushButton {
                     background-color: #003B00;      
@@ -110,7 +100,7 @@ class CreateTicket(QWidget):
 
         self.final_factor = ""
 
-# Update des Character Counters
+
     def update_character_counter(self):
         text = self.description.toPlainText()
         length = len(text)
@@ -125,7 +115,6 @@ class CreateTicket(QWidget):
 
         self.character_counter.setText(f"{length}/{max_len}")
 
-# Funktion des Submit Button
     def submit(self):
         self.category = self.dropdown.currentText()
         self.problem_quick = self.problem.text()
@@ -135,7 +124,6 @@ class CreateTicket(QWidget):
         text_to_single_line = text.replace("\n", " ").replace("\r", "")
         if len(text_to_single_line) > 250 and self.problem_quick != "":
 
-            #PopUp wenn zu lang und Submitted
             notification = QMessageBox()
             notification.setWindowTitle("Error")
             notification.setText("geht nich, mach kürzer aber füll alles aus! (hab nicht den ganzen Tag Zeit)")
@@ -155,7 +143,6 @@ class CreateTicket(QWidget):
                     text_to_single_line
                     ])
 
-# Inputs in die Textboxen löschen nach dem schreiben (noch im "with")
             inputs1 = self.findChildren(QLineEdit)
             for input_field in inputs1:
                 input_field.clear()

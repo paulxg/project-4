@@ -123,16 +123,16 @@ class MyTicketsWindow(QWidget):
         self.tableview.setModel(model)
     
     def edit_ticket(self, index):
-        # Die Zeile des angeklickten Elements aus dem index holen
+        # Zeile des angeklickten Elements aus dem index holen
         row = index.row()
-        # Das Model der Tabelle abrufen
+        # Model der Tabelle abrufen
         model = self.tableview.model()
-        # Den Wert aus der angeklickten Zeile, Spalte 0 (ticket number) auslesen
+        # Wert aus der angeklickten Zeile, Spalte 0 (ticket number) auslesen
         ticket_number = model.index(row, 0).data()
-        # Den Wert aus der angeklickten Zeile, Spalte 2 (category) auslesen
+        # Wert aus der angeklickten Zeile, Spalte 2 (category) auslesen
         category = model.index(row, 2).data()
         
-        # Ticketnummer per Signal an TicketManagerWindow schicken, falls wir nicht ins Leere geklickt haben
+        # Ticketnummer per Signal an TicketManagerWindow schicken, falls nicht ins Leere geklickt
         if ticket_number and category:
             self.request_edit_ticket.emit(str(ticket_number), str(category))
 

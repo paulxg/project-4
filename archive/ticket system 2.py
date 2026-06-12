@@ -53,23 +53,23 @@ def sign_in():
 
     window2.show()
 
-    def login_clicked():  # Achte auf korrekte Funktions-Definition
+    def login_clicked():
         username = name_input.text()  # Kein Komma am Ende!
         password = password_input.text()  # Kein Komma am Ende!
 
-        user_found = False  # Wir merken uns, ob wir jemanden gefunden haben
+        user_found = False  # merken, ob jemanden gefunden
 
         with open(file="userdata.txt", mode="r", encoding="utf-8") as userdata:
             for line in userdata:
                 data = line.strip().split(",")
 
-                # Sicherheitscheck: Hat die Zeile überhaupt Daten?
+                # Sicherheitscheck: Hat die Zeile überhaupt Daten
                 if len(data) >= 2:
                     if data[0] == username:
                         if data[1] == password:
                             print("Login erfolgreich!")
                             user_found = True
-                            break  # Wir haben ihn, Schleife beenden!
+                            break  #Schleife beenden
                         else:
                             print("Passwort falsch!")
                             user_found = True  # Nutzer existiert, aber PW ist falsch

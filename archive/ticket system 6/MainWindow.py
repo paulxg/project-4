@@ -20,7 +20,6 @@ class MainWindow(QWidget):
 
         layout.addWidget(create_ticket_button)
 
-        #AllTickets Button
         if CurrentUserdata.rank == "admin":
             alltickets_button = QPushButton("All Tickets")
             layout.addWidget(alltickets_button)

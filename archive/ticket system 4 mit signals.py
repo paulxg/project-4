@@ -2,10 +2,7 @@ import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QPushButton, QLabel, QLineEdit)
 from PyQt6.QtCore import pyqtSignal
 
-# 1. Das Start-Fenster (Sign In / Sign Up Auswahl)
-
 class StartWindow(QWidget):
-    # Wir definieren ein eigenes Signal: "Jemand will zum Login"
     request_login = pyqtSignal()
 
     def __init__(self):
@@ -23,16 +20,10 @@ class StartWindow(QWidget):
         layout.addWidget(btn_signin)
         layout.addWidget(btn_signup)
 
-        # Wenn der Button gedrückt wird, feuern wir unser Signal ab
-        # Wir rufen NICHT das andere Fenster auf, wir schreien nur "LOGIN!" in den Raum.
         btn_signin.clicked.connect(self.request_login.emit)
 
-
-# 2. Das Login-Fenster
-
 class LoginWindow(QWidget):
-    # Signal: "Login war erfolgreich"
-    login_success = pyqtSignal(str)  # Wir senden den Username mit
+    login_success = pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
@@ -52,16 +43,11 @@ class LoginWindow(QWidget):
         btn_submit.clicked.connect(self.check_login)
 
     def check_login(self):
-        # ... Hier käme deine echte Überprüfung mit der Datei ...
         user = self.username.text()
-        if user == "admin":  # Simulierter Erfolg
-            # Wir senden das Signal an den Controller
+        if user == "admin":
             self.login_success.emit(user)
         else:
             print("Falsch (nutze 'admin')")
-
-
-# 3. Das "Echte" Hauptprogramm
 
 class RealAppWindow(QWidget):
     def __init__(self, username):
@@ -74,45 +60,27 @@ class RealAppWindow(QWidget):
         layout.addWidget(QLabel(f"Hallo {username}! Hier läuft die App."))
         layout.addWidget(QPushButton("Arbeit erledigen..."))
 
-
-# 4. Der Controller (Der Manager)
-
 class WindowManager:
     def __init__(self):
         self.current_window = None
 
     def show_start_screen(self):
-        # Wir erstellen das Startfenster
         self.current_window = StartWindow()
-
-        # Wir verbinden das Signal des Fensters mit unserer Methode
         self.current_window.request_login.connect(self.show_login_screen)
-
         self.current_window.show()
 
     def show_login_screen(self):
-        # Altes Fenster schließen
         self.current_window.close()
-
-        # Neues Fenster erstellen
         self.current_window = LoginWindow()
-
-        # Auf Erfolg hören
         self.current_window.login_success.connect(self.show_main_app)
-
         self.current_window.show()
 
     def show_main_app(self, username):
         self.current_window.close()
-
-        # Das eigentliche Programm starten
         self.current_window = RealAppWindow(username)
         self.current_window.show()
 
-# Main Execution
 app = QApplication(sys.argv)
-
-# Der Manager übernimmt die Kontrolle
 manager = WindowManager()
 manager.show_start_screen()
 

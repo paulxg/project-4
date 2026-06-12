@@ -2,25 +2,22 @@ import sys
 from PyQt6.QtWidgets import (QApplication, QHBoxLayout, QPushButton, QWidget, QVBoxLayout, QLineEdit, QLabel, QComboBox, QFileDialog)
 from PyQt6.QtCore import pyqtSignal
 
-# 1. Der Controller (Der Manager)
 class WindowManager:
     def __init__(self):
         self.current_window = None
 
     def show_start_screen(self):
-        # Wir erstellen das Startfenster
+
         self.current_window = StartWindow()
 
-        # Wir verbinden das Signal des Fensters mit unserer Methode
+
         self.current_window.request_login.connect(self.show_login_screen)
 
         self.current_window.show()
 
     def show_login_screen(self):
-        # Altes Fenster schließen
         self.current_window.close()
 
-        # Neues Fenster erstellen
         self.current_window = LoginWindow()
 
         self.current_window.request_main_window.connect(self.show_main_window)
@@ -44,17 +41,11 @@ class WindowManager:
         self.current_window.show()
 
 
-#-------------------------------------------------------------------------------------------------
-
-# Universal userdata
 class CurrentUserdata:
     username = None
     password = None
 
-#mit CurrentUserdata.username in anderen Klassen darauf zugreifen
-#-------------------------------------------------------------------------------------------------
 class StartWindow(QWidget):
-    #Signal: "Jemand will zum Login"
     request_login = pyqtSignal()
 
     def __init__(self):
@@ -71,7 +62,6 @@ class StartWindow(QWidget):
         layout.addWidget(signin_button)
         layout.addWidget(signup_button)
 
-        # Verbindung herstellen
         signin_button.clicked.connect(self.request_login.emit)
 
 
@@ -79,16 +69,13 @@ class LoginWindow(QWidget):
     request_main_window = pyqtSignal()
 
     def __init__(self):
-        # super().__init__() ruft den Bauplan von QWidget auf, damit wir ein echtes Fenster sind
         super().__init__()
         self.setWindowTitle("Login")
         self.setFixedSize(300, 300)
 
-        # Layout erstellen
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        # Widgets erstellen
         self.name_input = QLineEdit()
         self.name_input.setPlaceholderText("Username")
 
@@ -98,25 +85,21 @@ class LoginWindow(QWidget):
 
         login_button = QPushButton("Submit")
 
-        # Widgets zum Layout hinzufügen
         layout.addWidget(QLabel("Username"))
         layout.addWidget(self.name_input)
         layout.addWidget(QLabel("Pin"))
         layout.addWidget(self.password_input)
         layout.addWidget(login_button)
 
-        # Button verbinden
         login_button.clicked.connect(self.check_login)
 
     def check_login(self):
-        # Hier greifen wir auf UNSERE (self) Eingabefelder zu
         username = self.name_input.text()
         password = self.password_input.text()
 
         user_found = False
 
         try:
-            # 'with' schließt die Datei automatisch, auch bei Fehlern
             with open("userdata.txt", "r", encoding="utf-8") as file:
                 for line in file:
                     data = line.strip().split(",")
@@ -167,7 +150,6 @@ class CreateTicket(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        #Dropdown Menü
         self.dropdown = QComboBox()
         self.dropdown_Items = [" ","Safety", "Error", "test1", "test2", "test3"]
         self.dropdown.addItems(self.dropdown_Items)
@@ -179,7 +161,6 @@ class CreateTicket(QWidget):
         layout.addWidget(self.label)
         layout.addWidget(self.dropdown)
 
-        #Problem-Kurzbeschreibung
         problem_label = QLabel("Describe your problem:")
         self.problem = QLineEdit()
         self.problem.setPlaceholderText("max. 30 characters")
@@ -188,7 +169,6 @@ class CreateTicket(QWidget):
         layout.addWidget(problem_label)
         layout.addWidget(self.problem)
 
-        #detailierte Problembeschreibung
         description_label = QLabel("Detailed description:")
         self.description = QLineEdit()
         self.description.setPlaceholderText("max. 250 characters")
@@ -197,13 +177,10 @@ class CreateTicket(QWidget):
         layout.addWidget(description_label)
         layout.addWidget(self.description)
 
-        #Submit Button
         submit_button = QPushButton("Submit")
-        #submit_button.clicked.connect(self.submit)
 
         layout.addWidget(submit_button)
 
-        # Attachment
         self.attachment_label = QLabel("Attachment:")
         self.attachment_button = QPushButton("Attach")
 
@@ -221,10 +198,8 @@ class CreateTicket(QWidget):
             print("Attachment: ", datei)
 
 
-# --- Das Hauptprogramm ---
 app = QApplication(sys.argv)
 
-# Der Manager übernimmt die Kontrolle
 manager = WindowManager()
 manager.show_start_screen()
 

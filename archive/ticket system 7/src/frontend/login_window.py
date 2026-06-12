@@ -10,7 +10,7 @@ class LoginWindow(QWidget):
     signout_signal = pyqtSignal()
 
     def __init__(self):
-        # super().__init__() ruft den Bauplan von QWidget auf, damit wir ein echtes Fenster sind
+        # super().__init__() ruft den Bauplan von QWidget auf
         super().__init__()
         self.setWindowTitle("Login")
         self.setFixedSize(300, 300)

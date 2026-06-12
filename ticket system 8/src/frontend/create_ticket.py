@@ -153,7 +153,7 @@ class CreateTicket(QWidget):
                     category,
                     problem_quick,
                     text_to_single_line,
-                    "open"  # Automatically assign "open" status
+                    "open"
                 )
 
                 # Inputs in die Textboxen löschen nach dem schreiben

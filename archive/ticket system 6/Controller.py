@@ -9,16 +9,14 @@ from MyTicketsWindow import MyTicketsWindow
 from UniversalData import CurrentUserdata
 from RegistrationWindow import RegistrationWindow
 
-# 1. Der Controller (Der Manager)
 class Controller:
     def __init__(self):
         self.current_window = None
 
     def show_start_screen(self):
-        #Wir erstellen das Startfenster
+        # Startfenster
         self.current_window = StartWindow()
 
-        #Wir verbinden das Signal des Fensters mit unserer Methode
         self.current_window.request_login.connect(self.show_login_screen)
         self.current_window.request_registration.connect(self.show_registration_screen)
 

@@ -29,7 +29,7 @@ class MyTicketsWindow(QWidget):
         layout.addWidget(self.backtomain)
 
         # model-Variable füllt als QStandardItemModel das Tabellenraster mit Inhalt
-        self.model = QStandardItemModel() #Inhalt als Modell, der den Inhalt aus csv Datei "im Kopf behält"
+        self.model = QStandardItemModel()
         self.tableview.setModel(self.model)
 
         db = Database()
@@ -44,13 +44,9 @@ class MyTicketsWindow(QWidget):
         column_count = self.model.columnCount()
 
         if column_count > 0:
-            # 1. Alle Spalten (AUßER der letzten) passen sich eng an den Inhalt an
             for col in range(column_count - 1):
                 header.setSectionResizeMode(col, QHeaderView.ResizeMode.ResizeToContents)
 
-            # 2. Die letzte Spalte (langer Text) wird gezwungen, den restlichen Platz
-            # auszufüllen und darf NICHT über den Rand hinauswachsen.
             header.setSectionResizeMode(column_count - 1, QHeaderView.ResizeMode.Stretch)
 
-        # 3. Jetzt, wo die Breite der Text-Spalte feststeht, kann die Höhe korrekt umbrechen
         self.tableview.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)

@@ -2,7 +2,6 @@ from PyQt6.QtWidgets import (QHBoxLayout, QPushButton, QWidget)
 from PyQt6.QtCore import pyqtSignal
 
 class StartWindow(QWidget):
-    #Signal: "Jemand will zum Login"
     request_login = pyqtSignal()
     request_registration = pyqtSignal()
 

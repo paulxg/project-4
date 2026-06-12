@@ -2,15 +2,15 @@ from PyQt6.QtWidgets import (QHBoxLayout, QPushButton, QWidget)
 from PyQt6.QtCore import pyqtSignal
 
 class StartWindow(QWidget):
-    #Signal: "Jemand will zum Login"
+    #Signal: Jemand will zum Login
     request_login = pyqtSignal()
     request_registration = pyqtSignal()
 
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Sign in/up")
-        self.resize(300, 300)           # Startgröße (Preset)
-        self.setMinimumSize(250, 200)   # Mindestgröße, die nicht unterschritten werden darf
+        self.resize(300, 300)           # Startgröße
+        self.setMinimumSize(250, 200)   # Mindestgröße
 
         layout = QHBoxLayout()
         self.setLayout(layout)
