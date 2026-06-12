@@ -48,21 +48,6 @@ class Database:
         except Error as e:
             raise DatabaseError(f"General SQL error while creating the user: {e}")
 
-    def create_messages_table(self): #todo CREATE Table löschen?
-        try:
-            self.cursor.execute("""
-                CREATE TABLE IF NOT EXISTS ticket_messages (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    ticket_id INT NOT NULL,
-                    sender_id INT NOT NULL,
-                    message TEXT NOT NULL,
-                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-                )
-            """)
-            self.connection.commit()
-        except Error as e:
-            raise DatabaseError(f"Error creating the messages table: {e}")
-
     def send_message(self, ticket_id, sender_id, message):
         try:
             query = "INSERT INTO ticket_messages (ticket_id, sender_id, message) VALUES (%s, %s, %s)"
