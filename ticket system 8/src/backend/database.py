@@ -154,7 +154,7 @@ class Database:
                 UPDATE tickets 
                 SET status = %s, 
                     handled_by = %s, 
-                    factor = CASE WHEN %s = 'closed' THEN -999999 ELSE factor END 
+                    factor = CASE WHEN %s = 'closed' THEN 0 ELSE factor END 
                 WHERE ticket_number = %s
             """
             self.cursor.execute(query, (status, CurrentUserdata.username, status, ticket_number))
