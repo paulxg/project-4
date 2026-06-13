@@ -29,7 +29,7 @@ class MyTicketsWindow(QWidget):
         layout.addWidget(self.backtomain)
 
         # model-Variable füllt als QStandardItemModel das Tabellenraster mit Inhalt
-        self.model = QStandardItemModel() #Inhalt als Modell, der den Inhalt aus csv Datei "im Kopf behält"
+        self.model = QStandardItemModel() #Inhalt als Modell, der den Inhalt aus csv Datei behält
         self.tableview.setModel(self.model)
 
         with open("tickets.txt", "r", encoding="utf-8") as file:

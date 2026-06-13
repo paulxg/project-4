@@ -4,13 +4,12 @@
 #error handling: im Terminal oder auch im Programm?
 #todo ticket autolöschen nach ticketschließen; alternativ: prio=0
 #todo comment spalte wieder entfernen aus MySQL
-#automatisch Fenster close nach comment (admin) WEEEEEEN juckt das
+#automatisch Fenster close nach comment (admin) unnötig
 #todo chat anzeigen nach submit statusänderung (zu aufwändig)
 #todo mytickets responsible admin ID: Username hinzufügen
-
 #todo Ticketlöschen nach 30 Tagen im closed Zustand
 #todo User bestätigt gelöstes Problem bevor finaler close des tickets
-#todo Fenster schöner machen [Anton ist wieder im Game!]
+#todo Fenster schöner machen
 #todo passwort hashen mit bcrypt (Paul)
 #todo user löschen/bearbeiten etc.
 #todo Wie kann der Admin mit dem Kunden in Kontakt treten? (Anstelle von Username vllt email?)
