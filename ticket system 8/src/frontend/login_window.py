@@ -60,7 +60,7 @@ class LoginWindow(QWidget):
     def show_or_hide_password(self, checked):
         if checked:
             self.password_input.setEchoMode(QLineEdit.EchoMode.Normal)
-            self.show_password.setText("🙈")
+            self.show_password.setText("🚫")
             self.show_password.setToolTip("Hide password")
         else:
             self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
