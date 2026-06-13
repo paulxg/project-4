@@ -221,7 +221,7 @@ class TicketEdit(QWidget):
     def load_messages(self):
         try:
             messages = Database().get_messages(self.ticket_number)
-            content = f"<i> Hello, an admin is currently reviewing your ticket and will get back to you as soon as possible. Please provide any further information available below or pay for faster service.</i> <br> <br>" + "".join(
+            content = f"<i> Hello, an admin is currently reviewing your ticket and will get back to you as soon as possible. Please provide any further information available below.</i> <br> <br>" + "".join(
                 f"<b>[{username}]</b> {timestamp} &mdash; {message}<br>"
                 for username, message, timestamp in messages
             )
