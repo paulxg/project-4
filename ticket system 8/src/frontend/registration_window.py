@@ -15,11 +15,11 @@ class RegistrationWindow(QWidget):
         self.resize(300, 300)
         self.setMinimumSize(250, 250)
 
-        #Layout erstellen
+        # Layout erstellen
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        #Widgets erstellen
+        # Widgets erstellen
         self.name_input = QLineEdit()
         self.name_input.setPlaceholderText("Username")
 

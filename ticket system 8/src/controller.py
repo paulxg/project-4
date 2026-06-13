@@ -7,7 +7,7 @@ from backend.universal_data import CurrentUserdata
 from frontend.registration_window import RegistrationWindow
 
 
-#Controller
+# Controller
 class Controller:
     def __init__(self):
         self.current_window = None

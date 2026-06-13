@@ -3,7 +3,7 @@ from mysql.connector import Error
 from backend.universal_data import CurrentUserdata
 
 class DatabaseError(Exception):
-    """Custom Exception class for database errors, to catch them specifically in the frontend."""
+    """ Exception Klasse um database errors abzufangen """
     pass
 
 class Database:
@@ -134,7 +134,7 @@ class Database:
 
     def update_status(self, status, ticket_number):
         try:
-            #Reset factor to 0 if new status is 'closed'
+            #wenn closed dann prio 0 '
             query = """
                 UPDATE tickets 
                 SET status = %s, 

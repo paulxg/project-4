@@ -15,7 +15,7 @@ class MainWindow(QWidget):
         layout = QHBoxLayout()
         self.setLayout(layout)
 
-        #CreateTicketButton
+        # CreateTicketButton
         create_ticket_button = QPushButton("Create Ticket")
         layout.addWidget(create_ticket_button)
 
@@ -23,7 +23,7 @@ class MainWindow(QWidget):
         layout.addWidget(my_tickets_button)
         my_tickets_button.clicked.connect(self.mytickets_signal.emit)
 
-        #SignoutButton
+        # SignoutButton
         signout_button = QPushButton("Signout")
         layout.addWidget(signout_button)
 

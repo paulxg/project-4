@@ -17,7 +17,7 @@ class CreateTicket(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        #Dropdown Menü
+        # Dropdown Menü
         self.dropdown = QComboBox()
         self.dropdown_Items = ProgramData.support_categories
         self.dropdown.addItems(self.dropdown_Items)
@@ -55,7 +55,7 @@ class CreateTicket(QWidget):
         # Signal für das Counter-Updating
         self.description.textChanged.connect(self.update_character_counter)
 
-        #Pflichtfeld
+        # Pflichtfeld
         required = QLabel("*required inputs")
         layout.addWidget(required)
 
@@ -63,7 +63,7 @@ class CreateTicket(QWidget):
         # Submit Button
         self.submit_button = QPushButton("Submit")
 
-        #Layouting des Submit Button
+        # Layouting des Submit Button
         self.submit_button.setStyleSheet("""
                 QPushButton {
                     background-color: #003B00;      
@@ -103,7 +103,7 @@ class CreateTicket(QWidget):
         self.datetime = ""
         self.factor = ""
 
-# Update Character Counter
+# Character Counter updaten
     def update_character_counter(self):
         text = self.description.toPlainText()
         length = len(text)
@@ -118,7 +118,7 @@ class CreateTicket(QWidget):
 
         self.character_counter.setText(f"{length}/{self.max_len}")
 
-#Funktion des Submit Button
+# Funktion des Submit Button
     def submit(self):
         print("submit started")
         category = self.dropdown.currentText()
@@ -132,7 +132,7 @@ class CreateTicket(QWidget):
         print(f"Your ticket priority is {p.prio}")
         self.factor = p.prio
 
-        #text length check
+        # text length check
         if len(text_to_single_line) > 250:
             #PopUp wenn zu lang und Submitted
             print("Description too long!")
@@ -156,7 +156,7 @@ class CreateTicket(QWidget):
                     "open"
                 )
 
-                # Inputs in die Textboxen löschen nach dem schreiben
+                # Inputs in die Textboxen löschen nach dem Schreiben
                 inputs1 = self.findChildren(QLineEdit)
                 for input_field in inputs1:
                     input_field.clear()

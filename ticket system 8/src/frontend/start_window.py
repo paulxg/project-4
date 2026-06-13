@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import (QHBoxLayout, QPushButton, QWidget)
 from PyQt6.QtCore import pyqtSignal
 
 class StartWindow(QWidget):
-    #Signal: Jemand will zum Login
+    # Signal: Jemand will zum Login
     request_login = pyqtSignal()
     request_registration = pyqtSignal()
 
@@ -21,6 +21,6 @@ class StartWindow(QWidget):
         layout.addWidget(signin_button)
         layout.addWidget(signup_button)
 
-        #Verbindung herstellen
+        #V erbindung herstellen
         signin_button.clicked.connect(self.request_login.emit)
         signup_button.clicked.connect(self.request_registration.emit)

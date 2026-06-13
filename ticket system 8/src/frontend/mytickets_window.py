@@ -19,32 +19,32 @@ class TicketManagerWindow(QWidget):
         main_layout = QVBoxLayout(self)
         print("Main layout created")
 
-        # 1. QTabWidget erstellen
+        # QTabWidget erstellen
         self.tabs = QTabWidget()
         self.tabs.setTabsClosable(True)
         self.tabs.tabCloseRequested.connect(self.close_tab)
         print("QTabWidget created")
 
-        # 2. Instanz deines bestehenden Windows erstellen (jetzt als Widget)
+        # Instanz des bestehenden Windows erstellen (als Widget)
         self.tab_mytickets = MyTicketsWindow()
         self.tabs.addTab(self.tab_mytickets, "My Tickets")
         
-        # Remove the close button (x) for the first tab (index 0)
+        # close button (also das x) für ersten tab (index 0) entfernen
         self.tabs.tabBar().setTabButton(0, QTabBar.ButtonPosition.RightSide, None)
         self.tabs.tabBar().setTabButton(0, QTabBar.ButtonPosition.LeftSide, None)
 
-        # NEU: Das Signal aus MyTicketsWindow abfangen, um den Tab sicher hier zu öffnen
+        # Das Signal aus MyTicketsWindow abfangen, dass der Tab hier sicher geöffnet wird
         self.tab_mytickets.request_edit_ticket.connect(self.open_edit_tab)
 
-        # 4. Das Tab-Widget in das Hauptfenster-Layout packen
+        #  Tab-Widget ins Hauptfenster-Layout packen
         main_layout.addWidget(self.tabs)
 
-        #Refresh Button
+        # Refresh Button
         self.refresh_button = QPushButton("Refresh")
         self.refresh_button.clicked.connect(self.refresh_ticket_table)
         main_layout.addWidget(self.refresh_button)
 
-        #backtomain pushbutton
+        # backtomain pushbutton
         self.backtomain = QPushButton("Back to Main Window")
         self.backtomain.clicked.connect(self.request_main_window.emit)
         main_layout.addWidget(self.backtomain)
@@ -58,11 +58,11 @@ class TicketManagerWindow(QWidget):
         except DatabaseError as e:
             QMessageBox.critical(self, "Database Error", str(e))
 
-    #Erstellen und Anzeigen Tab
+    # Erstellen und Anzeigen Tab
     def open_edit_tab(self, ticket_number, category):
         tab_edit = TicketEdit(ticket_number)
         tab_edit.ticket_deleted.connect(self.handle_ticket_deleted)
-        # Using the full category name directly in the tab title
+        # full category name direkt im tab title
         self.tabs.addTab(tab_edit, f"#{ticket_number} - {category}")
         self.tabs.setCurrentWidget(tab_edit)  # Wechselt automatisch direkt in den neuen Tab
 
@@ -83,27 +83,27 @@ class TicketManagerWindow(QWidget):
 
 
 class MyTicketsWindow(QWidget):
-    request_edit_ticket = pyqtSignal(str, str) #NEU: Signal transmits ticket number and category
+    request_edit_ticket = pyqtSignal(str, str) #Signal überträgt ticket number and category
 
     def __init__(self):
         super().__init__()
 
-        #Widget bekommt vertical layout, für weitere buttons unter Tabelle
+        # Widget bekommt vertical layout, für weitere buttons unter Tabelle
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
-        #QTableview für Tabellenansicht
+        # QTableview für Tabellenansicht
         self.tableview = QTableView() #sorgt für das tabellenartige Aussehen
         self.tableview.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers) #Unterbindung editing
         self.tableview.doubleClicked.connect(self.edit_ticket)
         
-        #Tabellenanpassung an Fenstergröße
+        # Tabellenanpassung an Fenstergröße
         self.tableview.resizeColumnsToContents()
         self.tableview.resizeRowsToContents()
         self.tableview.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.tableview.verticalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
-        #Widgets ins Layout packen
+        # Widgets ins Layout packen
         self.layout.addWidget(self.tableview)
 
         try:
